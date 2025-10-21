@@ -4,53 +4,53 @@ Before running any analyses, every student must have a valid
 VSC (Vlaamse Supercomputer Centrum) account and access to an
 interactive compute environment.
 ### Request your VSC account
-|
-  Each student must first apply for an account on the Flemish Supercomputer infrastructure:
-  👉 [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account)
-  Follow the steps described on that page carefully.
-  When asked for your **institution**, select **Hasselt University**.
+
+Each student must first apply for an account on the Flemish Supercomputer infrastructure:
+👉 [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account)
+Follow the steps described on that page carefully.
+When asked for your **institution**, select **Hasselt University**.
 ### Request your introduction credits
-|
-  After obtaining a VSC account, request your initial computing credits (needed to run jobs):
-  👉 [Request Introduction Credits (KU Leuven / UHasselt)](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
-  You will receive a confirmation email once your credits are approved and available.
+
+After obtaining a VSC account, request your initial computing credits (needed to run jobs):
+👉 [Request Introduction Credits (KU Leuven / UHasselt)](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
+You will receive a confirmation email once your credits are approved and available.
 ### Login to the VSC OnDemand portal
-|
-  Go to: 👉 [OnDemand](https://ondemand.hpc.kuleuven.be/)
-  1. Click **“Partner Organizations: VSC Account.”**
-  2. Choose **Hasselt University** from the dropdown.
-  3. Log in with your **VSC username** and **password**.
-  4. You will be redirected to the **VSC Dashboard**.
+
+Go to: 👉 [OnDemand](https://ondemand.hpc.kuleuven.be/)
+1. Click **“Partner Organizations: VSC Account.”**
+2. Choose **Hasselt University** from the dropdown.
+3. Log in with your **VSC username** and **password**.
+4. You will be redirected to the **VSC Dashboard**.
 ### Start an Interactive Shell Session
-|
-  To get a working Linux terminal environment for this course:
-  1. Go to the **“Interactive Apps”** tab.
-  2. Select **“Interactive Shell.”**
-  3. Configure the following settings:
-	 | Setting | Value |
-	 |----------|--------|
-	 | Cluster | Genius |
-	 | Partition | interactive |
-	 | VSC Account | intro_your personal VSC account |
-	 | Walltime | 2 hours |
-	 | Nodes | 1 |
-	 | Processors per node | 8 |
-	 | Cores per task | 8 |
-	 | Memory per core | 7500 MB |
-	 | Reservation | Bioinfo_course |
-	 | Email notification | ✓ I would like to receive an email when the session starts |
-  4. Click **Launch** to start your session.
-	 When ready, click **“Connect to VS Code / Jupyter / Shell”** to open your environment.
+
+To get a working Linux terminal environment for this course:
+1. Go to the **“Interactive Apps”** tab.
+2. Select **“Interactive Shell.”**
+3. Configure the following settings:
+| Setting                | Value                                          |
+|------------------------|------------------------------------------------|
+| Cluster                | Genius                                         |
+| Partition              | interactive                                    |
+| VSC Account            | your personal VSC account                      |
+| Walltime               | 2 hours                                        |
+| Nodes                  | 1                                              |
+| Processors per node    | 8                                              |
+| Cores per task         | 8                                              |
+| Memory per core        | 7500 MB                                        |
+| Reservation            | Bioinfo_course                                 |
+| Email notification     | ✓ “I would like to receive an email when the session starts” |
+4. Click **Launch** to start your session.
+When ready, click **“Connect to VS Code / Jupyter / Shell”** to open your environment.
 ## Step 2 — Connect to reserved cores, prepare workspace, load modules, and fetch data
 After launching your Interactive Shell session on VSC, connect to the terminal,
 create your course workspace under $VSC_DATA, load required modules, and download
 the SRA data for the microglia study (GSE111972).
 ### Connect to your reserved cores (shell/SSH)
-|
+
 In the OnDemand interface for your running job, click the **Connect** button at the bottom
 (e.g., “Connect to Shell/SSH”). This opens a terminal on the reserved compute node(s).
 ### Create your course folder under $VSC_DATA
-|
+
 Use the VSC data path to store course files. Replace the folder name if preferred.
 ```bash
 cd "$VSC_DATA"
@@ -59,7 +59,7 @@ cd Bioinfo_course
 pwd  # verify your working directory
 ```
 ### Load required environment modules
-|
+
 Load the interactive environment and SRA Toolkit (version may vary on your cluster).
 ```bash
 module load cluster/genius/interactive
@@ -67,7 +67,7 @@ module load SRA-Toolkit/3.0.5-gompi-2021a
 ```
 > If a module is unavailable, run `module avail` to see alternatives or contact support.
 ### Study data: Microglia in MS (GSE111972)
-|
+
 Source: Transcriptional profiling of human microglia reveals grey–white matter
 heterogeneity and multiple sclerosis-associated changes.
 GEO page: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111972
@@ -82,7 +82,7 @@ GEO page: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111972
 | CON_WM_11  | GSM3045835 | SRR6849257| 27.5           | Single-end | 716 MB      | Control white matter | Control |
 > Note: Data are **single-end**; do **not** use paired-end flags when processing.
 ### Download FASTQ files from SRA (adjust output path!)
-|
+
 Set an **absolute path** where your FASTQs will be saved (edit OUT=... to your own VSC path),
 then run the loop. This uses `prefetch` + `fasterq-dump` and compresses with `pigz` if available,
 else falls back to `gzip`.
@@ -90,11 +90,11 @@ else falls back to `gzip`.
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
 mkdir -p "$OUT"
 for SRR in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do
-  echo "Downloading $SRR ..."
-  prefetch "$SRR" \
-  && fasterq-dump -O "$OUT" -e 8 "$SRR" \
-  && pigz -p 8 "$OUT/${SRR}.fastq" \
-  || gzip -9 "$OUT/${SRR}.fastq"
+echo "Downloading $SRR ..."
+prefetch "$SRR" \
+&& fasterq-dump -O "$OUT" -e 8 "$SRR" \
+&& pigz -p 8 "$OUT/${SRR}.fastq" \
+|| gzip -9 "$OUT/${SRR}.fastq"
 done
 ```
 **Tips**
@@ -102,7 +102,7 @@ done
 - For single-end data, `--split-files` is **not** needed.
 - If `pigz` is not installed as a module, `gzip` fallback will be used.
 ### (Optional) Organize or link into your repository
-|
+
 If you have a Git repository for the tutorial, you may symlink FASTQs into `data/raw`
 (keeps the repo small, data outside the repo):
 ```bash
@@ -167,7 +167,7 @@ module load seqtk
 ```
 > If unavailable, check with `module avail seqtk` or ask your system admin.
 ### Downsample to 5 million reads
-|
+
 Define input and output directories (using the standard `$VSC_DATA` structure):
 ```bash
 IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
@@ -177,8 +177,8 @@ mkdir -p "$OUT"
 Then run the loop to process all samples:
 ```bash
 for s in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do
-  echo "Subsampling $s to 5,000,000 reads ..."
-  seqtk sample -s42 "$IN/${s}.fastq.gz" 5000000 | gzip > "$OUT/${s}.sub5M.fastq.gz"
+echo "Subsampling $s to 5,000,000 reads ..."
+seqtk sample -s42 "$IN/${s}.fastq.gz" 5000000 | gzip > "$OUT/${s}.sub5M.fastq.gz"
 done
 ```
 **Notes**
@@ -189,13 +189,13 @@ done
 Perform quality control and adapter trimming on the 5M sub-sampled FASTQ files using fastp.
 This step removes low-quality bases and short reads, generating cleaned FASTQs and HTML QC reports.
 ### Load fastp module
-|
+
 ```bash
 module load fastp/0.23.2-GCC-10.3.0
 ```
 > Check `module avail fastp` if this exact version is unavailable on your cluster.
 ### Run fastp on all sub-sampled FASTQs
-|
+
 Define the input and output directories based on your `$VSC_DATA` structure:
 ```bash
 IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastq_sub5M"
@@ -205,12 +205,12 @@ mkdir -p "$OUT"
 Then run the following loop to trim all samples:
 ```bash
 for fq in "$IN"/SRR*.fastq.gz; do
-  s=$(basename "${fq%.fastq.gz}")
-  echo "Running fastp on $s ..."
-  fastp -i "$fq" \
-		-o "$OUT/${s}.trimmed.fastq.gz" \
-		-h "$OUT/${s}_fastp.html" \
-		-w 8
+s=$(basename "${fq%.fastq.gz}")
+echo "Running fastp on $s ..."
+fastp -i "$fq" \
+-o "$OUT/${s}.trimmed.fastq.gz" \
+-h "$OUT/${s}_fastp.html" \
+-w 8
 done
 ```
 **Notes**
@@ -223,20 +223,20 @@ done
 Download the human reference genome (GRCh38), build a STAR index, and prepare for alignment
 of trimmed FASTQ files. This step sets up the reference needed for mapping reads to genes.
 ### Create a reference genome directory
-|
+
 ```bash
 cd "$VSC_DATA/Bioinfo_course"
 mkdir -p Ref_genome
 cd Ref_genome
 ```
 ### Load the STAR module
-|
+
 ```bash
 module load STAR/2.7.3a-GCCcore-6.4.0
 ```
 > Check `module avail STAR` if this version differs on your cluster.
 ### Download the reference genome and annotation (Ensembl GRCh38)
-|
+
 ```bash
 wget https://ftp.ensembl.org/pub/current/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 wget https://ftp.ensembl.org/pub/current/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
@@ -246,21 +246,21 @@ This will produce:
 - `Homo_sapiens.GRCh38.dna.primary_assembly.fa`
 - `Homo_sapiens.GRCh38.115.chr.gtf`
 ### Generate the STAR genome index
-|
+
 ```bash
 STAR --runThreadN 8 \
-	 --runMode genomeGenerate \
-	 --genomeDir "$VSC_DATA/Bioinfo_course/Ref_genome" \
-	 --genomeFastaFiles "$VSC_DATA/Bioinfo_course/Ref_genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa" \
-	 --sjdbGTFfile "$VSC_DATA/Bioinfo_course/Ref_genome/Homo_sapiens.GRCh38.115.chr.gtf" \
-	 --sjdbOverhang 100
+--runMode genomeGenerate \
+--genomeDir "$VSC_DATA/Bioinfo_course/Ref_genome" \
+--genomeFastaFiles "$VSC_DATA/Bioinfo_course/Ref_genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa" \
+--sjdbGTFfile "$VSC_DATA/Bioinfo_course/Ref_genome/Homo_sapiens.GRCh38.115.chr.gtf" \
+--sjdbOverhang 100
 ```
 **Notes**
 - `--sjdbOverhang` should be read length minus 1 (e.g., 100 for 101 bp reads).
 - The index will be stored inside `$VSC_DATA/Bioinfo_course/Ref_genome`.
 - This step may take several minutes depending on resources.
 ### (Preview of next step)
-|
+
 Once the reference is ready, you will align your trimmed FASTQ files
 located in `$VSC_DATA/Bioinfo_course/MS_microglia_fastp` against this genome
 using STAR in Step 6.
@@ -268,7 +268,7 @@ using STAR in Step 6.
 Map the trimmed FASTQ reads to the human reference genome (GRCh38)
 using STAR, producing sorted BAM files and gene-level read counts.
 ### Set directories and load STAR
-|
+
 ```bash
 module load STAR/2.7.3a-GCCcore-6.4.0
 IDX="$VSC_DATA/Bioinfo_course/Ref_genome"
@@ -277,18 +277,18 @@ OUT="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 mkdir -p "$OUT"
 ```
 ### Run STAR alignment on all trimmed FASTQ files
-|
+
 ```bash
 for fq in "$IN"/*.sub5M.trimmed.fastq.gz; do
-  s=$(basename "$fq" .sub5M.trimmed.fastq.gz)
-  echo "Aligning $s ..."
-  STAR --runThreadN 8 \
-	   --genomeDir "$IDX" \
-	   --readFilesIn "$fq" \
-	   --readFilesCommand zcat \
-	   --outFileNamePrefix "$OUT/${s}." \
-	   --outSAMtype BAM SortedByCoordinate \
-	   --quantMode GeneCounts
+s=$(basename "$fq" .sub5M.trimmed.fastq.gz)
+echo "Aligning $s ..."
+STAR --runThreadN 8 \
+--genomeDir "$IDX" \
+--readFilesIn "$fq" \
+--readFilesCommand zcat \
+--outFileNamePrefix "$OUT/${s}." \
+--outSAMtype BAM SortedByCoordinate \
+--quantMode GeneCounts
 done
 ```
 **Explanation**
@@ -298,7 +298,7 @@ done
 - `--outSAMtype BAM SortedByCoordinate` writes coordinate-sorted BAMs directly.
 - `--quantMode GeneCounts` produces a gene-level count summary (used later in DESeq2).
 ### Output
-|
+
 STAR will create the following files for each sample inside `$OUT`:
 - `<sample>.Aligned.sortedByCoord.out.bam` – aligned reads (sorted BAM)
 - `<sample>.ReadsPerGene.out.tab` – gene-level counts
@@ -312,7 +312,7 @@ Confirm the library orientation (strandness) using STAR’s ReadsPerGene output.
 The NEBNext Ultra Directional RNA Library Prep Kit produces reverse-stranded libraries
 (“RF”, “fr-firststrand”, or “-s 2”), but this can be verified empirically.
 ### Check strandness of aligned samples
-|
+
 Navigate to the STAR output directory:
 ```bash
 cd "$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
@@ -322,9 +322,9 @@ Run the following commands to calculate forward/reverse read fractions per sampl
 OUT=strandness_from_STAR.tsv
 printf "sample\tforward_counts(col3)\treverse_counts(col4)\tforward_frac\treverse_frac\n" > "$OUT"
 for f in *.ReadsPerGene.out.tab; do
-  s=$(basename "$f" .ReadsPerGene.out.tab)
-  awk -v S="$s" 'NR>4 {f+=$3; r+=$4} END {t=f+r; if(t==0)t=1;
-	printf "%s\t%.0f\t%.0f\t%.3f\t%.3f\n", S, f, r, f/t, r/t}' "$f"
+s=$(basename "$f" .ReadsPerGene.out.tab)
+awk -v S="$s" 'NR>4 {f+=$3; r+=$4} END {t=f+r; if(t==0)t=1;
+printf "%s\t%.0f\t%.0f\t%.3f\t%.3f\n", S, f, r, f/t, r/t}' "$f"
 done >> "$OUT"
 echo "Wrote $OUT"
 cat "$OUT"
@@ -342,7 +342,7 @@ Quantify gene-level expression counts from the aligned BAM files using featureCo
 Since these samples were prepared with the NEBNext Ultra Directional RNA-Seq kit,
 the libraries are reverse-stranded (antisense orientation, `-s 2`).
 ### Load the Subread module
-|
+
 ```bash
 module load Subread
 ```
@@ -354,9 +354,9 @@ ALIGN_DIR="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 OUTDIR="$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts"
 mkdir -p "$OUTDIR"
 featureCounts -T 8 -s 2 -t exon -g gene_id \
-  -a "$GTF" \
-  -o "$OUTDIR/featureCounts_counts.txt" \
-  "$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam
+-a "$GTF" \
+-o "$OUTDIR/featureCounts_counts.txt" \
+"$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam
 ```
 **Explanation**
 - `-T 8`: use 8 threads
@@ -367,51 +367,51 @@ featureCounts -T 8 -s 2 -t exon -g gene_id \
 - `-o`: output count table file
 - Input: all sorted BAMs in `$ALIGN_DIR`
 ### Convert to a clean count matrix (tab-delimited)
-|
+
 ```bash
 awk 'NR==2{
-		printf "gene"
-		for(i=7;i<=NF;i++){
-		  g=$i
-		  sub(/^.*\//,"",g)
-		  sub(/\\.Aligned\\.sortedByCoord\\.out\\.bam$/,"",g)
-		  printf "\\t" g
-		}
-		printf "\\n"
-		next
-	  }
-	  NR>2{
-		printf "%s", $1
-		for(i=7;i<=NF;i++) printf "\\t%s", $i
-		printf "\\n"
-	  }' \
-  "$OUTDIR/featureCounts_counts.txt" > "$OUTDIR/featureCounts_counts_matrix.tsv"
+printf "gene"
+for(i=7;i<=NF;i++){
+  g=$i
+  sub(/^.*\//,"",g)
+  sub(/\\.Aligned\\.sortedByCoord\\.out\\.bam$/,"",g)
+  printf "\\t" g
+}
+printf "\\n"
+next
+}
+NR>2{
+printf "%s", $1
+for(i=7;i<=NF;i++) printf "\\t%s", $i
+printf "\\n"
+}' \
+"$OUTDIR/featureCounts_counts.txt" > "$OUTDIR/featureCounts_counts_matrix.tsv"
 ```
 **Outputs**
 - Raw featureCounts summary:
-  `$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts.txt`
+`$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts.txt`
 - Clean matrix for DESeq2 or downstream analysis:
-  `$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv`
+`$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv`
 ## Step 9 — Switch to RStudio Server and run DEA (DESeq2) + GSEA
 After generating featureCounts outputs, stop the Shell interactive job and start an
 RStudio Server session (Interactive Apps) with ~4 cores. Perform DE analysis
 (MS vs Control) using DESeq2, annotate genes, save DEGs, plot a volcano, and run GSEA.
 ### End Shell job and launch RStudio
-|
+
 1) **Terminate** the Shell interactive job.
 2) In **OnDemand → Interactive Apps → RStudio Server**, request ~**4 cores**, launch, and connect.
 ### Run DESeq2 (MS vs Control), annotate, save outputs, and perform GSEA
-|
+
 In RStudio, run the following (adjust only if your paths differ):
 ```r
 suppressPackageStartupMessages({
-  library(DESeq2); library(readr); library(dplyr); library(ggplot2); library(ggrepel); library(apeglm)
-  library(biomaRt)
-  library(clusterProfiler); library(msigdbr); library(org.Hs.eg.db); library(enrichplot)
+library(DESeq2); library(readr); library(dplyr); library(ggplot2); library(ggrepel); library(apeglm)
+library(biomaRt)
+library(clusterProfiler); library(msigdbr); library(org.Hs.eg.db); library(enrichplot)
 })
 # Paths
 counts_path <- file.path(Sys.getenv("VSC_DATA"),
-						 "Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv")
+				 "Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv")
 out_dir <- file.path(Sys.getenv("VSC_DATA"), "Bioinfo_course/MS_microglia_DEA")
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 # Read counts (tab-delimited from Step 8)
@@ -421,10 +421,10 @@ cts <- as.data.frame(counts[,-1])
 rownames(cts) <- gene
 # Ensure sample order matches design
 cts <- cts[, c("SRR6849240","SRR6849241","SRR6849242",
-			   "SRR6849255","SRR6849256","SRR6849257")]
+	   "SRR6849255","SRR6849256","SRR6849257")]
 coldata <- data.frame(
-  row.names = colnames(cts),
-  condition = factor(c("MS","MS","MS","Control","Control","Control"))
+row.names = colnames(cts),
+condition = factor(c("MS","MS","MS","Control","Control","Control"))
 )
 # DESeq2
 dds <- DESeqDataSetFromMatrix(countData = round(cts), colData = coldata, design = ~ condition)
@@ -437,14 +437,14 @@ res <- results(dds, cooksCutoff = FALSE, independentFiltering = FALSE)
 mart <- useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
 gene_ids <- gsub("\\..*", "", rownames(res))
 annot <- getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-			   filters = "ensembl_gene_id", values = gene_ids, mart = mart)
+	   filters = "ensembl_gene_id", values = gene_ids, mart = mart)
 res_tbl <- as.data.frame(res)
 res_tbl$ensembl_gene_id <- gsub("\\..*", "", rownames(res_tbl))
 res_annot <- merge(res_tbl, annot, by = "ensembl_gene_id", all.x = TRUE)
 res_annot <- res_annot[order(res_annot$padj), ]
 # Save all results
 write_tsv(res_annot,
-		  file.path(out_dir, "deseq2_results_annotated.tsv"))
+  file.path(out_dir, "deseq2_results_annotated.tsv"))
 # ---- Define DEGs and save ----
 lfc_thr  <- 0.5
 padj_thr <- 0.05
@@ -463,42 +463,42 @@ sig <- df[!is.na(df$padj) & df$padj < padj_thr & abs(df$log2FoldChange) > lfc_th
 ord <- order(sig$padj, -abs(sig$log2FoldChange))
 top10 <- head(sig[ord, ], 10)
 p <- ggplot(df, aes(x = log2FoldChange, y = mlog10padj, color = status)) +
-  geom_point(size = 1.3, alpha = 0.8, na.rm = TRUE) +
-  geom_vline(xintercept = c(-lfc_thr, lfc_thr), linetype = "dashed") +
-  geom_hline(yintercept = -log10(padj_thr), linetype = "dashed") +
-  ggrepel::geom_text_repel(
-	data = top10, aes(label = external_gene_name),
-	size = 3, max.overlaps = Inf, box.padding = 0.5, point.padding = 0.2
-  ) +
-  scale_color_manual(values = c(NotSig = "grey70", Up = "red", Down = "blue")) +
-  labs(x = "log2 fold change",
-	   y = expression(-log[10]("adjusted p-value")),
-	   color = "Status",
-	   title = "MS vs Control — Volcano plot",
-	   subtitle = sprintf("FDR < %.02f & |LFC| > %.2f; top 10 labeled", padj_thr, lfc_thr)) +
-  theme_minimal(base_size = 12) +
-  theme(legend.position = "right", panel.grid.minor = element_blank())
+geom_point(size = 1.3, alpha = 0.8, na.rm = TRUE) +
+geom_vline(xintercept = c(-lfc_thr, lfc_thr), linetype = "dashed") +
+geom_hline(yintercept = -log10(padj_thr), linetype = "dashed") +
+ggrepel::geom_text_repel(
+data = top10, aes(label = external_gene_name),
+size = 3, max.overlaps = Inf, box.padding = 0.5, point.padding = 0.2
+) +
+scale_color_manual(values = c(NotSig = "grey70", Up = "red", Down = "blue")) +
+labs(x = "log2 fold change",
+y = expression(-log[10]("adjusted p-value")),
+color = "Status",
+title = "MS vs Control — Volcano plot",
+subtitle = sprintf("FDR < %.02f & |LFC| > %.2f; top 10 labeled", padj_thr, lfc_thr)) +
+theme_minimal(base_size = 12) +
+theme(legend.position = "right", panel.grid.minor = element_blank())
 ggsave(filename = file.path(out_dir, "volcano_DEGs.png"), p, width = 7, height = 5, dpi = 300)
 # ---- GSEA (Hallmark gene sets) ----
 df2 <- res_annot
 symbols <- df2$external_gene_name
 entrez  <- mapIds(org.Hs.eg.db, keys = symbols, keytype = "SYMBOL",
-				  column = "ENTREZID", multiVals = "first")
+		  column = "ENTREZID", multiVals = "first")
 df2$ENTREZID <- entrez
 score <- df2$stat
 if (is.null(score) || all(is.na(score))) score <- df2$log2FoldChange
 rank_df <- tibble::tibble(ENTREZID = df2$ENTREZID, score = score) |>
-  dplyr::filter(!is.na(ENTREZID), is.finite(score)) |>
-  dplyr::group_by(ENTREZID) |>
-  dplyr::summarise(score = score[which.max(abs(score))], .groups = "drop")
+dplyr::filter(!is.na(ENTREZID), is.finite(score)) |>
+dplyr::group_by(ENTREZID) |>
+dplyr::summarise(score = score[which.max(abs(score))], .groups = "drop")
 ranks <- rank_df$score
 names(ranks) <- rank_df$ENTREZID
 ranks <- sort(ranks, decreasing = TRUE)
 m_h <- msigdbr(species = "Homo sapiens", category = "H") |>
-  dplyr::select(gs_name, entrez_gene)
+dplyr::select(gs_name, entrez_gene)
 set.seed(42)
 gseaH <- GSEA(ranks, TERM2GENE = m_h,
-			  pAdjustMethod = "BH", minGSSize = 10, maxGSSize = 500, verbose = FALSE)
+	  pAdjustMethod = "BH", minGSSize = 10, maxGSSize = 500, verbose = FALSE)
 # Save GSEA results and a summary plot
 gsea_tbl <- as.data.frame(gseaH@result)
 readr::write_tsv(gsea_tbl, file.path(out_dir, "GSEA_Hallmark_results.tsv"))
