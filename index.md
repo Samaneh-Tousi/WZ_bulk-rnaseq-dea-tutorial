@@ -1,4 +1,4 @@
-# tutorial_steps.md
+# index.md
 steps:
   - id: step1
     title: "Access to VSC and Starting Your Session"
