@@ -6,17 +6,17 @@ interactive compute environment.
 ### Request your VSC account
 
 Each student must first apply for an account on the Flemish Supercomputer infrastructure:
-👉 [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account)
+[Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account)
 Follow the steps described on that page carefully.
 When asked for your **institution**, select **Hasselt University**.
 ### Request your introduction credits
 
 After obtaining a VSC account, request your initial computing credits (needed to run jobs):
-👉 [Request Introduction Credits (KU Leuven / UHasselt)](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
+[Request Introduction Credits (KU Leuven / UHasselt)](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
 You will receive a confirmation email once your credits are approved and available.
 ### Login to the VSC OnDemand portal
 
-Go to: 👉 [OnDemand](https://ondemand.hpc.kuleuven.be/)
+Go to: [OnDemand](https://ondemand.hpc.kuleuven.be/)
 1. Click **“Partner Organizations: VSC Account.”**
 2. Choose **Hasselt University** from the dropdown.
 3. Log in with your **VSC username** and **password**.
