@@ -1,5 +1,4 @@
 # bulk RNA-seq and differential expression analysis (DEA) on VSC
-
 ## Step 1 — Access to VSC and Starting Your Session
 Before running any analyses, every student must have a valid
 VSC (Vlaamse Supercomputer Centrum) account and access to an
