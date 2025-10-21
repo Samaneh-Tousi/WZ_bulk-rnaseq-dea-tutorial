@@ -17,7 +17,7 @@ interactive compute environment.
   You will receive a confirmation email once your credits are approved and available.
 ### Login to the VSC OnDemand portal
 |
-  Go to: (https://ondemand.hpc.kuleuven.be/)
+  Go to: 👉 [OnDemand](https://ondemand.hpc.kuleuven.be/)
   1. Click **“Partner Organizations: VSC Account.”**
   2. Choose **Hasselt University** from the dropdown.
   3. Log in with your **VSC username** and **password**.
