@@ -27,7 +27,6 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 
 ## Pipeline at a glance
 
-```
 **flowchart** 
   A[FASTQ (SRA)] --> B[Subsample (seqtk)]
   B --> C[QC & trimming (fastp)]
@@ -36,15 +35,16 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
   E --> F[featureCounts ( -s 2 )]
   F --> G[DESeq2 (MS vs Control)]
   G --> H[GSEA (Hallmark)]
-  ``` 
+ 
   
 # Prerequisites
 
 - VSC account + intro credits or project credits
-![VSC OnDemand login screenshot](assets/HPC_nodes.png)
+- Access to OnDemand and Interactive Apps
+- Basic shell + R familiarity
+- Storage under $VSC_DATA or staging storage
 
 ---
-
 ### What is an HPC Node?
 
 An **HPC node** (High-Performance Computing node) is a single powerful computer within the larger **VSC cluster**.  
@@ -54,20 +54,15 @@ Each node has:
 - Access to **high-speed storage** and **shared file systems**
 
 When you start an **interactive session** on VSC, you’re temporarily reserving a portion of one or more nodes (e.g., 1 node with 8 cores and 7.5 GB RAM per core).  
-
-> ⚙️ Think of it like booking a workstation on the supercomputer for a limited time to run your analysis.
+Think of it like booking a workstation on the supercomputer for a limited time to run your analysis.
+![VSC OnDemand login screenshot](assets/HPC_nodes.png)
+<img src="assets/HPC_nodes.png" alt="VSC OnDemand login" width="200">
 
 For more information about the VSC system and its usage, please see:
 - [VSC Training Resources](https://www.vscentrum.be/vsctraining)
 - [HPC Introduction (GitHub)](https://github.com/hpcleuven/HPC-intro/blob/master/HPCintro.pdf)
 
 ---
-
-- Access to OnDemand and Interactive Apps
-
-- Basic shell + R familiarity
-
-- Storage under $VSC_DATA or staging storage
 
 # Step 1 - Access to VSC & Interactive Sessions
 
