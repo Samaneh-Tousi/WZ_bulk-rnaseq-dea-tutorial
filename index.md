@@ -1,68 +1,97 @@
 ---
 title: Bulk RNA-seq & DEA on VSC
-description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignment, counting, and DE analysis on VSC (Hasselt University).
+description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignment, counting, and DE analysis on Vlaamse Supercomputer Centrum (VSC).
 ---
 
 # Bulk RNA-seq & Differential Expression Analysis (DEA) on VSC
 
 > **Goal**: Run a complete bulk RNA-seq workflow on the **Vlaamse Supercomputer Centrum (VSC)**:  
-> QC → trimming → alignment → counting → **DESeq2** → **GSEA** → reporting.
+> Sequence QC & trimming → alignment → counting → DESeq2 → GSEA.
 
 ---
 
 ## Contents
-1. [Prerequisites](#prerequisites)  
-2. [Step 1 - Access & Session](#step-1--access--session)  
-3. [Step 2 - Connect, workspace, data](#step-2--connect-workspace-data)  
-4. [Step 3 - Downsample FASTQ](#step-3--downsample-fastq)  
-5. [Step 4 - QC & trimming (fastp)](#step-4--qc--trimming-fastp)  
-6. [Step 5 - Reference genome (STAR index)](#step-5--reference-genome-star-index)  
-7. [Step 6 - Alignment (STAR)](#step-6--alignment-star)  
-8. [Step 7 - Strandness check](#step-7--strandness-check)  
-9. [Step 8 - featureCounts (reverse-stranded)](#step-8--featurecounts-reverse-stranded)  
-10. [Step 9 - DESeq2 + GSEA (RStudio)](#step-9--deseq2--gsea-rstudio)  
+[Prerequisites](#prerequisites)  
+[Step 1 - Access & Session](#step-1--access--session)  
+[Step 2 - Connect, workspace, data](#step-2--connect-workspace-data)  
+[Step 3 - Downsample FASTQ](#step-3--downsample-fastq)  
+[Step 4 - QC & trimming (fastp)](#step-4--qc--trimming-fastp)  
+[Step 5 - Reference genome (STAR index)](#step-5--reference-genome-star-index)  
+[Step 6 - Alignment (STAR)](#step-6--alignment-star)  
+[Step 7 - Strandness check](#step-7--strandness-check)  
+[Step 8 - featureCounts (reverse-stranded)](#step-8--featurecounts-reverse-stranded)
+[Step 9 - MultiQC summary report](#step-9--MultiQC summary report)  
+[Step 10 - DESeq2 + GSEA (RStudio)](#step-10--deseq2--gsea-rstudio)  
 
 ---
 
 ## Pipeline at a glance
 
-```mermaid
-flowchart LR
-  A[FASTQ (SRA)] --> B[QC (FastQC/MultiQC)]
-  B --> C[Subsample (seqtk)]
-  C --> D[Trim (fastp)]
-  D --> E[STAR Align]
-  E --> F[Strandness check]
-  F --> G[featureCounts ( -s 2 )]
-  G --> H[DESeq2 (MS vs Control)]
-  H --> I[GSEA (Hallmark)]
-  I --> J[Figures & Reports]
-``` 
+```
+**flowchart** 
+  A[FASTQ (SRA)] --> B[Subsample (seqtk)]
+  B --> C[QC & trimming (fastp)]
+  C --> D[STAR Align]
+  D --> E[Library Strandness check]
+  E --> F[featureCounts ( -s 2 )]
+  F --> G[DESeq2 (MS vs Control)]
+  G --> H[GSEA (Hallmark)]
+  ``` 
   
 # Prerequisites
 
-VSC account + intro credits
+- VSC account + intro credits or project credits
+![VSC OnDemand login screenshot](assets/HPC_nodes.png)
 
-Access to OnDemand and Interactive Apps
+---
 
-Basic shell + R familiarity
+### What is an HPC Node?
 
-Storage under $VSC_DATA
+An **HPC node** (High-Performance Computing node) is a single powerful computer within the larger **VSC cluster**.  
+Each node has:
+- Multiple **CPU cores** (e.g., 64,72, 96, or more)
+- Large **memory (RAM)**
+- Access to **high-speed storage** and **shared file systems**
 
-# Step 1 - Access & Session
+When you start an **interactive session** on VSC, you’re temporarily reserving a portion of one or more nodes (e.g., 1 node with 8 cores and 7.5 GB RAM per core).  
 
-Request account:
-https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account
+> ⚙️ Think of it like booking a workstation on the supercomputer for a limited time to run your analysis.
 
-Select Hasselt University.
+For more information about the VSC system and its usage, please see:
+- [VSC Training Resources](https://www.vscentrum.be/vsctraining)
+- [HPC Introduction (GitHub)](https://github.com/hpcleuven/HPC-intro/blob/master/HPCintro.pdf)
 
-Request intro credits:
-https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits
+---
 
-Login to OnDemand:
-https://ondemand.hpc.kuleuven.be/
+- Access to OnDemand and Interactive Apps
 
-Start Interactive Shell: Cluster Genius, Partition interactive, 2h, 1 node, 8 procs, 7500 MB/core, Reservation Bioinfo_course, email notify ✓.
+- Basic shell + R familiarity
+
+- Storage under $VSC_DATA or staging storage
+
+# Step 1 - Access to VSC & Interactive Sessions
+
+Request for your VSC account: [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account)
+
+Select **Hasselt University** when prompted.
+
+Request intro credits: [Request introduction credits](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
+
+**If you are a student enrolled in the Bioinformatics course, you do not need to request a VSC account, one has already been created for you and comes with the necessary project credits required to run the analyses.**
+
+Login to OnDemand: [VSC OnDemand Portal](https://ondemand.hpc.kuleuven.be/)
+
+Start **Interactive Shell** with:
+- Cluster: *Wice*
+- Partition: *interactive*
+- Account: *your intro_VSC account* or *your project account*
+- Number of hours: *2 h* or more
+- Number of nodes: *1*
+- Number of processes per node: *8*
+- Number of cores per each task: *8*
+- Required memory per core in megabytes: *7500 MB*
+- Reservation: *Bioinfo_course*
+- ✅ I would like to receive an email when the session starts
 
 # Step 2 - Connect, workspace, data
 
