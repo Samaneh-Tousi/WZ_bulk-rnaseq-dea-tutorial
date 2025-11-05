@@ -248,7 +248,7 @@ Illumina machines use Phred+33 encoding, meaning the ASCII code of the character
 | `/`       | 47    | 14      | 96%      |
 | `<`       | 60    | 27      | 99.8%    |
 
-Quick rule of thumb
+**Quick rule of thumb**
 
 | Q Score | Meaning    | Interpretation          |
 | ------- | ---------- | ----------------------- |
@@ -280,13 +280,15 @@ IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastq_sub5M"
 mkdir -p "$OUT"
 
-for s in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do
-  echo "Subsampling $s to 5,000,000 reads ..."
-  seqtk sample -s42 "$IN/${s}.fastq.gz" 5_000_000 | gzip > "$OUT/${s}.sub5M.fastq.gz"
-done
+for s in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do echo "Subsampling $s to 5,000,000 reads ..."; seqtk sample -s42 "$IN/${s}.fastq.gz" 5000000 | gzip > "$OUT/${s}.sub5M.fastq.gz"; done
+
 ```
 
 # Step 4 - QC & trimming (fastp)
+
+**fastp** is an all-in-one FASTQ preprocessing tool that performs quality control (QC), adapter trimming, and filtering of sequencing reads — all in one fast, multithreaded program.
+
+It is often used as a faster, modern replacement for older tools like **FastQC** and **Trimmomatic**.
 
 ```
 module load fastp/0.23.2-GCC-10.3.0
@@ -294,16 +296,13 @@ IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastq_sub5M"
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
 mkdir -p "$OUT"
 
-for fq in "$IN"/SRR*.fastq.gz; do
-  s=$(basename "${fq%.fastq.gz}")
-  echo "fastp $s"
-  fastp -i "$fq" \
-        -o "$OUT/${s}.trimmed.fastq.gz" \
-        -h "$OUT/${s}_fastp.html" \
-		-j "$OUT/${s}_fastp.json" \
-        -w 8
-done
+for fq in "$IN"/SRR*.fastq.gz; do s=$(basename "${fq%.fastq.gz}"); echo "Running fastp on $s ..."; fastp -i "$fq" -o "$OUT/${s}.trimmed.fastq.gz" -h "$OUT/${s}_fastp.html" -j "$OUT/${s}_fastp.json" -w 8; done
+
 ```
+When you run fastp, it automatically creates a comprehensive quality report in HTML format, see below a part of the file.
+
+<img src="assets/Fastp.png" alt="Fastp" width="600">
+
 
 # Step 5 - Reference genome (STAR index)
 
