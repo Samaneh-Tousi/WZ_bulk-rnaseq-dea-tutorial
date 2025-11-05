@@ -153,6 +153,7 @@ In SRA, each sequencing run has an SRR accession number (SRR######).
 | **GSM** | GSM3045818 | GEO *Sample* — metadata for one biological sample |
 | **SRR** | SRR6849240 | SRA *Run* — the actual sequencing file(s)         |
 
+
 ** From SRR to FASTQ **
 
 The SRR files in SRA are stored in a binary format (.sra) to save space.
@@ -165,6 +166,107 @@ OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
 mkdir -p "$OUT"
 for SRR in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do echo "Downloading $SRR ..."; prefetch "$SRR" && fasterq-dump -O "$OUT" -e 8 "$SRR" && pigz -p 8 "$OUT/${SRR}.fastq" || gzip -9 "$OUT/${SRR}.fastq"; done
 ```
+
+** Checking and Understanding FASTQ Files**
+
+Once your .fastq.gz files are downloaded from SRA, you can inspect their format and quality encoding directly from the command line.
+
+**Preview your FASTQ file**
+
+FASTQ files are text-based but usually compressed (.gz).
+To peek inside without fully decompressing:
+
+```
+cd "$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
+zcat SRR6849240.fastq.gz | head
+```
+This prints the first few reads (each read spans 4 lines).
+
+Example output:
+
+```
+@SRR6849240.1 1 length=76
+CCTAGNTAATTTTTTGTATTTTTAGTCGAGACAGGGTTTCTCCATGTTGGTCAGGCTGGTCTCGAACTCCCGACCT
++SRR6849240.1 1 length=76
+AAAAA#EEE/EEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEAEEEEEEEEEEE<EAEEEAEAE/<AA
+```
+Each read is made up of four lines:
+
+| Line | Description                                       | Example                     |
+| ---- | ------------------------------------------------- | --------------------------- |
+| 1    | **Read ID** (starts with `@`) — unique identifier | `@SRR6849240.1`             |
+| 2    | **DNA sequence** — bases A, T, G, C, or N         | `CCTAGNTAATTTTTTGTATTTT...` |
+| 3    | **Separator line**, starts with `+`               | `+SRR6849240.1`             |
+| 4    | **Quality scores**, one symbol per base           | `AAAAA#EEE/EEEEEEEEEE...`   |
+
+
+So, this record describes one sequenced fragment with:
+76 nucleotides
+76 corresponding quality characters
+
+**Quality score line**
+
+The 4th line (AAAAA#EEE/EEEE...) encodes the Phred quality score (Q) for each base, using [ASCII symbols](https://www.ascii-code.com/).
+
+Each character corresponds to a numeric quality value:
+
+**Q=ASCII code−33**
+
+On the other word, Phred quality score (Q) quantifies the probability that a base was called incorrectly:
+
+**Q=−10×log10​(Perror​)**
+
+| Q score | Base call accuracy | Error probability | ASCII character (Illumina 1.8+) |
+| ------- | ------------------ | ----------------- | ------------------------------- |
+| 10      | 90%                | 1 in 10           | `+`                             |
+| 20      | 99%                | 1 in 100          | `5`                             |
+| 30      | 99.9%              | 1 in 1,000        | `?`                             |
+| 40      | 99.99%             | 1 in 10,000       | `I`                             |
+
+
+So, the higher the score → the more reliable that base call.
+
+Illumina machines use Phred+33 encoding, meaning the ASCII code of the character minus 33 gives you the numeric quality score.
+
+**Let’s decode a few examples**
+
+| Character | ASCII code | Q score | Base call accuracy                         |
+| --------- | ---------- | ------- | ------------------------------------------ |
+| **C**     | 67         | 34      | 99.96% correct (1 error in ~2500 bases)    |
+| **F**     | 70         | 37      | 99.98% correct (1 error in ~5000 bases)    |
+| **H**     | 72         | 39      | 99.99% correct (1 error in ~8000 bases)    |
+| **J**     | 74         | 41      | 99.99%+ correct (1 error in ~12,500 bases) |
+| **E**     | 69         | 36      | 99.97% correct                             |
+| **D**     | 68         | 35      | 99.97% correct                             |
+
+
+| Character | ASCII | Q score | Accuracy |
+| --------- | ----- | ------- | -------- |
+| `A`       | 65    | 32      | 99.94%   |
+| `E`       | 69    | 36      | 99.97%   |
+| `#`       | 35    | 2       | 37%      |
+| `/`       | 47    | 14      | 96%      |
+| `<`       | 60    | 27      | 99.8%    |
+
+Quick rule of thumb
+
+| Q Score | Meaning    | Interpretation          |
+| ------- | ---------- | ----------------------- |
+| Q ≥ 30  | Excellent  | Keep                    |
+| 20–29   | Acceptable | Keep, but monitor       |
+| 10–19   | Poor       | Trim / filter           |
+| <10     | Bad        | Likely sequencing error |
+
+
+**Quick quality checklist**
+
+| What to check    | Command                      | Expected                   |                     |
+| ---------------- | ---------------------------- | -------------------------- | ------------------- |
+| File format      | `zcat file.fastq.gz          | head -4`                   | 4-line read pattern |
+| Read length      | Count bases on line 2        | Usually 75–151 bp          |                     |
+| Quality encoding | Look at characters (A, E, J) | Likely Phred+33 (Illumina) |                     |
+| Typical pattern  | High → drop at end           | Normal for Illumina        |                     |
+
 
 # Step 3 - Downsample FASTQ
 
