@@ -143,6 +143,9 @@ for SRR in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do
 
 # Step 3 - Downsample FASTQ
 
+To make the exercises run faster, we downsample each FASTQ file by randomly selecting a subset of reads (up to 5 million reads per sample).
+⚠️ **Note**: This step is only for training purposes. You should not downsample your data in real analyses, as it reduce sensitivity and affect biological conclusions.
+
 ```
 module load seqtk
 IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
