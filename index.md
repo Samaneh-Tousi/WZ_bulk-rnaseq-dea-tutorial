@@ -12,15 +12,15 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 
 ## Contents
 1. [Prerequisites](#prerequisites)  
-2. [Step 1 — Access & Session](#step-1--access--session)  
-3. [Step 2 — Connect, workspace, data](#step-2--connect-workspace-data)  
-4. [Step 3 — Downsample FASTQ](#step-3--downsample-fastq)  
-5. [Step 4 — QC & trimming (fastp)](#step-4--qc--trimming-fastp)  
-6. [Step 5 — Reference genome (STAR index)](#step-5--reference-genome-star-index)  
-7. [Step 6 — Alignment (STAR)](#step-6--alignment-star)  
-8. [Step 7 — Strandness check](#step-7--strandness-check)  
-9. [Step 8 — featureCounts (reverse-stranded)](#step-8--featurecounts-reverse-stranded)  
-10. [Step 9 — DESeq2 + GSEA (RStudio)](#step-9--deseq2--gsea-rstudio)  
+2. [Step 1 - Access & Session](#step-1--access--session)  
+3. [Step 2 - Connect, workspace, data](#step-2--connect-workspace-data)  
+4. [Step 3 - Downsample FASTQ](#step-3--downsample-fastq)  
+5. [Step 4 - QC & trimming (fastp)](#step-4--qc--trimming-fastp)  
+6. [Step 5 - Reference genome (STAR index)](#step-5--reference-genome-star-index)  
+7. [Step 6 - Alignment (STAR)](#step-6--alignment-star)  
+8. [Step 7 - Strandness check](#step-7--strandness-check)  
+9. [Step 8 - featureCounts (reverse-stranded)](#step-8--featurecounts-reverse-stranded)  
+10. [Step 9 - DESeq2 + GSEA (RStudio)](#step-9--deseq2--gsea-rstudio)  
 
 ---
 
@@ -49,7 +49,7 @@ Basic shell + R familiarity
 
 Storage under $VSC_DATA
 
-# Step 1 — Access & Session
+# Step 1 - Access & Session
 
 Request account:
 https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account
@@ -64,7 +64,7 @@ https://ondemand.hpc.kuleuven.be/
 
 Start Interactive Shell: Cluster Genius, Partition interactive, 2h, 1 node, 8 procs, 7500 MB/core, Reservation Bioinfo_course, email notify ✓.
 
-# Step 2 — Connect, workspace, data
+# Step 2 - Connect, workspace, data
 
 Connect to the running shell job (bottom Connect button).
 
@@ -100,7 +100,7 @@ for SRR in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do
 done
 ```
 
-# Step 3 — Downsample FASTQ
+# Step 3 - Downsample FASTQ
 
 ```
 module load seqtk
@@ -114,7 +114,7 @@ for s in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do
 done
 ```
 
-# Step 4 — QC & trimming (fastp)
+# Step 4 - QC & trimming (fastp)
 
 ```
 module load fastp/0.23.2-GCC-10.3.0
@@ -133,7 +133,7 @@ for fq in "$IN"/SRR*.fastq.gz; do
 done
 ```
 
-# Step 5 — Reference genome (STAR index)
+# Step 5 - Reference genome (STAR index)
 
 ```
 cd "$VSC_DATA/Bioinfo_course"
@@ -154,7 +154,7 @@ STAR --runThreadN 8 \
 ```
 Note: sjdbOverhang = readLength − 1.
 
-# Step 6 — Alignment (STAR)
+# Step 6 - Alignment (STAR)
 
 ```
 module load STAR/2.7.3a-GCCcore-6.4.0
@@ -181,7 +181,7 @@ Check metrics:
 less "$OUT"/<sample>.Log.final.out
 ```
 
-# Step 7 — Strandness check
+# Step 7 - Strandness check
 NEBNext Ultra Directional → reverse-stranded expected.
 
 ```
@@ -198,7 +198,7 @@ cat "$OUT"
 ```
 Interpretation: reverse fraction ≫ forward → use -s 2 downstream.
 
-# Step 8 — featureCounts (reverse-stranded)
+# Step 8 - featureCounts (reverse-stranded)
 
 ```
 module load Subread
@@ -225,7 +225,7 @@ awk 'NR==2{
   "$OUTDIR/featureCounts_counts.txt" > "$OUTDIR/featureCounts_counts_matrix.tsv"
 ```
 
-# Step 9 — MultiQC summary report
+# Step 9 - MultiQC summary report
 
 ```
 # (Optional) if MultiQC isn't preinstalled on VSC
@@ -255,7 +255,7 @@ A directory of summary data (multiqc_data/)
 💡 Tip: Download and open the multiqc_all.html file locally to interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries.
 
 
-# Step 10 — DESeq2 & GSEA (RStudio)
+# Step 10 - DESeq2 & GSEA (RStudio)
 
 Switch app: Stop the shell job. Launch RStudio Server (4 cores).
 
