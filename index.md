@@ -119,7 +119,10 @@ After this step, you’re ready to start downloading the example RNA-seq dataset
 
 
 ## Dataset: GSE111972 (microglia, MS vs Control).
-[GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111972)
+[Transcriptional profiling of human microglia in brain white matter of multiple sclerosis versus control samples](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111972)
+
+For this analysis, we included three biological samples in each group, the minimum number needed for statistical analysis.
+
 
 | sample_id | SRR        | condition | tissue               | layout     |
 | --------- | ---------- | --------- | -------------------- | ---------- |
