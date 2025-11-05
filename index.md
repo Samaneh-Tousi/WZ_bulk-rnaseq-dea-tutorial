@@ -57,7 +57,7 @@ Each node has:
 
 When you start an **interactive session** on VSC, you’re temporarily reserving a portion of one or more nodes (e.g., 1 node with 8 cores and 7.5 GB RAM per core).  
 Think of it like booking a workstation on the supercomputer for a limited time to run your analysis.
-<img src="assets/HPC_nodes.png" alt="VSC HPC" width="700">
+<img src="assets/HPC_nodes.png" alt="VSC HPC" width="600">
 
 For more information about the VSC system and its usage, please see:
 - [VSC Training Resources](https://www.vscentrum.be/vsctraining)
@@ -75,8 +75,9 @@ For more information about the VSC system and its usage, please see:
 
 Login to OnDemand: [VSC OnDemand Portal](https://ondemand.hpc.kuleuven.be/)
 
+<img src="assets/OnDemand.png" alt="VSC OnDemand login" width="600">
+
 Start **Interactive Shell** with:
-<img src="assets/OnDemand.png" alt="VSC OnDemand login" width="700">
 
 - Cluster: *Wice*
 - Partition: *interactive*
