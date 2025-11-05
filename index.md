@@ -119,7 +119,7 @@ After this step, you’re ready to start downloading the example RNA-seq dataset
 
 
 ## Dataset: GSE111972 (microglia, MS vs Control).
-[GEO]https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111972
+[GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111972)
 
 | sample_id | SRR        | condition | tissue               | layout     |
 | --------- | ---------- | --------- | -------------------- | ---------- |
