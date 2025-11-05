@@ -27,14 +27,16 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 
 ## Pipeline at a glance
 
-**flowchart** 
+```mermaid
+flowchart LR
   A[FASTQ (SRA)] --> B[Subsample (seqtk)]
   B --> C[QC & trimming (fastp)]
   C --> D[STAR Align]
   D --> E[Library Strandness check]
-  E --> F[featureCounts ( -s 2 )]
+  E --> F[featureCounts (-s 2)]
   F --> G[DESeq2 (MS vs Control)]
   G --> H[GSEA (Hallmark)]
+```  
  
   
 # Prerequisites
@@ -55,8 +57,7 @@ Each node has:
 
 When you start an **interactive session** on VSC, you’re temporarily reserving a portion of one or more nodes (e.g., 1 node with 8 cores and 7.5 GB RAM per core).  
 Think of it like booking a workstation on the supercomputer for a limited time to run your analysis.
-![VSC OnDemand login screenshot](assets/HPC_nodes.png)
-<img src="assets/HPC_nodes.png" alt="VSC OnDemand login" width="200">
+<img src="assets/HPC_nodes.png" alt="VSC OnDemand login" width="600">
 
 For more information about the VSC system and its usage, please see:
 - [VSC Training Resources](https://www.vscentrum.be/vsctraining)
