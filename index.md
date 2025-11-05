@@ -67,11 +67,9 @@ For more information about the VSC system and its usage, please see:
 
 # Step 1 - Access to VSC & Interactive Sessions
 
-Request for your VSC account: [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account)
+[Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account), Select **Hasselt University** when prompted.
 
-Select **Hasselt University** when prompted.
-
-Request intro credits: [Request introduction credits](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
+[Request introduction credits](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
 
 **If you are a student enrolled in the Bioinformatics course, you do not need to request a VSC account, one has already been created for you and comes with the necessary project credits required to run the analyses.**
 
