@@ -133,6 +133,31 @@ For this analysis, we included three biological samples in each group, the minim
 | CON_WM_10 | SRR6849256 | Control   | Control white matter | Single-end |
 | CON_WM_11 | SRR6849257 | Control   | Control white matter | Single-end |
 
+
+**About GEO, SRA, and data identifiers**
+
+The dataset we use in this tutorial comes from the Gene Expression Omnibus (GEO), a public repository hosted by NCBI that stores high-throughput functional genomics data, such as RNA-seq, ChIP-seq, and microarray experiments.
+
+Each study submitted to GEO receives a GEO Series accession number, written as GSE######.
+
+The GSE record describes the overall experiment, including metadata, design, and sample details.
+
+Each sample within that study has its own GSM accession (GSM######), representing an individual biological replicate or condition.
+
+GEO often provides a link to the Sequence Read Archive (SRA), where the actual raw sequencing reads are stored.
+In SRA, each sequencing run has an SRR accession number (SRR######).
+
+| Type    | Example    | Description                                       |
+| ------- | ---------- | ------------------------------------------------- |
+| **GSE** | GSE111972  | GEO *Series* — the entire study                   |
+| **GSM** | GSM3045818 | GEO *Sample* — metadata for one biological sample |
+| **SRR** | SRR6849240 | SRA *Run* — the actual sequencing file(s)         |
+
+** From SRR to FASTQ **
+
+The SRR files in SRA are stored in a binary format (.sra) to save space.
+To work with them in RNA-seq tools, we first download these .sra files using prefetch, then convert them to standard FASTQ format using fasterq-dump from the SRA Toolkit.
+
 Download:
 
 ```
@@ -144,6 +169,7 @@ for SRR in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do
 # Step 3 - Downsample FASTQ
 
 To make the exercises run faster, we downsample each FASTQ file by randomly selecting a subset of reads (up to 5 million reads per sample).
+
 ⚠️ **Note**: This step is only for training purposes. You should not downsample your data in real analyses, as it reduce sensitivity and affect biological conclusions.
 
 ```
