@@ -92,16 +92,34 @@ Start **Interactive Shell** with:
 
 # Step 2 - Connect, workspace, data
 
-Connect to the running shell job (bottom Connect button).
+Connect to the running shell job (bottom Connect button). 
+Once connected, use these commands to prepare your course workspace and load required software:
 
 ```
-cd "$VSC_DATA"
+cd $VSC_DATA
 mkdir -p Bioinfo_course && cd Bioinfo_course && pwd
+
+# Load environment modules for this session
 module load cluster/genius/interactive
 module load SRA-Toolkit/3.0.5-gompi-2021a
 ```
+Explanation:
+
+**cd $VSC_DATA** → moves you into your personal storage directory on the cluster
+
+**mkdir -p Bioinfo_course** → creates a folder for all course-related work
+
+**cd Bioinfo_course** → enters that folder
+
+**pwd** → confirms your current directory
+
+**module load ...** → loads the tools needed for downloading and processing sequencing data
+
+After this step, you’re ready to start downloading the example RNA-seq datasets in the next section.
+
+
 ## Dataset: GSE111972 (microglia, MS vs Control).
-GEO: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111972
+[GEO]https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111972
 
 | sample_id | SRR        | condition | tissue               | layout     |
 | --------- | ---------- | --------- | -------------------- | ---------- |
@@ -117,13 +135,7 @@ Download:
 ```
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
 mkdir -p "$OUT"
-for SRR in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do
-  echo "Downloading $SRR ..."
-  prefetch "$SRR" \
-  && fasterq-dump -O "$OUT" -e 8 "$SRR" \
-  && pigz -p 8 "$OUT/${SRR}.fastq" \
-  || gzip -9 "$OUT/${SRR}.fastq"
-done
+for SRR in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do echo "Downloading $SRR ..."; prefetch "$SRR" && fasterq-dump -O "$OUT" -e 8 "$SRR" && pigz -p 8 "$OUT/${SRR}.fastq" || gzip -9 "$OUT/${SRR}.fastq"; done
 ```
 
 # Step 3 - Downsample FASTQ
