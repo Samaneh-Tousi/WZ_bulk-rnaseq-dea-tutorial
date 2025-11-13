@@ -338,7 +338,9 @@ Note: sjdbOverhang = readLength − 1.
 
 Once the reference genome index is prepared, we can align our trimmed FASTQ reads to the genome using STAR. In this step, STAR takes each cleaned sequencing read, finds the best matching location(s) in the indexed genome, and produces a **sorted BAM** file that records the exact alignment. Because RNA-seq reads may span exon–exon junctions, STAR performs splice-aware alignment, ensuring accurate mapping across introns. 
 
-<img src="assets/Alaigning_1.png" alt="Aligning to the transcriptome vs Genome" width="600">
+<img src="assets/Alaigning_1.png" alt="Aligning to the transcriptome vs Genome" width="800">
+
+<a href="assets/Intro2RNAseq.pdf" target="_blank">Intro2RNAseq</a>
 
 We also enable --quantMode GeneCounts, which instructs STAR to generate preliminary per-gene read counts that will later help verify the library’s strandness. The output of this step includes aligned BAM files, gene count summaries, and STAR logs, all stored in the MS_microglia_STAR_aligned directory and ready for downstream quantification and differential expression analysis.
 
