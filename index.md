@@ -443,6 +443,20 @@ awk 'NR==2{
   "$OUTDIR/featureCounts_counts.txt" > "$OUTDIR/featureCounts_counts_matrix.tsv"
 ```
 
+
+**Raw counts vs normalized expression units**
+
+Raw read counts tell you how many sequencing reads mapped to each gene, and they are the correct input for statistical models like DESeq2. However, raw counts cannot be directly compared across genes or samples because gene lengths and sequencing depth differ. Normalized units such as CPM, RPKM/FPKM, and TPM adjust the counts to make expression values more comparable.
+
+| Measure        | Full Name                          | Normalizes for Sequencing Depth? | Normalizes for Gene Length? | Typical Use Case                        | Common Tools That Generate It                                                  |
+| -------------- | ---------------------------------- | -------------------------------- | --------------------------- | --------------------------------------- | ------------------------------------------------------------------------------ |
+| **Raw Counts** | –                                  | ❌ No                            | ❌ No                       | Differential expression (DESeq2, edgeR) | **featureCounts**, **HTSeq-count**, **STAR GeneCounts**, **RSEM (raw counts)** |
+| **CPM**        | Counts Per Million                 | ✔️ Yes                           | ❌ No                       | Filtering; within-sample comparison     | **edgeR**, **limma**, **custom R scripts**                                     |
+| **RPKM**       | Reads Per Kilobase per Million     | ✔️ Yes                           | ✔️ Yes                      | Legacy single-end RNA-seq normalization | **RSEM**, older pipelines, some custom scripts                                 |
+| **FPKM**       | Fragments Per Kilobase per Million | ✔️ Yes                           | ✔️ Yes                      | Legacy paired-end RNA-seq normalization | **Cufflinks**, **RSEM**, some aligner-quant tools                              |
+| **TPM**        | Transcripts Per Million            | ✔️ Yes                           | ✔️ Yes                      | Cross-sample expression comparison      | **Salmon**, **Kallisto**, **RSEM**, **tximport (derived)**                     |
+
+
 # Step 9 - MultiQC summary report
 
 ```
