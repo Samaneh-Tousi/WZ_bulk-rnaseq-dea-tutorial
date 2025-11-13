@@ -376,6 +376,41 @@ less "$OUT"/<sample>.Log.final.out
 
 <img src="assets/Log_final_out.png" alt="Log_final_out" width="700">
 
+**BAM files: What they are and how to inspect them?**
+
+A BAM file (Binary Alignment/Map) is the compressed binary version of a SAM file, which stores read alignments produced by tools like STAR, HISAT2, or BWA. Each record in a BAM file contains information about where a sequencing read aligns in the genome, its mapping quality, strand, cigar string (how it aligns), and more. Because BAM files are binary, you cannot open them directly with a text editor. Instead, you use tools such as samtools to view or inspect them.
+
+To view just the first few alignment lines:
+
+```
+module load SAMtools/1.18-GCC-12.3.0
+samtools view yourfile.bam | head
+```
+To see the header (metadata, reference names, and alignment settings):
+
+```
+samtools view -H yourfile.bam
+```
+These commands let you quickly verify that the alignments look correct without scrolling through the entire file.
+
+**Example interpretation of a BAM file**
+```
+SRR6849240.12345	16	chr1	10542	255	76M	*	0	0	ACTG…	AAAA…	NM:i:0
+```
+**Means:**
+
+This read is named **SRR6849240.12345**
+
+FLAG **16** → read maps to reverse strand
+
+It aligned to chromosome 1, position **10542**
+
+CIGAR **76M** → 76 bases matched the reference (no indels)
+
+MAPQ **255** → unique, high-confidence alignment
+
+**NM:i:0** → 0 mismatches from the reference
+
 
 # Step 7 - Strandness check
 Verifying library strandness is an important quality-control step in RNA-seq analysis, because different library preparation kits produce reads that originate from either the forward or reverse strand of the original transcript. The NEBNext Ultra Directional kit used in this dataset is expected to generate reverse-stranded libraries, but STAR makes it easy to confirm this empirically. Each STAR alignment produces a ReadsPerGene.out.tab file containing read counts for unstranded (column 2), forward-strand (column 3), and reverse-strand (column 4) alignments. By summing columns 3 and 4 for each sample, we compute the fraction of reads mapping to each strand. If the reverse fraction is much higher than the forward fraction, the dataset is reverse-stranded which matches the expected behavior of NEBNext. This confirmation ensures that we correctly specify -s 2 (reverse-stranded) in featureCounts and downstream analyses.
