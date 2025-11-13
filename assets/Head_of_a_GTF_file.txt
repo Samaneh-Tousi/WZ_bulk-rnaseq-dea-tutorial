@@ -1,0 +1,11 @@
+ head -n 10
+     1  #!genome-build GRCh38.p14
+     2  #!genome-version GRCh38
+     3  #!genome-date 2013-12
+     4  #!genome-build-accession GCA_000001405.29
+     5  #!genebuild-last-updated 2025-05
+     6  1       ensembl_havana  gene            3069168 3438621 .       +       .       gene_id "ENSG00000142611"; gene_version "17"; gene_name "PRDM16"; gene_source "ensembl_havana"; gene_biotype "protein_coding";
+     7  1       havana          transcript      3069168 3434342 .       +       .       gene_id "ENSG00000142611"; gene_version "17"; transcript_id "ENST00000511072"; transcript_version "5"; gene_name "PRDM16"; gene_source "ensembl_havana"; gene_biotype "protein_coding"; transcript_name "PRDM16-206"; transcript_source "havana"; transcript_biotype "protein_coding"; tag "gencode_basic"; tag "gencode_primary"; transcript_support_level "5";
+     8  1       havana          exon            3069168 3069296 .       +       .       gene_id "ENSG00000142611"; gene_version "17"; transcript_id "ENST00000511072"; transcript_version "5"; exon_number "1"; gene_name "PRDM16"; gene_source "ensembl_havana"; gene_biotype "protein_coding"; transcript_name "PRDM16-206"; transcript_source "havana"; transcript_biotype "protein_coding"; exon_id "ENSE00002048533"; exon_version "1"; tag "gencode_basic"; tag "gencode_primary"; transcript_support_level "5";
+     9  1       havana          CDS             3069260 3069296 .       +       0       gene_id "ENSG00000142611"; gene_version "17"; transcript_id "ENST00000511072"; transcript_version "5"; exon_number "1"; gene_name "PRDM16"; gene_source "ensembl_havana"; gene_biotype "protein_coding"; transcript_name "PRDM16-206"; transcript_source "havana"; transcript_biotype "protein_coding"; protein_id "ENSP00000426975"; protein_version "1"; tag "gencode_basic"; tag "gencode_primary"; transcript_support_level "5";
+    10  1       havana          start_codon     3069260 3069262 .       +       0       gene_id "ENSG00000142611"; gene_version "17"; transcript_id "ENST00000511072"; transcript_version "5"; exon_number "1"; gene_name "PRDM16"; gene_source "ensembl_havana"; gene_biotype "protein_coding"; transcript_name "PRDM16-206"; transcript_source "havana"; transcript_biotype "protein_coding"; tag "gencode_basic"; tag "gencode_primary"; transcript_support_level "5";
