@@ -382,7 +382,7 @@ Verifying library strandness is an important quality-control step in RNA-seq ana
 
 **Q:** If mRNAs are always transcribed from the antisense (template) DNA strand, how is it possible that RNA-seq kits produce “forward-stranded”, “reverse-stranded”, or “unstranded” libraries?
 
-**A:** Because strandness is not determined by biology — it is determined by the library preparation kit.
+**A:** Because strandness is not determined by biology, it is determined by the library preparation kit.
 During RNA-seq library prep, several biochemical steps (cDNA synthesis, second-strand digestion, amplification) can preserve, invert, or erase the original strand orientation.
 
 For example, the NEBNext Ultra Directional kit used in this dataset incorporates dUTP into the second cDNA strand and selectively removes it, causing reads to map in the reverse orientation relative to the gene → a reverse-stranded library (-s 2).
@@ -403,6 +403,18 @@ cat "$OUT"
 Interpretation: reverse fraction ≫ forward → use -s 2 downstream.
 
 # Step 8 - Quantifying Gene Expression by featureCounts
+
+Although featureCounts is one of the fastest and most widely used tools for counting reads that overlap annotated genes, several other methods exist depending on the analysis needs.
+
+| Tool                            | Type                                           | Input                  | Speed                  | Outputs                      | Strengths                                                                | Limitations                                  |
+| ------------------------------- | ---------------------------------------------- | ---------------------- | ---------------------- | ---------------------------- | ------------------------------------------------------------------------ | -------------------------------------------- |
+| **featureCounts** (Subread)     | Aligned read counter                           | BAM                    |   **Very fast**        | Raw gene counts              | Highly efficient; widely used; supports strandness & exon-level counting | Requires aligned reads (BAM)                 |
+| **HTSeq-count**                 | Aligned read counter                           | BAM                    |   **Slow**             | Raw gene counts              | Very configurable; simple counting logic                                 | Slow on large datasets; single-threaded      |
+| **STAR --quantMode GeneCounts** | Built-in aligner counter                       | BAM (during alignment) |   Fast (no extra step) | 3 count types per gene       | Convenient; no extra tools needed                                        | Less flexible; limited annotation handling   |
+| **RSEM**                        | Probabilistic gene & transcript quantification | FASTQ/BAM              |   Moderate             | TPM, FPKM, counts            | Models isoforms; widely used in publications                             | More computationally expensive; more complex |
+| **Kallisto**                    | Alignment-free transcript quantification       | FASTQ                  |   **Very fast**        | Transcript-level TPM, counts | Lightweight; excellent speed & accuracy                                  | Requires tximport to convert to gene-level   |
+| **Salmon**                      | Alignment-free / quasi-mapping quantification  | FASTQ                  |   **Very fast**        | Transcript-level TPM, counts | Bias correction; modern, accurate                                        | Also requires tximport for DEA               |
+
 
 In this step, we generate gene-level read counts from the aligned BAM files using featureCounts, a fast and widely used quantification tool from the Subread package. featureCounts assigns aligned reads to genomic features (typically exons) based on the annotation file (GTF). We specify -s 2 because our libraries are reverse-stranded, as confirmed in the previous step. Only reads aligning to the antisense strand of genes will be counted. The command produces a raw count table (featureCounts_counts.txt) that includes metadata columns and full file paths; therefore, an additional awk script is used to clean the matrix, remove extra columns, and extract sample names. The result in **featureCounts_counts_matrix.tsv** is a clean, tab-delimited matrix suitable for downstream analysis in DESeq2, edgeR, or similar tools.
 
