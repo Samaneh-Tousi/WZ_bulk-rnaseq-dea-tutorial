@@ -523,9 +523,28 @@ $VSC_DATA/Bioinfo_course/MS_microglia_MultiQC/multiqc_all.html
 <a href="assets/multiqc_all_1.html" target="_blank">**Interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries!**</a>
 
 
-# Step 10 - DESeq2 & GSEA (RStudio)
+# Step 10 - Differential expression analysis (DEA)
 
-Switch app: Stop the shell job. Launch RStudio Server (4 cores).
+Once we have a clean gene-level count matrix, the next step is differential expression analysis (DEA), testing which genes show statistically significant changes in expression between conditions (e.g. MS vs Control). DEA tools work on raw counts, model the variability between biological replicates, and apply appropriate normalization and statistical tests. The most widely used tools in bulk RNA-seq are DESeq2, edgeR, and limma-voom. They all aim to answer the same question **“which genes are differentially expressed?”**, but differ in how they normalize counts, model variance, and what experimental designs they are best suited for. A key point is that biological replicates are essential for reliable statistics, while technical replicates are usually merged at the count level rather than treated as independent samples.
+
+**Common DEA tools and when to use them**
+
+| Tool                             | Input                                      | Normalization method                                    | Pros                                                                                                                      | Cons                                                                              | Best for…                                                                                                                                     |
+| -------------------------------- | ------------------------------------------ | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **DESeq2**                       | Raw counts (integer)                       | Size factors estimated from the median-of-ratios method | Very robust; intuitive; excellent for typical RNA-seq designs; built-in shrinkage of fold changes; great documentation    | Slower on very large datasets; primarily R / Bioconductor                         | **Small–moderate sample sizes** (e.g. 3–10 biological replicates per group), simple or moderately complex designs (2+ conditions, covariates) |
+| **edgeR**                        | Raw counts (integer)                       | **TMM** (Trimmed Mean of M values) normalization        | Very flexible; handles complex designs, GLMs, and low replicate numbers; good for count filtering and dispersion modeling | Syntax a bit more technical; results depend strongly on filtering choices         | Datasets with **few replicates** (e.g. 2–3 per group) or **complex experimental designs** (batch, interactions, paired samples)               |
+| **limma-voom**                   | Raw counts → logCPM with precision weights | Library-size scaling + voom mean–variance modeling      | Extremely fast; powerful for **larger** sample sizes; great for multi-factor designs and microarray-like workflows        | Less ideal for very low replicate numbers; assumes good mean–variance modeling    | **Larger studies** (e.g. >10 samples per group), multi-factor designs, when you want fast linear-model based analysis                         |
+| **Others (e.g. NOISeq, sleuth)** | Varies                                     | Varies (often built-in)                                 | Can be useful in special cases or for specific pipelines                                                                  | Less standard; fewer community examples; sometimes require transcript-level input | Specialized workflows; usually not first choice for standard bulk RNA-seq                                                                     |
+
+
+To start the analysis, Stop the shell job and Launch RStudio Server (4 cores).
+
+<img src="assets/Rstudio_interactive.png" alt="Rstudio_interactive" width="600">
+<img src="assets/Rstudio_interactive2.png" alt="Rstudio_interactive2" width="600">
+<img src="assets/Rstudio_interactive3.png" alt="Rstudio_interactive3" width="600">
+
+Open a new R script once the R session is started.
+
 
 ```
 suppressPackageStartupMessages({
