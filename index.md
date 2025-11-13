@@ -374,6 +374,9 @@ Check metrics:
 less "$OUT"/<sample>.Log.final.out
 ```
 
+<img src="assets/Log_final_out.png" alt="Log_final_out" width="700">
+
+
 # Step 7 - Strandness check
 NEBNext Ultra Directional → reverse-stranded expected.
 
