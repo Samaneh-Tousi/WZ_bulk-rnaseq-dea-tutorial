@@ -345,7 +345,7 @@ Once the reference genome index is prepared, we can align our trimmed FASTQ read
 
 <img src="assets/Alaigning_1.png" alt="Aligning to the transcriptome vs Genome" width="800">
 
-<a href="assets/Intro2RNAseq.pdf" target="_blank">**Intro2RNAseq**</a>
+<a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 20, for more explanation**</a>
 
 We also enable --quantMode GeneCounts, which instructs STAR to generate preliminary per-gene read counts that will later help verify the library’s strandness. The output of this step includes aligned BAM files, gene count summaries, and STAR logs, all stored in the MS_microglia_STAR_aligned directory and ready for downstream quantification and differential expression analysis.
 
