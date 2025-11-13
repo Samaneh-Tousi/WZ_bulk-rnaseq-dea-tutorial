@@ -459,6 +459,8 @@ Raw read counts tell you how many sequencing reads mapped to each gene, and they
 
 # Step 9 - MultiQC summary report
 
+MultiQC is a tool that scans the output files from many bioinformatics programs (such as FastQC, fastp, STAR, and featureCounts) and compiles them into one interactive HTML report. Instead of checking each tool’s results separately, MultiQC gives you a single overview of sample quality, trimming performance, alignment statistics, and counting summaries making it much easier to detect problems or compare samples side-by-side.
+
 ```
 # (Optional) if MultiQC isn't preinstalled on VSC
 conda install -c bioconda multiqc
