@@ -402,7 +402,9 @@ cat "$OUT"
 ```
 Interpretation: reverse fraction ≫ forward → use -s 2 downstream.
 
-# Step 8 - featureCounts (reverse-stranded)
+# Step 8 - Quantifying Gene Expression by featureCounts
+
+In this step, we generate gene-level read counts from the aligned BAM files using featureCounts, a fast and widely used quantification tool from the Subread package. featureCounts assigns aligned reads to genomic features (typically exons) based on the annotation file (GTF). We specify -s 2 because our libraries are reverse-stranded, as confirmed in the previous step. Only reads aligning to the antisense strand of genes will be counted. The command produces a raw count table (featureCounts_counts.txt) that includes metadata columns and full file paths; therefore, an additional awk script is used to clean the matrix, remove extra columns, and extract sample names. The result in **featureCounts_counts_matrix.tsv** is a clean, tab-delimited matrix suitable for downstream analysis in DESeq2, edgeR, or similar tools.
 
 ```
 module load Subread
