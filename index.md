@@ -480,11 +480,10 @@ multiqc -o "$MQC_OUT" -n multiqc_all "$FASTP_DIR" "$STAR_DIR" "$FC_DIR"
 Outputs:
 
 A single HTML summary:
+
 $VSC_DATA/Bioinfo_course/MS_microglia_MultiQC/multiqc_all.html
 
-A directory of summary data (multiqc_data/)
-
-💡 Tip: Download and open the multiqc_all.html file locally to interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries.
+<a href="assets/multiqc_all_1.html" target="_blank">**Interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries!**</a>
 
 
 # Step 10 - DESeq2 & GSEA (RStudio)
