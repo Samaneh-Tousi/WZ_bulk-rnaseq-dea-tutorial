@@ -20,6 +20,7 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 - [Step 7 - Quantifying Gene Expression by featureCounts](#step-7---quantifying-gene-expression-by-featurecounts)
 - [Step 8 - MultiQC summary report](#step-8---multiqc-summary-report)
 - [Step 9 - Differential expression analysis (DEA) & Enrichment analysis (GSEA)](#step-9---differential-expression-analysis-dea--enrichment-analysis-gsea)
+
 ---
 
 ## Pipeline at a glance
