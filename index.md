@@ -543,14 +543,32 @@ To start the analysis, Stop the shell job and Launch RStudio Server (4 cores).
 <img src="assets/Rstudio_interactive2.png" alt="Rstudio_interactive2" width="600">
 <img src="assets/Rstudio_interactive3.png" alt="Rstudio_interactive3" width="600">
 
-Open a new R script once the R session is started.
+Open a new R script once the R session is started and follo the stepsas below:
 
+**Install packages only if they are not already installed**
 
 ```
+# List of required packages
+packages <- c(
+  "DESeq2", "readr", "dplyr", "ggplot2", "ggrepel", "apeglm",
+  "biomaRt", "clusterProfiler", "msigdbr", "org.Hs.eg.db", "enrichplot"
+)
+
+# Install missing packages
+installed <- rownames(installed.packages())
+to_install <- packages[!(packages %in% installed)]
+
+if (length(to_install) > 0) {
+  message("Installing missing packages: ", paste(to_install, collapse = ", "))
+  BiocManager::install(to_install, ask = FALSE)
+}
+
+# Load packages quietly
 suppressPackageStartupMessages({
-  library(DESeq2); library(readr); library(dplyr); library(ggplot2); library(ggrepel); library(apeglm)
-  library(biomaRt); library(clusterProfiler); library(msigdbr); library(org.Hs.eg.db); library(enrichplot)
+  lapply(packages, library, character.only = TRUE)
 })
+
+```
 
 counts_path <- file.path(Sys.getenv("VSC_DATA"),
                          "Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv")
