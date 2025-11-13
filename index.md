@@ -311,7 +311,9 @@ Before we can measure gene expression from RNA-seq data, we must determine where
 Several tools exist for aligning next-generation sequencing reads, such as BWA, Bowtie2, HISAT2, and STAR. However, not all of them are suitable for RNA-seq. Tools like BWA or Bowtie2 are excellent for DNA-seq but cannot model splicing. HISAT2 and STAR are both splice-aware, but STAR has become the gold standard for bulk RNA-seq because it is exceptionally fast, highly accurate, and specifically optimized to detect splice junctions. STAR builds a specialized index of the genome that enables rapid searching, and during alignment it breaks each read into smaller seeds, maps them efficiently, and reconstructs spliced alignments with high precision. It also produces useful outputs such as sorted BAM files, splice junction information, and optional gene-level counts when using --quantMode GeneCounts.
 
 
-Reference genome (STAR index)
+**Building the Reference Genome (STAR Index)**
+
+Before STAR can align RNA-seq reads, it must first build a genome index from the reference FASTA sequence and gene annotation (GTF). This index acts as a searchable map of the genome that STAR uses to rapidly locate and align sequencing reads. In this step, we download the human reference genome (GRCh38) and its corresponding annotation from Ensembl, decompress the files, and run STAR in genomeGenerate mode. STAR processes the genome and annotation into a set of optimized index files stored inside the Ref_genome directory. This step only needs to be performed once per genome version and can take a few minutes depending on computing resources. The resulting index will be used in the next stage when we align our trimmed FASTQ files to the genome.
 
 ```
 cd "$VSC_DATA/Bioinfo_course"
