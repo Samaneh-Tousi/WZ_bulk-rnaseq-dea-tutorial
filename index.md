@@ -576,21 +576,54 @@ out_dir <- file.path(Sys.getenv("VSC_DATA"), "Bioinfo_course/MS_microglia_DEA")
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 ```
 
-# counts
-counts <- read_tsv(counts_path)
-gene <- counts$gene
-cts <- as.data.frame(counts[,-1]); rownames(cts) <- gene
-cts <- cts[, c("SRR6849240","SRR6849241","SRR6849242",
-               "SRR6849255","SRR6849256","SRR6849257")]
-coldata <- data.frame(row.names = colnames(cts),
-                      condition = factor(c("MS","MS","MS","Control","Control","Control")))
+**Building the DESeq2 Dataset and Running Differential Expression**
 
-dds <- DESeqDataSetFromMatrix(countData = round(cts), colData = coldata, design = ~ condition)
-dds <- dds[rowSums(counts(dds)) >= 10, ]
-dds <- DESeq(dds)
+```
+# ---- Load gene-level count matrix from featureCounts ----
+counts <- read_tsv(counts_path)           # Read the TSV counts file into R (first column = gene, others = samples)
 
-res <- results(dds, cooksCutoff = FALSE, independentFiltering = FALSE)
+# ---- Extract gene IDs and build a clean counts matrix ----
+gene <- counts$gene                       # Store gene IDs from the 'gene' column
+cts  <- as.data.frame(counts[ , -1])      # Remove the first column (gene IDs), keep only counts
+rownames(cts) <- gene                     # Set gene IDs as row names of the count matrix
 
+# (Optional but recommended) Reorder columns to match the desired sample order
+cts <- cts[ , c("SRR6849240","SRR6849241","SRR6849242",
+                "SRR6849255","SRR6849256","SRR6849257")]  # 3 MS + 3 Control
+
+# ---- Build sample information (metadata) ----
+coldata <- data.frame(
+  row.names = colnames(cts),              # Row names must match column names of 'cts'
+  condition = factor(c("MS","MS","MS",    # Condition for each sample in the same order as columns
+                       "Control","Control","Control"))
+)
+
+# ---- Create DESeq2 dataset object ----
+dds <- DESeqDataSetFromMatrix(
+  countData = round(cts),                 # Raw counts (rounded to integers, as required by DESeq2)
+  colData   = coldata,                    # Sample metadata (conditions)
+  design    = ~ condition                 # Model: expression ~ condition (MS vs Control)
+)
+
+# ---- Filter out very lowly-expressed genes ----
+dds <- dds[rowSums(counts(dds)) >= 10, ]  # Keep genes with at least 10 total counts across all samples
+
+# ---- Run the full DESeq2 pipeline ----
+dds <- DESeq(dds)                         # Normalization, dispersion estimation, and model fitting
+
+# ---- Extract differential expression results ----
+res <- results(
+  dds,
+  cooksCutoff          = FALSE,           # Do not automatically filter by Cook's distance
+  independentFiltering = FALSE            # Keep all genes (no automatic filtering by mean counts)
+)
+```
+
+**Gene Annotation with Ensembl (biomaRt)**
+
+After computing differential expression, the results contain gene identifiers in Ensembl ID format (e.g., ENSG00000141510.12). These identifiers are accurate but not user-friendly, so the next step is to annotate them with human-readable gene symbols (e.g., TP53). Using the biomaRt package, we query the Ensembl database, retrieve gene symbols for all genes in the results, remove version suffixes (e.g., .12), and merge the annotations back into the results table. The output is an annotated results file that is easier to interpret and suitable for downstream visualization and reporting.
+
+```
 # annotate
 mart <- useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
 gene_ids <- gsub("\\..*", "", rownames(res))
@@ -600,7 +633,15 @@ res_tbl <- as.data.frame(res); res_tbl$ensembl_gene_id <- gsub("\\..*", "", rown
 res_annot <- merge(res_tbl, annot, by = "ensembl_gene_id", all.x = TRUE)
 res_annot <- res_annot[order(res_annot$padj), ]
 readr::write_tsv(res_annot, file.path(out_dir, "deseq2_results_annotated.tsv"))
+```
 
+**Identifying Differentially Expressed Genes (DEGs) and Creating a Volcano Plot**
+
+Once the differential expression results are annotated, the next step is to extract the significant differentially expressed genes (DEGs). This is done by applying thresholds on both statistical significance (adjusted p-value or FDR) and effect size (log₂ fold change). In this tutorial, genes with padj < 0.05 and |log₂FC| > 0.5 are considered DEGs. After filtering, the DEG list is saved as a TSV file for downstream functional analysis.
+
+To visualize the global expression changes between conditions, we generate a volcano plot, which displays each gene based on its log₂ fold change (x-axis) and statistical significance (–log₁₀ adjusted p-value, y-axis). Genes are categorized as Up, Down, or Not Significant, and the top 10 most significant genes are labeled. This plot provides an intuitive overview of the direction, magnitude, and significance of differential expression across the whole transcriptome.
+
+```
 # DEGs
 lfc_thr <- 0.5; padj_thr <- 0.05
 DEGs <- subset(res_annot, !is.na(padj) & padj < padj_thr & abs(log2FoldChange) > lfc_thr)
@@ -627,16 +668,26 @@ p <- ggplot(df, aes(x = log2FoldChange, y = mlog10padj, color = status)) +
   theme_minimal(base_size = 12)
 
 ggsave(file.path(out_dir, "volcano_DEGs.png"), p, width = 7, height = 5, dpi = 300)
+```
 
+**Gene Set Enrichment Analysis (GSEA), Hallmark Pathways**
+
+After identifying differentially expressed genes, we want to understand which biological pathways are systematically up- or down-regulated. Gene Set Enrichment Analysis (GSEA) evaluates genome-wide ranked statistics (e.g., Wald statistics or log₂ fold changes) to determine whether predefined gene sets show significant enrichment at the top or bottom of the ranked list. Unlike over-representation analysis, GSEA does not require an arbitrary DEG cutoff and instead uses all genes, making it more sensitive and biologically interpretable.
+In this step, we first convert gene symbols to Entrez IDs, which are required by many pathway databases. Then we build a ranked gene list, load the MSigDB Hallmark gene sets, and run GSEA. The results are saved to disk along with visualizations: a plot of the top enriched pathways and an enrichment map showing relationships among enriched terms.
+
+```
 # GSEA (Hallmark)
 symbols <- res_annot$external_gene_name
 entrez  <- mapIds(org.Hs.eg.db, keys = symbols, keytype = "SYMBOL", column = "ENTREZID", multiVals = "first")
 res_annot$ENTREZID <- entrez
+
 score <- if (!all(is.na(res_annot$stat))) res_annot$stat else res_annot$log2FoldChange
+
 rank_df <- tibble::tibble(ENTREZID = res_annot$ENTREZID, score = score) |>
   dplyr::filter(!is.na(ENTREZID), is.finite(score)) |>
   dplyr::group_by(ENTREZID) |>
   dplyr::summarise(score = score[which.max(abs(score))], .groups = "drop")
+
 ranks <- sort(setNames(rank_df$score, rank_df$ENTREZID), decreasing = TRUE)
 
 m_h <- msigdbr(species = "Homo sapiens", category = "H") |>
@@ -644,6 +695,7 @@ m_h <- msigdbr(species = "Homo sapiens", category = "H") |>
 
 set.seed(42)
 gseaH <- GSEA(ranks, TERM2GENE = m_h, pAdjustMethod = "BH", minGSSize = 10, maxGSSize = 500, verbose = FALSE)
+
 readr::write_tsv(as.data.frame(gseaH@result), file.path(out_dir, "GSEA_Hallmark_results.tsv"))
 
 png(file.path(out_dir, "GSEA_Hallmark_top4.png"), width = 900, height = 700)
@@ -655,10 +707,6 @@ png(file.path(out_dir, "GSEA_Hallmark_emap.png"), width = 1200, height = 900)
 print(emapplot(gseaH2, showCategory = 10))
 dev.off()
 ```
-Outputs ($VSC_DATA/Bioinfo_course/MS_microglia_DEA):
-deseq2_results_annotated.tsv, DEGs_MS_vs_Control_padj0.05_LFC0.50.tsv, volcano_DEGs.png,
-GSEA_Hallmark_results.tsv, GSEA_Hallmark_top4.png, GSEA_Hallmark_emap.png
-
   
 	 
 
