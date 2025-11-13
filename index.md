@@ -540,7 +540,6 @@ Once we have a clean gene-level count matrix, the next step is differential expr
 To start the analysis, Stop the shell job and Launch RStudio Server (4 cores).
 
 <img src="assets/Rstudio_interactive.png" alt="Rstudio_interactive" width="600">
-<img src="assets/Rstudio_interactive2.png" alt="Rstudio_interactive2" width="600">
 <img src="assets/Rstudio_interactive3.png" alt="Rstudio_interactive3" width="600">
 
 Open a new R script once the R session is started and follo the stepsas below:
@@ -569,11 +568,13 @@ suppressPackageStartupMessages({
 })
 
 ```
-
+**Setting up input and output directories in R**
+```
 counts_path <- file.path(Sys.getenv("VSC_DATA"),
                          "Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv")
 out_dir <- file.path(Sys.getenv("VSC_DATA"), "Bioinfo_course/MS_microglia_DEA")
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
+```
 
 # counts
 counts <- read_tsv(counts_path)
