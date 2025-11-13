@@ -310,6 +310,9 @@ Before we can measure gene expression from RNA-seq data, we must determine where
 
 Several tools exist for aligning next-generation sequencing reads, such as BWA, Bowtie2, HISAT2, and STAR. However, not all of them are suitable for RNA-seq. Tools like BWA or Bowtie2 are excellent for DNA-seq but cannot model splicing. HISAT2 and STAR are both splice-aware, but STAR has become the gold standard for bulk RNA-seq because it is exceptionally fast, highly accurate, and specifically optimized to detect splice junctions. STAR builds a specialized index of the genome that enables rapid searching, and during alignment it breaks each read into smaller seeds, maps them efficiently, and reconstructs spliced alignments with high precision. It also produces useful outputs such as sorted BAM files, splice junction information, and optional gene-level counts when using --quantMode GeneCounts.
 
+**What Are GTF and GFF Annotation Files?**
+
+GTF (Gene Transfer Format) and GFF (General Feature Format) are standardized file formats used to describe genomic features such as genes, exons, transcripts, and coding regions. Both formats provide the information needed by aligners and quantification tools to understand where genes are located on the genome. GTF is essentially a more strict and human-readable version of GFF2, using fixed column names and consistent attribute formatting, which makes it widely used in RNA-seq workflows (including STAR and featureCounts). GFF3, a newer version, is more flexible and supports hierarchical gene models, but some tools require conversion before use. In practice, GTF is preferred for RNA-seq expression analysis because it is simpler, more consistent across databases, and compatible with most RNA-seq tools.
 
 **Building the Reference Genome (STAR Index)**
 
