@@ -9,20 +9,17 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 > Sequence QC & trimming → alignment → counting → DESeq2 → GSEA.
 
 ---
-
-## Contents
-[Prerequisites](#prerequisites)  
-[Step 1 - Access & Session](#step-1--access--session)  
-[Step 2 - Connect, workspace, data](#step-2--connect-workspace-data)  
-[Step 3 - Downsample FASTQ](#step-3--downsample-fastq)  
-[Step 4 - QC & trimming (fastp)](#step-4--qc--trimming-fastp)  
-[Step 5 - Reference genome (STAR index)](#step-5--reference-genome-star-index)  
-[Step 6 - Alignment (STAR)](#step-6--alignment-star)  
-[Step 7 - Strandness check](#step-7--strandness-check)  
-[Step 8 - featureCounts (reverse-stranded)](#step-8--featurecounts-reverse-stranded)
-[Step 9 - MultiQC summary report](#step-9--MultiQC summary report)  
-[Step 10 - DESeq2 + GSEA (RStudio)](#step-10--deseq2--gsea-rstudio)  
-
+# Contents
+### [Prerequisites](#prerequisites)
+### [Step 1 – Access to VSC & Interactive Sessions](#step-1--access-to-vsc--interactive-sessions)
+### [Step 2 – Connect, workspace, data](#step-2--connect-workspace-data)
+### [Step 3 – Downsample FASTQ](#step-3--downsample-fastq)
+### [Step 4 – QC & trimming (fastp)](#step-4--qc--trimming-fastp)
+### [Step 5 – Mapping vs. Aligning RNA-seq Reads](#step-5--mapping-vs-aligning-rna-seq-reads)
+### [Step 6 – Strandness check](#step-6--strandness-check)
+### [Step 7 – Quantifying Gene Expression by featureCounts](#step-7--quantifying-gene-expression-by-featurecounts)
+### [Step 8 – MultiQC summary report](#step-8--multiqc-summary-report)
+### [Step 9 – Differential expression analysis (DEA) & Enrichment analysis (GSEA)](#step-9--differential-expression-analysis-dea--enrichment-analysis-gsea)
 ---
 
 ## Pipeline at a glance
@@ -412,7 +409,7 @@ MAPQ **255** → unique, high-confidence alignment
 **NM:i:0** → 0 mismatches from the reference
 
 
-# Step 7 - Strandness check
+# Step 6 - Strandness check
 Verifying library strandness is an important quality-control step in RNA-seq analysis, because different library preparation kits produce reads that originate from either the forward or reverse strand of the original transcript. The NEBNext Ultra Directional kit used in this dataset is expected to generate reverse-stranded libraries, but STAR makes it easy to confirm this empirically. Each STAR alignment produces a ReadsPerGene.out.tab file containing read counts for unstranded (column 2), forward-strand (column 3), and reverse-strand (column 4) alignments. By summing columns 3 and 4 for each sample, we compute the fraction of reads mapping to each strand. If the reverse fraction is much higher than the forward fraction, the dataset is reverse-stranded which matches the expected behavior of NEBNext. This confirmation ensures that we correctly specify -s 2 (reverse-stranded) in featureCounts and downstream analyses.
 
 **Q:** If mRNAs are always transcribed from the antisense (template) DNA strand, how is it possible that RNA-seq kits produce “forward-stranded”, “reverse-stranded”, or “unstranded” libraries?
@@ -437,7 +434,7 @@ cat "$OUT"
 ```
 Interpretation: reverse fraction ≫ forward → use -s 2 downstream.
 
-# Step 8 - Quantifying Gene Expression by featureCounts
+# Step 7 - Quantifying Gene Expression by featureCounts
 
 Although featureCounts is one of the fastest and most widely used tools for counting reads that overlap annotated genes, several other methods exist depending on the analysis needs.
 
@@ -492,7 +489,7 @@ Raw read counts tell you how many sequencing reads mapped to each gene, and they
 | **TPM**        | Transcripts Per Million            | ✔️ Yes                           | ✔️ Yes                      | Cross-sample expression comparison      | **Salmon**, **Kallisto**, **RSEM**, **tximport (derived)**                     |
 
 
-# Step 9 - MultiQC summary report
+# Step 8 - MultiQC summary report
 
 MultiQC is a tool that scans the output files from many bioinformatics programs (such as FastQC, fastp, STAR, and featureCounts) and compiles them into one interactive HTML report. Instead of checking each tool’s results separately, MultiQC gives you a single overview of sample quality, trimming performance, alignment statistics, and counting summaries making it much easier to detect problems or compare samples side-by-side.
 
@@ -523,7 +520,7 @@ $VSC_DATA/Bioinfo_course/MS_microglia_MultiQC/multiqc_all.html
 <a href="assets/multiqc_all_1.html" target="_blank">**Interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries!**</a>
 
 
-# Step 10 - Differential expression analysis (DEA)
+# Step 9 - Differential expression analysis (DEA) & Enrichment analysis (GSEA)
 
 Once we have a clean gene-level count matrix, the next step is differential expression analysis (DEA), testing which genes show statistically significant changes in expression between conditions (e.g. MS vs Control). DEA tools work on raw counts, model the variability between biological replicates, and apply appropriate normalization and statistical tests. The most widely used tools in bulk RNA-seq are DESeq2, edgeR, and limma-voom. They all aim to answer the same question **“which genes are differentially expressed?”**, but differ in how they normalize counts, model variance, and what experimental designs they are best suited for. A key point is that biological replicates are essential for reliable statistics, while technical replicates are usually merged at the count level rather than treated as independent samples.
 
@@ -539,8 +536,8 @@ Once we have a clean gene-level count matrix, the next step is differential expr
 
 To start the analysis, Stop the shell job and Launch RStudio Server (4 cores).
 
-<img src="assets/Rstudio_interactive.png" alt="Rstudio_interactive" width="600">
-<img src="assets/Rstudio_interactive3.png" alt="Rstudio_interactive3" width="600">
+<img src="assets/Rstudio_interactive.png" alt="Rstudio_interactive" width="800">
+<img src="assets/Rstudio_interactive3.png" alt="Rstudio_interactive3" width="800">
 
 Open a new R script once the R session is started and follo the stepsas below:
 
@@ -669,6 +666,7 @@ p <- ggplot(df, aes(x = log2FoldChange, y = mlog10padj, color = status)) +
 
 ggsave(file.path(out_dir, "volcano_DEGs.png"), p, width = 7, height = 5, dpi = 300)
 ```
+<img src="assets/DEGs_Volcano.png" alt="DEGs_Volcano" width="600">
 
 **Gene Set Enrichment Analysis (GSEA), Hallmark Pathways**
 
@@ -707,6 +705,7 @@ png(file.path(out_dir, "GSEA_Hallmark_emap.png"), width = 1200, height = 900)
 print(emapplot(gseaH2, showCategory = 10))
 dev.off()
 ```
+<img src="assets/GSEA.png" alt="GSEA" width="700">
   
 	 
 
