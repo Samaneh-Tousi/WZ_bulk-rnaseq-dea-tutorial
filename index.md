@@ -334,7 +334,9 @@ STAR --runThreadN 8 \
 ```
 Note: sjdbOverhang = readLength − 1.
 
-# Step 6 - Alignment (STAR)
+**Aligning Reads to the Genome with STAR**
+
+Once the reference genome index is prepared, we can align our trimmed FASTQ reads to the genome using STAR. In this step, STAR takes each cleaned sequencing read, finds the best matching location(s) in the indexed genome, and produces a **sorted BAM** file that records the exact alignment. Because RNA-seq reads may span exon–exon junctions, STAR performs splice-aware alignment, ensuring accurate mapping across introns. We also enable --quantMode GeneCounts, which instructs STAR to generate preliminary per-gene read counts that will later help verify the library’s strandness. The output of this step includes aligned BAM files, gene count summaries, and STAR logs, all stored in the MS_microglia_STAR_aligned directory and ready for downstream quantification and differential expression analysis.
 
 ```
 module load STAR/2.7.3a-GCCcore-6.4.0
