@@ -10,16 +10,16 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 
 ---
 # Contents
-### [Prerequisites](#prerequisites)
-### [Step 1 – Access to VSC & Interactive Sessions](#step-1--access-to-vsc--interactive-sessions)
-### [Step 2 – Connect, workspace, data](#step-2--connect-workspace-data)
-### [Step 3 – Downsample FASTQ](#step-3--downsample-fastq)
-### [Step 4 – QC & trimming (fastp)](#step-4--qc--trimming-fastp)
-### [Step 5 – Mapping vs. Aligning RNA-seq Reads](#step-5--mapping-vs-aligning-rna-seq-reads)
-### [Step 6 – Strandness check](#step-6--strandness-check)
-### [Step 7 – Quantifying Gene Expression by featureCounts](#step-7--quantifying-gene-expression-by-featurecounts)
-### [Step 8 – MultiQC summary report](#step-8--multiqc-summary-report)
-### [Step 9 – Differential expression analysis (DEA) & Enrichment analysis (GSEA)](#step-9--differential-expression-analysis-dea--enrichment-analysis-gsea)
+## [Prerequisites](#prerequisites)
+## [Step 1 – Access to VSC & Interactive Sessions](#step-1--access-to-vsc--interactive-sessions)
+## [Step 2 – Connect, workspace, data](#step-2--connect-workspace-data)
+## [Step 3 – Downsample FASTQ](#step-3--downsample-fastq)
+## [Step 4 – QC & trimming (fastp)](#step-4--qc--trimming-fastp)
+## [Step 5 – Mapping vs. Aligning RNA-seq Reads](#step-5--mapping-vs-aligning-rna-seq-reads)
+## [Step 6 – Strandness check](#step-6--strandness-check)
+## [Step 7 – Quantifying Gene Expression by featureCounts](#step-7--quantifying-gene-expression-by-featurecounts)
+## [Step 8 – MultiQC summary report](#step-8--multiqc-summary-report)
+## [Step 9 – Differential expression analysis (DEA) & Enrichment analysis (GSEA)](#step-9--differential-expression-analysis-dea--enrichment-analysis-gsea)
 ---
 
 ## Pipeline at a glance
@@ -634,7 +634,7 @@ readr::write_tsv(res_annot, file.path(out_dir, "deseq2_results_annotated.tsv"))
 
 **Identifying Differentially Expressed Genes (DEGs) and Creating a Volcano Plot**
 
-Once the differential expression results are annotated, the next step is to extract the significant differentially expressed genes (DEGs). This is done by applying thresholds on both statistical significance (adjusted p-value or FDR) and effect size (log₂ fold change). In this tutorial, genes with padj < 0.05 and |log₂FC| > 0.5 are considered DEGs. After filtering, the DEG list is saved as a TSV file for downstream functional analysis.
+Once the differential expression results are annotated, the next step is to extract the significant differentially expressed genes (DEGs). This is done by applying thresholds on both statistical significance (adjusted p-value or FDR) and effect size (log₂ fold change). In this tutorial, genes with padj < 0.05 and -0.5 <log₂FC > 0.5 are considered DEGs. After filtering, the DEG list is saved as a TSV file for downstream functional analysis.
 
 To visualize the global expression changes between conditions, we generate a volcano plot, which displays each gene based on its log₂ fold change (x-axis) and statistical significance (–log₁₀ adjusted p-value, y-axis). Genes are categorized as Up, Down, or Not Significant, and the top 10 most significant genes are labeled. This plot provides an intuitive overview of the direction, magnitude, and significance of differential expression across the whole transcriptome.
 
