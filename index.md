@@ -9,17 +9,17 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 > Sequence QC & trimming → alignment → counting → DESeq2 → GSEA.
 
 ---
-# Contents
-## [Prerequisites](#prerequisites)
-## [Step 1 – Access to VSC & Interactive Sessions](#step-1--access-to-vsc--interactive-sessions)
-## [Step 2 – Connect, workspace, data](#step-2--connect-workspace-data)
-## [Step 3 – Downsample FASTQ](#step-3--downsample-fastq)
-## [Step 4 – QC & trimming (fastp)](#step-4--qc--trimming-fastp)
-## [Step 5 – Mapping vs. Aligning RNA-seq Reads](#step-5--mapping-vs-aligning-rna-seq-reads)
-## [Step 6 – Strandness check](#step-6--strandness-check)
-## [Step 7 – Quantifying Gene Expression by featureCounts](#step-7--quantifying-gene-expression-by-featurecounts)
-## [Step 8 – MultiQC summary report](#step-8--multiqc-summary-report)
-## [Step 9 – Differential expression analysis (DEA) & Enrichment analysis (GSEA)](#step-9--differential-expression-analysis-dea--enrichment-analysis-gsea)
+## Contents
+- [Prerequisites](#prerequisites)
+- [Step 1 - Access to VSC & Interactive Sessions](#step-1---access-to-vsc--interactive-sessions)
+- [Step 2 - Connect, workspace, data](#step-2---connect-workspace-data)
+- [Step 3 - Downsample FASTQ](#step-3---downsample-fastq)
+- [Step 4 - QC & trimming (fastp)](#step-4---qc--trimming-fastp)
+- [Step 5 - Mapping vs. Aligning RNA-seq Reads](#step-5---mapping-vs-aligning-rna-seq-reads)
+- [Step 6 - Strandness check](#step-6---strandness-check)
+- [Step 7 - Quantifying Gene Expression by featureCounts](#step-7---quantifying-gene-expression-by-featurecounts)
+- [Step 8 - MultiQC summary report](#step-8---multiqc-summary-report)
+- [Step 9 - Differential expression analysis (DEA) & Enrichment analysis (GSEA)](#step-9---differential-expression-analysis-dea--enrichment-analysis-gsea)
 ---
 
 ## Pipeline at a glance
