@@ -1,49 +1,17 @@
 ---
 layout: single
-title: "Bulk RNA-seq & Differential Expression Analysis (DEA) on VSC"
-description: "A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignment, counting, and DE analysis on the Vlaamse Supercomputer Centrum (VSC)."
+title: "Bulk RNA-seq & DEA Tutorial"
+description: "A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignment, counting, and DE analysis on Vlaamse Supercomputer Centrum (VSC)."
 toc: true
 toc_sticky: true
 ---
 
-## Introduction to Bulk RNA-seq
-*(#introduction-to-bulk-rna-seq)*
-
-## Typical bioinformatics workflow of differential gene expression analysis
-*(#typical-bioinformatics-workflow-of-differential-gene-expression-analysis)*
-
-## Prerequisites
-*(#prerequisites)*
-
-## Step 1 - Access to VSC & Interactive Sessions
-...
-
-## Step 2 - Connect, workspace, data
-...
-
-## Step 3 - Downsample FASTQ
-...
-
-## Step 4 - QC & trimming (fastp)
-...
-
-## Step 5 - Mapping vs. Aligning RNA-seq Reads
-...
-
-## Step 6 - Strandness check
-...
-
-## Step 7 - Quantifying Gene Expression by featureCounts
-...
-
-## Step 8 - MultiQC summary report
-...
-
-## Step 9 - Differential expression analysis (DEA) and Enrichment analysis (GSEA)
-...
+> **Goal**: Run a complete bulk RNA-seq workflow on the **VSC** …
 
 ---
-# Introduction to Bulk RNA-seq
+
+## Introduction to Bulk RNA-seq
+
 
 Bulk RNA sequencing (bulk RNA-seq) is a high-throughput technique used to measure gene expression by capturing and sequencing the entire RNA content of a biological sample. Unlike single-cell RNA-seq, which analyzes individual cells, bulk RNA-seq measures the average transcriptomic profile of all cells combined. This makes it powerful for studying tissue-level changes, disease states, treatment effects, and biological pathways.
 
