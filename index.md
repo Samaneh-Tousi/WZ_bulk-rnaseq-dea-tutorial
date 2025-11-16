@@ -264,7 +264,7 @@ CCTAGNTAATTTTTTGTATTTTTAGTCGAGACAGGGTTTCTCCATGTTGGTCAGGCTGGTCTCGAACTCCCGACCT
 +SRR6849240.1 1 length=76
 AAAAA#EEE/EEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEAEEEEEEEEEEE<EAEEEAEAE/<AA
 ```
-<span style="color:purple; font-weight:600;">Examine the FASTQ read above. Based on the sequence (A/C/T/G/N) and the quality string of ASCII symbols (A, E, /, <, #), what can you conclude about: 1-the presence of an “N” in the read, 2- the overall base-calling quality, 3- positions where sequencing quality drops, 4- and whether this read is likely to be kept or trimmed during QC?</span>**
+<span style="color:purple; font-weight:600;">Question: Examine the FASTQ read above. Based on the sequence (A/C/T/G/N) and the quality string of ASCII symbols (A, E, /, <, #), what can you conclude about: 1-the presence of an “N” in the read, 2- the overall base-calling quality, 3- positions where sequencing quality drops, 4- and whether this read is likely to be kept or trimmed during QC?</span>
 
 Each read is made up of four lines:
 
@@ -452,7 +452,7 @@ less "$OUT"/<sample>.Log.final.out
 
 <img src="assets/Log_final_out.png" alt="Log_final_out" width="700">
 
-<span style="color:purple; font-weight:600;">This sample shows ~89.7% uniquely mapped reads, ~9.6% multimapped reads, and almost no unmapped reads. Based on this STAR alignment summary, what can you conclude about the overall quality of this RNA-seq sample? Mention at least two indicators of good quality and one potential point to watch.</span>
+<span style="color:purple; font-weight:600;">Question: This sample shows ~89.7% uniquely mapped reads, ~9.6% multimapped reads, and almost no unmapped reads. Based on this STAR alignment summary, what can you conclude about the overall quality of this RNA-seq sample? Mention at least two indicators of good quality and one potential point to watch.</span>
 
 **BAM files: What they are and how to inspect them?**
 
