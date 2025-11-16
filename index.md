@@ -12,6 +12,7 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 ## Contents
 - [Introduction to Bulk RNA-seq](#Introduction-to--Bulk--RNA-seq)
 - [Prerequisites](#prerequisites)
+- [Typical bioinformatics workflow of differential gene expression analysis](#Typical-bioinformatics-workflow)
 - [Step 1 - Access to VSC & Interactive Sessions](#step-1---access-to-vsc--interactive-sessions)
 - [Step 2 - Connect, workspace, data](#step-2---connect-workspace-data)
 - [Step 3 - Downsample FASTQ](#step-3---downsample-fastq)
@@ -112,13 +113,13 @@ The different steps of sequencing with Illumina’s sequencing by synthesis meth
 <a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 8, for more explanation**</a>
  
 
-## Typical bioinformatics workflow of differential gene expression analysis
+### Typical bioinformatics workflow of differential gene expression analysis
 
 <img src="assets/workflow.png" alt="workflow" width="800">
 
 <a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 17, for more explanation**</a>
   
-## Prerequisites
+### Prerequisites
 
 - VSC account + intro credits or project credits
 - Access to OnDemand and Interactive Apps
