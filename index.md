@@ -607,7 +607,7 @@ Question: Looking at the MultiQC report summary for all your samples:
 2. What criteria did you use to flag that sample as unusual?  
 3. What are plausible **biological** or **technical** reasons for this deviation?  
 4. Based on what you see in the report, would you exclude this sample from your downstream differential expression analysis? Why or why not?
-</span>
+
 
 ## Step 9 - Differential expression analysis (DEA) and Enrichment analysis (GSEA) {#step-9-differential-expression-analysis-dea-and-enrichment-analysis-gsea}
 
