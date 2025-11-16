@@ -7,13 +7,13 @@ toc_sticky: true
 ---
 
 ## Introduction to Bulk RNA-seq
-*(your text continues here)*
+*(#introduction-to-bulk-rna-seq)*
 
 ## Typical bioinformatics workflow of differential gene expression analysis
-*(your text)*
+*(#typical-bioinformatics-workflow-of-differential-gene-expression-analysis)*
 
 ## Prerequisites
-*(your text)*
+*(#prerequisites)*
 
 ## Step 1 - Access to VSC & Interactive Sessions
 ...
