@@ -1,6 +1,7 @@
 ---
 # Bulk RNA-seq & DEA Tutorial
 ---
+
 ## Table of Contents
 - [Introduction to Bulk RNA-seq](#introduction-to-bulk-rna-seq)
 - [Typical bioinformatics workflow of differential gene expression analysis](#typical-bioinformatics-workflow-of-differential-gene-expression-analysis)
@@ -14,6 +15,7 @@
 - [Step 7 – Quantifying Gene Expression by featureCounts](#step-7--quantifying-gene-expression-by-featurecounts)
 - [Step 8 – MultiQC summary report](#step-8--multiqc-summary-report)
 - [Step 9 – Differential expression analysis (DEA) and Enrichment analysis (GSEA)](#step-9--differential-expression-analysis-dea-and-enrichment-analysis-gsea)
+
 ---
 
 ## Introduction to Bulk RNA-seq
