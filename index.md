@@ -601,12 +601,12 @@ $VSC_DATA/Bioinfo_course/MS_microglia_MultiQC/multiqc_all.html
 
 <a href="assets/multiqc_all_1.html" target="_blank">**Interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries!**</a>
 
-<span style="color:purple; font-weight:600;">
+<span style="color:purple; font-weight:600;"
 Question: Looking at the MultiQC report summary for all your samples:
 1. Identify one sample that appears as a potential outlier in terms of sequencing depth, duplication rate or GC content.  
 2. What criteria did you use to flag that sample as unusual?  
 3. What are plausible **biological** or **technical** reasons for this deviation?  
-4. Based on what you see in the report, would you exclude this sample from your downstream differential expression analysis? Why or why not?
+4. Based on what you see in the report, would you exclude this sample from your downstream differential expression analysis? Why or why not?>
 
 
 ## Step 9 - Differential expression analysis (DEA) and Enrichment analysis (GSEA) {#step-9-differential-expression-analysis-dea-and-enrichment-analysis-gsea}
