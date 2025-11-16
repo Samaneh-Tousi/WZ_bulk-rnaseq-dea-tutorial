@@ -111,25 +111,19 @@ The different steps of sequencing with Illumina’s sequencing by synthesis meth
 
 <a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 8, for more explanation**</a>
  
-# Prerequisites
+
+## Typical bioinformatics workflow of differential gene expression analysis
+
+<img src="assets/workflow.png" alt="workflow" width="800">
+
+<a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 17, for more explanation**</a>
+  
+## Prerequisites
 
 - VSC account + intro credits or project credits
 - Access to OnDemand and Interactive Apps
 - Basic shell + R familiarity
 - Storage under $VSC_DATA or staging storage
-
-## Pipeline at a glance
-
-```mermaid
-flowchart LR
-  A[FASTQ (SRA)] --> B[Subsample (seqtk)]
-  B --> C[QC & trimming (fastp)]
-  C --> D[STAR Align]
-  D --> E[Library Strandness check]
-  E --> F[featureCounts (-s 2)]
-  F --> G[DESeq2 (MS vs Control)]
-  G --> H[GSEA (Hallmark)]
-```  
 
 ---
 ### What is an HPC Node?
