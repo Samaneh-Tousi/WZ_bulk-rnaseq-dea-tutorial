@@ -1,15 +1,17 @@
 ---
-title: Bulk RNA-seq & DEA on VSC
-description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignment, counting, and DE analysis on Vlaamse Supercomputer Centrum (VSC).
+layout: single
+title: "Bulk RNA-seq & DEA Tutorial"
+description: "A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignment, counting, and DE analysis on Vlaamse Supercomputer Centrum (VSC)."
+toc: true
+toc_sticky: true
 ---
-
 # Bulk RNA-seq & Differential Expression Analysis (DEA) on VSC
 
 > **Goal**: Run a complete bulk RNA-seq workflow on the **Vlaamse Supercomputer Centrum (VSC)**:  
 > Sequence QC & trimming → alignment → counting → DESeq2 → GSEA.
 
 ---
-## Contents
+## Table of Contents
 - [Introduction to Bulk RNA-seq](#Introduction-to--Bulk--RNA-seq)
 - [Typical bioinformatics workflow of differential gene expression analysis](#typical-bioinformatics-workflow-of-differential-gene-expression-analysis)
 - [Prerequisites](#prerequisites)
