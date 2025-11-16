@@ -85,6 +85,7 @@ Common kits: NEBNext Ultra Directional, Illumina TruSeq Stranded.
 **Library Preparation Kits**
 
 Different kits build RNA-seq libraries with distinct characteristics:
+
 | **Kit Name**                         | **Type**      | **Strandness**   | **Use Case**                       |
 | ------------------------------------ | ------------- | ---------------- | ---------------------------------- |
 | **NEBNext Ultra II Directional RNA** | mRNA/total    | Reverse-stranded | Most common for human bulk RNA-seq |
