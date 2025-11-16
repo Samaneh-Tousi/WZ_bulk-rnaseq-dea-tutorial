@@ -450,6 +450,8 @@ less "$OUT"/<sample>.Log.final.out
 
 <img src="assets/Log_final_out.png" alt="Log_final_out" width="700">
 
+<span style="color:purple; font-weight:600;">This sample shows ~89.7% uniquely mapped reads, ~9.6% multimapped reads, and almost no unmapped reads. Based on this STAR alignment summary, what can you conclude about the overall quality of this RNA-seq sample? Mention at least two indicators of good quality and one potential point to watch.</span>
+
 **BAM files: What they are and how to inspect them?**
 
 A BAM file (Binary Alignment/Map) is the compressed binary version of a SAM file, which stores read alignments produced by tools like STAR, HISAT2, or BWA. Each record in a BAM file contains information about where a sequencing read aligns in the genome, its mapping quality, strand, cigar string (how it aligns), and more. Because BAM files are binary, you cannot open them directly with a text editor. Instead, you use tools such as samtools to view or inspect them.
