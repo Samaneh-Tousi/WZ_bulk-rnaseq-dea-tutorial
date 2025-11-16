@@ -5,6 +5,28 @@ description: "A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignme
 toc: true
 toc_sticky: true
 ---
+# Introduction to Bulk RNA-seq
+
+# Prerequisites
+
+# Step 1 - Access to VSC & Interactive Sessions
+
+# Step 2 - Connect, workspace, data
+
+# Step 3 - Downsample FASTQ
+
+# Step 4 - QC & trimming (fastp)
+
+# Step 5 - Mapping vs. Aligning RNA-seq Reads
+
+# Step 6 - Strandness check
+
+# Step 7 - Quantifying Gene Expression by featureCounts
+
+# Step 8 - MultiQC summary report
+
+# Step 9 - Differential expression analysis (DEA) & Enrichment analysis (GSEA)
+---
 
 ## Introduction to Bulk RNA-seq
 
