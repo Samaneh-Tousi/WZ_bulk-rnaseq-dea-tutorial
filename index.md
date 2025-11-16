@@ -113,7 +113,7 @@ The different steps of sequencing with Illumina’s sequencing by synthesis meth
 
 <a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 17, for more explanation**</a>
   
-## Prerequisites
+## Prerequisites {#prerequisites}
 
 - VSC account + intro credits or project credits
 - Access to OnDemand and Interactive Apps
@@ -139,7 +139,7 @@ For more information about the VSC system and its usage, please see:
 
 ---
 
-##Step 1 - Access to VSC & Interactive Sessions
+## Step 1 - Access to VSC & Interactive Sessions {#step-1-access-to-vsc-interactive-sessions}
 
 [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account), Select **Hasselt University** when prompted.
 
@@ -164,7 +164,7 @@ Start **Interactive Shell** with:
 - Reservation: *Bioinfo_course*
 - ✅ I would like to receive an email when the session starts
 
-## Step 2 - Connect, workspace, data
+## Step 2 - Connect, workspace, data {#step-2-connect-workspace-data}
 
 Connect to the running shell job (bottom Connect button). 
 Once connected, use these commands to prepare your course workspace and load required software:
@@ -342,7 +342,7 @@ Illumina machines use Phred+33 encoding, meaning the ASCII code of the character
 | Typical pattern  | High → drop at end           | Normal for Illumina        |                     |
 
 
-## Step 3 - Downsample FASTQ
+## Step 3 - Downsample FASTQ {#step-3-downsample-fastq}
 
 To make the exercises run faster, we downsample each FASTQ file by randomly selecting a subset of reads (up to 5 million reads per sample).
 
@@ -358,7 +358,7 @@ for s in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do e
 
 ```
 
-## Step 4 - QC & trimming (fastp)
+## Step 4 - QC & trimming (fastp) {#step-4-qc-trimming-fastp}
 
 **fastp** is an all-in-one FASTQ preprocessing tool that performs quality control (QC), adapter trimming, and filtering of sequencing reads — all in one fast, multithreaded program.
 
@@ -378,7 +378,7 @@ When you run fastp, it automatically creates a comprehensive quality report in H
 <img src="assets/Fastp.png" alt="Fastp" width="600">
 
 
-## Step 5 - Mapping vs. Aligning RNA-seq Reads
+## Step 5 - Mapping vs Aligning RNA-seq Reads {#step-5-mapping-vs-aligning-rna-seq-reads}
 
 Before we can measure gene expression from RNA-seq data, we must determine where each sequencing read originated in the genome. This process is often called mapping or alignment. Mapping refers to finding the approximate genomic region a read comes from, while alignment describes the precise, base-by-base match between the read and the genome, including mismatches, gaps, or splice junctions. In RNA-seq, both are essential because transcripts contain exons separated by introns, so many reads span exon–exon boundaries and require a splice-aware aligner.
 
@@ -486,7 +486,8 @@ MAPQ **255** → unique, high-confidence alignment
 **NM:i:0** → 0 mismatches from the reference
 
 
-## Step 6 - Strandness check
+## Step 6 - Strandness check {#step-6-strandness-check}
+
 Verifying library strandness is an important quality-control step in RNA-seq analysis, because different library preparation kits produce reads that originate from either the forward or reverse strand of the original transcript. The NEBNext Ultra Directional kit used in this dataset is expected to generate reverse-stranded libraries, but STAR makes it easy to confirm this empirically. Each STAR alignment produces a ReadsPerGene.out.tab file containing read counts for unstranded (column 2), forward-strand (column 3), and reverse-strand (column 4) alignments. By summing columns 3 and 4 for each sample, we compute the fraction of reads mapping to each strand. If the reverse fraction is much higher than the forward fraction, the dataset is reverse-stranded which matches the expected behavior of NEBNext. This confirmation ensures that we correctly specify -s 2 (reverse-stranded) in featureCounts and downstream analyses.
 
 **Q:** If mRNAs are always transcribed from the antisense (template) DNA strand, how is it possible that RNA-seq kits produce “forward-stranded”, “reverse-stranded”, or “unstranded” libraries?
@@ -511,7 +512,7 @@ cat "$OUT"
 ```
 Interpretation: reverse fraction ≫ forward → use -s 2 downstream.
 
-## Step 7 - Quantifying Gene Expression by featureCounts
+## Step 7 - Quantifying Gene Expression by featureCounts {#step-7-quantifying-gene-expression-by-featurecounts}
 
 Although featureCounts is one of the fastest and most widely used tools for counting reads that overlap annotated genes, several other methods exist depending on the analysis needs.
 
@@ -566,7 +567,7 @@ Raw read counts tell you how many sequencing reads mapped to each gene, and they
 | **TPM**        | Transcripts Per Million            | ✔️ Yes                           | ✔️ Yes                      | Cross-sample expression comparison      | **Salmon**, **Kallisto**, **RSEM**, **tximport (derived)**                     |
 
 
-## Step 8 - MultiQC summary report
+## Step 8 - MultiQC summary report {#step-8-multiqc-summary-report}
 
 MultiQC is a tool that scans the output files from many bioinformatics programs (such as FastQC, fastp, STAR, and featureCounts) and compiles them into one interactive HTML report. Instead of checking each tool’s results separately, MultiQC gives you a single overview of sample quality, trimming performance, alignment statistics, and counting summaries making it much easier to detect problems or compare samples side-by-side.
 
@@ -597,7 +598,7 @@ $VSC_DATA/Bioinfo_course/MS_microglia_MultiQC/multiqc_all.html
 <a href="assets/multiqc_all_1.html" target="_blank">**Interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries!**</a>
 
 
-## Step 9 - Differential expression analysis (DEA) & Enrichment analysis (GSEA)
+## Step 9 - Differential expression analysis (DEA) and Enrichment analysis (GSEA) {#step-9-differential-expression-analysis-dea-and-enrichment-analysis-gsea}
 
 Once we have a clean gene-level count matrix, the next step is differential expression analysis (DEA), testing which genes show statistically significant changes in expression between conditions (e.g. MS vs Control). DEA tools work on raw counts, model the variability between biological replicates, and apply appropriate normalization and statistical tests. The most widely used tools in bulk RNA-seq are DESeq2, edgeR, and limma-voom. They all aim to answer the same question **“which genes are differentially expressed?”**, but differ in how they normalize counts, model variance, and what experimental designs they are best suited for. A key point is that biological replicates are essential for reliable statistics, while technical replicates are usually merged at the count level rather than treated as independent samples.
 
