@@ -1,12 +1,8 @@
 ---
+layout: single
 title: "Bulk RNA-seq & DEA Tutorial"
-format:
-  pdf:
-    toc: true
-    number-sections: true
-    colorlinks: true
-  html:
-    toc: true
+toc: true
+toc_sticky: true
 ---
 
 ## Introduction to Bulk RNA-seq
