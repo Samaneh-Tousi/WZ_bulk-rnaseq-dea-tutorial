@@ -15,7 +15,7 @@ plugins:
 # --------------------------
 markdown: kramdown
 kramdown:
-  toc_levels: "1..4"
+  toc_levels: "1..10"
 
 # --------------------------
 # OPTIONAL: Site navigation
