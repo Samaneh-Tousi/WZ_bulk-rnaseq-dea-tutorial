@@ -601,12 +601,12 @@ $VSC_DATA/Bioinfo_course/MS_microglia_MultiQC/multiqc_all.html
 
 <a href="assets/multiqc_all_1.html" target="_blank">**Interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries!**</a>
 
-<span style="color:purple; font-weight:600;"
+<span style="color:purple; font-weight:600;">
 Question: Looking at the MultiQC report summary for all your samples:
 1. Identify one sample that appears as a potential outlier in terms of sequencing depth, duplication rate or GC content.  
 2. What criteria did you use to flag that sample as unusual?  
 3. What are plausible **biological** or **technical** reasons for this deviation?  
-4. Based on what you see in the report, would you exclude this sample from your downstream differential expression analysis? Why or why not?>
+4. Based on what you see in the report, would you exclude this sample from your downstream differential expression analysis? Why or why not?
 
 
 ## Step 9 - Differential expression analysis (DEA) and Enrichment analysis (GSEA) {#step-9-differential-expression-analysis-dea-and-enrichment-analysis-gsea}
@@ -622,6 +622,10 @@ Once we have a clean gene-level count matrix, the next step is differential expr
 | **limma-voom**                   | Raw counts → logCPM with precision weights | Library-size scaling + voom mean–variance modeling      | Extremely fast; powerful for **larger** sample sizes; great for multi-factor designs and microarray-like workflows        | Less ideal for very low replicate numbers; assumes good mean–variance modeling    | **Larger studies** (e.g. >10 samples per group), multi-factor designs, when you want fast linear-model based analysis                         |
 | **Others (e.g. NOISeq, sleuth)** | Varies                                     | Varies (often built-in)                                 | Can be useful in special cases or for specific pipelines                                                                  | Less standard; fewer community examples; sometimes require transcript-level input | Specialized workflows; usually not first choice for standard bulk RNA-seq                                                                     |
 
+<span style="color:purple; font-weight:600;">
+Question: Imagine you have 10 biological replicates per condition, collected at two different time points, and there are some confounding variables across replicates (such as donor effects or batch differences).
+Based on this study design, which differential expression analysis tool would be the most appropriate (DESeq2, edgeR, or limma-voom), and why?
+</span>
 
 To start the analysis, Stop the shell job and Launch RStudio Server (4 cores).
 
