@@ -5,6 +5,7 @@ description: "A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignme
 toc: true
 toc_sticky: true
 ---
+
 # Bulk RNA-seq & Differential Expression Analysis (DEA) on VSC
 
 > **Goal**: Run a complete bulk RNA-seq workflow on the **Vlaamse Supercomputer Centrum (VSC)**:  

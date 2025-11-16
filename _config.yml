@@ -7,4 +7,4 @@ kramdown:
   toc_levels: "1..4"
 
 title: "Bulk RNA-seq & DEA Tutorial"
-description: "Full workflow on VSC including QC, trimming, alignment, counting, DEA, and GSEA."
+description: "A step-by-step bioinformatics tutorial for bulk RNA-seq and differential expression analysis (DEA) on VSC."
