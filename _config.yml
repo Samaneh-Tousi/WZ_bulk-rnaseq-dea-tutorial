@@ -1,8 +1,53 @@
+# ===========================================================
+#  Minimal Mistakes Jekyll configuration
+# ===========================================================
+
+# Use the Minimal Mistakes remote theme
 remote_theme: "mmistakes/minimal-mistakes"
 
+# Required plugins
 plugins:
   - jekyll-include-cache
 
+# Markdown engine
 markdown: kramdown
+
 kramdown:
-  toc_levels: "2..2"   # <- only show level-2 headings (##) in the TOC
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+  toc_levels: "2..3"    # Include only H2 and H3 in the right-side TOC
+
+# Site metadata
+title: "Bulk RNA-seq & DEA Tutorial"
+description: "A step-by-step tutorial for QC, trimming, alignment, counting, DESeq2, and GSEA on the VSC cluster."
+url: "https://samaneh-tousi.github.io"
+baseurl: "/bulk-rnaseq-dea-tutorial"
+
+# Theme settings
+theme: minimal-mistakes-jekyll
+
+# Default settings for pages
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: single
+      toc: true
+      toc_sticky: true
+      author_profile: false
+
+# Exclude unnecessary files
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - README.md
+
+# Optional: enable breadcrumbs
+breadcrumbs: true
+
+# Optional: enable search (if needed in future)
+search: false
