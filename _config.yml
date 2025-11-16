@@ -1,10 +1,30 @@
+title: "Bulk RNA-seq & DEA Tutorial"
+description: "Tutorial for bulk RNA-seq QC, alignment, counting, DESeq2, and GSEA."
+
+# --------------------------
+# THEME
+# --------------------------
 remote_theme: "mmistakes/minimal-mistakes"
+
 plugins:
+  - jekyll-remote-theme
   - jekyll-include-cache
 
+# --------------------------
+# MARKDOWN SETTINGS
+# --------------------------
 markdown: kramdown
 kramdown:
   toc_levels: "1..4"
 
-title: "Bulk RNA-seq & DEA Tutorial"
-description: "A step-by-step bioinformatics tutorial for bulk RNA-seq and differential expression analysis (DEA) on VSC."
+# --------------------------
+# OPTIONAL: Site navigation
+# --------------------------
+minimal_mistakes_skin: "default"
+
+# If you want breadcrumb navigation:
+breadcrumbs: true
+
+# If you want SEO optimization:
+seo:
+  type: "WebPage"

@@ -1,30 +1,53 @@
 ---
 layout: single
 title: "Bulk RNA-seq & DEA Tutorial"
-description: "A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignment, counting, and DE analysis on Vlaamse Supercomputer Centrum (VSC)."
+description: "A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignment, counting, and DE analysis on the Vlaamse Supercomputer Centrum (VSC)."
 toc: true
 toc_sticky: true
 ---
 
-> **Goal**: Run a complete bulk RNA-seq workflow on the **Vlaamse Supercomputer Centrum (VSC)**:  
-> Sequence QC & trimming → alignment → counting → DESeq2 → GSEA.
+# Bulk RNA-seq & Differential Expression Analysis (DEA) on VSC
+
+> **Goal:** Run a complete bulk RNA-seq workflow on the VSC cluster:  
+> QC → trimming → alignment → counting → **DESeq2** → **GSEA**.
 
 ---
 
-## Table of Contents
-- [Introduction to Bulk RNA-seq](#introduction-to-bulk-rna-seq)
-- [Typical bioinformatics workflow of differential gene expression analysis](#typical-bioinformatics-workflow-of-differential-gene-expression-analysis)
-- [Prerequisites](#prerequisites)
-- [Step 1 – Access to VSC & Interactive Sessions](#step-1--access-to-vsc--interactive-sessions)
-- [Step 2 – Connect, workspace, data](#step-2--connect-workspace-data)
-- [Step 3 – Downsample FASTQ](#step-3--downsample-fastq)
-- [Step 4 – QC & trimming (fastp)](#step-4--qc--trimming-fastp)
-- [Step 5 – Mapping vs. Aligning RNA-seq Reads](#step-5--mapping-vs-aligning-rna-seq-reads)
-- [Step 6 – Strandness check](#step-6--strandness-check)
-- [Step 7 – Quantifying Gene Expression by featureCounts](#step-7--quantifying-gene-expression-by-featurecounts)
-- [Step 8 – MultiQC summary report](#step-8--multiqc-summary-report)
-- [Step 9 – Differential expression analysis (DEA) and Enrichment analysis (GSEA)](#step-9--differential-expression-analysis-dea-and-enrichment-analysis-gsea)
----
+## Introduction to Bulk RNA-seq
+*(your text continues here)*
+
+## Typical bioinformatics workflow of differential gene expression analysis
+*(your text)*
+
+## Prerequisites
+*(your text)*
+
+## Step 1 - Access to VSC & Interactive Sessions
+...
+
+## Step 2 - Connect, workspace, data
+...
+
+## Step 3 - Downsample FASTQ
+...
+
+## Step 4 - QC & trimming (fastp)
+...
+
+## Step 5 - Mapping vs. Aligning RNA-seq Reads
+...
+
+## Step 6 - Strandness check
+...
+
+## Step 7 - Quantifying Gene Expression by featureCounts
+...
+
+## Step 8 - MultiQC summary report
+...
+
+## Step 9 - Differential expression analysis (DEA) and Enrichment analysis (GSEA)
+...
 
 # Introduction to Bulk RNA-seq
 
