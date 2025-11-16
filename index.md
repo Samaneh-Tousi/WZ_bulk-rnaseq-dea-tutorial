@@ -732,7 +732,7 @@ Once the differential expression results are annotated, the next step is to extr
 To visualize the global expression changes between conditions, we generate a volcano plot, which displays each gene based on its log₂ fold change (x-axis) and statistical significance (–log₁₀ adjusted p-value, y-axis). Genes are categorized as Up, Down, or Not Significant, and the top 10 most significant genes are labeled. This plot provides an intuitive overview of the direction, magnitude, and significance of differential expression across the whole transcriptome.
 
 <span style="color:purple; font-weight:600;">
-RNA-seq differential expression results often show both a p-value and an adjusted p-value (padj) for each gene.
+Question: RNA-seq differential expression results often show both a p-value and an adjusted p-value (padj) for each gene.
 Based on your understanding of multiple testing in large datasets, explain the difference between the p-value and the adjusted p-value.
 Which one should be used to decide whether a gene is truly differentially expressed, and why?
 </span>
