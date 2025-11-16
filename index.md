@@ -80,8 +80,35 @@ Common kits: NEBNext Ultra Directional, Illumina TruSeq Stranded.
 
 <img src="assets/SE_PE.png" alt="SE_PE" width="500">
 
-[Paired-end vs Single-end sequencing (Illumina)](https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html)
+[**Read the reference, Paired-end vs Single-end sequencing (Illumina)**](https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html)
 
+**Library Preparation Kits**
+
+Different kits build RNA-seq libraries with distinct characteristics:
+| **Kit Name**                         | **Type**      | **Strandness**   | **Use Case**                       |
+| ------------------------------------ | ------------- | ---------------- | ---------------------------------- |
+| **NEBNext Ultra II Directional RNA** | mRNA/total    | Reverse-stranded | Most common for human bulk RNA-seq |
+| **Illumina TruSeq Stranded mRNA**    | PolyA mRNA    | Reverse-stranded | Gene expression, DE analysis       |
+| **Illumina TruSeq Total RNA**        | rRNA-depleted | Reverse-stranded | Noncoding RNA, degraded samples    |
+| **SMARTer Stranded Total RNA**       | FFPE-friendly | Forward-stranded | Clinical samples, low input        |
+| **RiboZero kits**                    | rRNA-depleted | Reverse-stranded | Microbiome + host, broad coverage  |
+
+These differences determine how reads should be interpreted and how tools like STAR, featureCounts, or kallisto handle strand orientation.
+
+**Sequencing Platforms**
+Most bulk RNA-seq data today is generated on Illumina platforms, which produce short, accurate reads with low error rates:
+
+**Illumina NovaSeq**: very high throughput, large studies
+
+**Illumina NextSeq**: medium throughput
+
+**Illumina MiSeq**: smaller experiments, pilot studies
+
+<img src="assets/Illumina_seq.png" alt="Illumina_seq" width="800">
+
+The different steps of sequencing with Illumina’s sequencing by synthesis method.
+
+<a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 8, for more explanation**</a>
  
 # Prerequisites
 
