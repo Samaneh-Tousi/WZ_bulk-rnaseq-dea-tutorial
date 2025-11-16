@@ -17,6 +17,10 @@
 - [Step 9 – Differential expression analysis (DEA) and Enrichment analysis (GSEA)](#step-9-differential-expression-analysis-dea-and-enrichment-analysis-gsea)
 
 ---
+<span style="color:purple; font-weight:600;">
+Note: All questions are shown in purple for practice and self-assessment.
+</span>
+---
 
 ## Introduction to Bulk RNA-seq {#introduction-to-bulk-rna-seq}
 
