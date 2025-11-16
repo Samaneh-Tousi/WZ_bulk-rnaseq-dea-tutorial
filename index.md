@@ -38,6 +38,7 @@ Bulk RNA sequencing (bulk RNA-seq) is a high-throughput technique used to measur
 4- Bioinformatics Analysis – Reads are quality-checked, trimmed, aligned to a reference genome, counted per gene, and statistically evaluated for differential expression.
 
 <img src="assets/Bulk_seq1.png" alt="Bulk_seq1" width="800">
+
 <a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Pages 4-9, for more explanation**</a>
 
 
@@ -77,7 +78,8 @@ Common kits: NEBNext Ultra Directional, Illumina TruSeq Stranded.
 **Paired-end (PE)**: sequence both ends
 → better for alternative splicing, isoform analysis, assembly
 
-<img src="assets/SE_PE.png" alt="SE_PE" width="700">
+<img src="assets/SE_PE.png" alt="SE_PE" width="500">
+
 [Paired-end vs Single-end sequencing (Illumina)](https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html)
 
  
