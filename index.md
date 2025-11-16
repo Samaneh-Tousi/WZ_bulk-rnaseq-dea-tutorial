@@ -6,10 +6,6 @@ toc: true
 toc_sticky: true
 ---
 
-> **Goal**: Run a complete bulk RNA-seq workflow on the **VSC** …
-
----
-
 ## Introduction to Bulk RNA-seq
 
 
