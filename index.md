@@ -264,6 +264,17 @@ CCTAGNTAATTTTTTGTATTTTTAGTCGAGACAGGGTTTCTCCATGTTGGTCAGGCTGGTCTCGAACTCCCGACCT
 +SRR6849240.1 1 length=76
 AAAAA#EEE/EEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEAEEEEEEEEEEE<EAEEEAEAE/<AA
 ```
+<span style="color:purple; font-weight:600;">Examine the FASTQ read above. Based on the sequence (A/C/T/G/N) and the quality string of ASCII symbols (A, E, /, <, #), what can you conclude about:
+
+the presence of an “N” in the read,
+
+the overall base-calling quality,
+
+positions where sequencing quality drops,
+
+and whether this read is likely to be kept or trimmed during QC?
+</span>**
+
 Each read is made up of four lines:
 
 | Line | Description                                       | Example                     |
