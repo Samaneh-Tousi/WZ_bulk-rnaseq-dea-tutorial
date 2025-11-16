@@ -11,7 +11,7 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 ---
 ## Contents
 - [Introduction to Bulk RNA-seq](#Introduction-to--Bulk--RNA-seq)
-- [Typical bioinformatics workflow of differential gene expression analysis](#Typical-bioinformatics-workflow-of-differential-gene-expression-analysis)
+- [Typical bioinformatics workflow of differential gene expression analysis](#typical-bioinformatics-workflow-of-differential-gene-expression-analysis)
 - [Prerequisites](#prerequisites)
 - [Step 1 - Access to VSC & Interactive Sessions](#step-1---access-to-vsc--interactive-sessions)
 - [Step 2 - Connect, workspace, data](#step-2---connect-workspace-data)
