@@ -10,6 +10,7 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 
 ---
 ## Contents
+- [Introduction to Bulk RNA-seq](#Introduction-to--Bulk--RNA-seq)
 - [Prerequisites](#prerequisites)
 - [Step 1 - Access to VSC & Interactive Sessions](#step-1---access-to-vsc--interactive-sessions)
 - [Step 2 - Connect, workspace, data](#step-2---connect-workspace-data)
@@ -21,6 +22,71 @@ description: A step-by-step, reproducible tutorial for bulk RNA-seq QC, alignmen
 - [Step 8 - MultiQC summary report](#step-8---multiqc-summary-report)
 - [Step 9 - Differential expression analysis (DEA) and Enrichment analysis (GSEA)](#step-9---differential-expression-analysis-dea--enrichment-analysis-gsea)
 ---
+
+# Introduction to Bulk RNA-seq
+
+Bulk RNA sequencing (bulk RNA-seq) is a high-throughput technique used to measure gene expression by capturing and sequencing the entire RNA content of a biological sample. Unlike single-cell RNA-seq, which analyzes individual cells, bulk RNA-seq measures the average transcriptomic profile of all cells combined. This makes it powerful for studying tissue-level changes, disease states, treatment effects, and biological pathways.
+
+**what are the steps?**
+
+1- RNA Extraction – Total RNA (or mRNA) is purified from tissue or cells.
+
+2- Library Preparation – RNA molecules are fragmented, converted into cDNA, and barcoded using a specific library prep kit.
+
+3- Sequencing – Prepared libraries are sequenced on a high-throughput platform (e.g., Illumina).
+
+4- Bioinformatics Analysis – Reads are quality-checked, trimmed, aligned to a reference genome, counted per gene, and statistically evaluated for differential expression.
+
+<img src="assets/Bulk_seq1.png" alt="Bulk_seq1" width="800">
+<a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Pages 4-9, for more explanation**</a>
+
+
+**Modalities of Bulk RNA-seq**
+
+Bulk RNA-seq can be performed in different modalities, depending on what part of the transcriptome is captured:
+
+**1. mRNA-seq (PolyA enrichment)**
+
+Selects poly-A–tailed mRNA.
+
+Captures mainly protein-coding genes.
+
+Most common in human studies.
+
+**2. Total RNA-seq (rRNA depletion)**
+
+Removes rRNA and keeps all other RNA types.
+
+Captures coding + noncoding RNAs (lncRNA, miRNA precursors, etc.).
+
+Preferred for degraded samples (e.g., FFPE tissue).
+
+**3. Strand-specific (directional) RNA-seq**
+
+Preserves information about which DNA strand a transcript originated from.
+
+Essential when antisense transcription or overlapping genes exist.
+
+Common kits: NEBNext Ultra Directional, Illumina TruSeq Stranded.
+
+**4. Single-end vs. Paired-end sequencing**
+
+**Single-end (SE)**: sequence one end of each fragment
+→ cheaper and sufficient for basic gene expression
+
+**Paired-end (PE)**: sequence both ends
+→ better for alternative splicing, isoform analysis, assembly
+
+<img src="assets/SE_PE.png" alt="SE_PE" width="700">
+[Paired-end vs Single-end sequencing (Illumina)](https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html)
+
+ 
+# Prerequisites
+
+- VSC account + intro credits or project credits
+- Access to OnDemand and Interactive Apps
+- Basic shell + R familiarity
+- Storage under $VSC_DATA or staging storage
 
 ## Pipeline at a glance
 
@@ -34,14 +100,6 @@ flowchart LR
   F --> G[DESeq2 (MS vs Control)]
   G --> H[GSEA (Hallmark)]
 ```  
- 
-  
-# Prerequisites
-
-- VSC account + intro credits or project credits
-- Access to OnDemand and Interactive Apps
-- Basic shell + R familiarity
-- Storage under $VSC_DATA or staging storage
 
 ---
 ### What is an HPC Node?
