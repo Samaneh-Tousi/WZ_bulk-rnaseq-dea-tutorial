@@ -18,8 +18,7 @@
 
 ---
 
-## Introduction to Bulk RNA-seq
-
+## Introduction to Bulk RNA-seq {#introduction-to-bulk-rna-seq}
 
 Bulk RNA sequencing (bulk RNA-seq) is a high-throughput technique used to measure gene expression by capturing and sequencing the entire RNA content of a biological sample. Unlike single-cell RNA-seq, which analyzes individual cells, bulk RNA-seq measures the average transcriptomic profile of all cells combined. This makes it powerful for studying tissue-level changes, disease states, treatment effects, and biological pathways.
 
@@ -108,7 +107,7 @@ The different steps of sequencing with Illumina’s sequencing by synthesis meth
 <a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 8, for more explanation**</a>
  
 
-## Typical bioinformatics workflow of differential gene expression analysis
+## Typical bioinformatics workflow of differential gene expression analysis {#typical-bioinformatics-workflow-of-differential-gene-expression-analysis}
 
 <img src="assets/workflow.png" alt="workflow" width="800">
 
@@ -140,7 +139,7 @@ For more information about the VSC system and its usage, please see:
 
 ---
 
-## Step 1 - Access to VSC & Interactive Sessions
+##Step 1 - Access to VSC & Interactive Sessions
 
 [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account), Select **Hasselt University** when prompted.
 
