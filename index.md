@@ -105,9 +105,9 @@ Most bulk RNA-seq data today is generated on Illumina platforms, which produce s
 
 **Illumina MiSeq**: smaller experiments, pilot studies
 
-<img src="assets/Illumina_seq.png" alt="Illumina_seq" width="800">
-
 The different steps of sequencing with Illumina’s sequencing by synthesis method.
+
+<img src="assets/Illumina_seq.png" alt="Illumina_seq" width="800">
 
 <a href="assets/Intro2RNAseq.pdf" target="_blank">**Read the reference, Page 8, for more explanation**</a>
  
