@@ -1,5 +1,6 @@
 ---
 # Bulk RNA-seq & DEA Tutorial
+(by Samaneh E. Tousi)
 ---
 
 ## Table of Contents
