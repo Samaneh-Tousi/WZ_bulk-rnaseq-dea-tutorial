@@ -1,7 +1,7 @@
 ---
-# Bulk RNA-seq data and differential expression analysis (DEA) 
-(by Samaneh E. Tousi)
+title: "Bulk RNA-seq data and differential expression analysis (DEA)" 
 ---
+by: Samaneh E. Tousi
 
 ## Table of Contents
 - [Introduction to Bulk RNA-seq](#introduction-to-bulk-rna-seq)
