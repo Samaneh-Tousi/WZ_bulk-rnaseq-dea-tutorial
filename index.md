@@ -1,5 +1,5 @@
 ---
-# Bulk RNA-seq & DEA Tutorial
+# Bulk RNA-seq data and differential expression analysis (DEA) 
 (by Samaneh E. Tousi)
 ---
 
