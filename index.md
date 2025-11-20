@@ -1,5 +1,5 @@
 ---
-**Bulk RNA-seq data and differential expression analysis (DEA)**
+**Bulk RNA-seq Data and Differential Expression Analysis (DEA) on VSC Clusters**
 ---
 
 by: Samaneh E. Tousi
