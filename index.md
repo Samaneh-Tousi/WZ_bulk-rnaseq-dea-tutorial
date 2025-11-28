@@ -121,10 +121,12 @@ The different steps of sequencing with Illumina’s sequencing by synthesis meth
   
 ## Prerequisites {#prerequisites}
 
-- VSC account + intro credits or project credits
-- Access to OnDemand and Interactive Apps
-- Basic shell + R familiarity
-- Storage under $VSC_DATA or staging storage
+1- VSC account + intro credits or project credits
+**VSC is the Flanders' most highly integrated high-performance research computing (HPC) environment**
+
+2- Access to OnDemand and Interactive Apps
+3- Basic shell + R familiarity
+4- Storage under $VSC_DATA or staging storage
 
 ---
 ### What is an HPC Node?
