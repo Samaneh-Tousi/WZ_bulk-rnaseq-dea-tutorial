@@ -154,11 +154,13 @@ For more information about the VSC system and its usage, please see:
 
 ## Step 1 - Access to VSC & Interactive Sessions {#step-1-access-to-vsc-interactive-sessions}
 
+**If you are enrolled in the Bioinformatics course, you only need to request a VSC account. After your account is approved, request to join the p_h_edu_bioinformatics2025 group. The necessary computing credits for running the analyses are already provided.**
+
+However, if you are not student and following this tutorial outside the Bioinformatics course, you will need to request introductory credits to start running computations on your own, or apply for project credits if you are responsible for a group of researchers who require computing resources for a shared project.
+
 [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account), Select **Hasselt University** when prompted.
 
 [Request introduction credits](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
-
-**If you are a student enrolled in the Bioinformatics course, you do not need to request a VSC account, one has already been created for you and comes with the necessary project credits required to run the analyses.**
 
 Login to OnDemand: [VSC OnDemand Portal](https://ondemand.hpc.kuleuven.be/)
 
@@ -174,7 +176,7 @@ Start **Interactive Shell** with:
 - Number of processes per node: *8*
 - Number of cores per each task: *8*
 - Required memory per core in megabytes: *7500 MB*
-- Reservation: *Bioinfo_course*
+- Reservation: *course_h_edu_bioinformatics2025*
 - ✅ I would like to receive an email when the session starts
 
 ## Step 2 - Connect, workspace, data {#step-2-connect-workspace-data}
