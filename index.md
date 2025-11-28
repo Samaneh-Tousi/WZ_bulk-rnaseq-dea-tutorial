@@ -154,7 +154,7 @@ For more information about the VSC system and its usage, please see:
 
 ## Step 1 - Access to VSC & Interactive Sessions {#step-1-access-to-vsc-interactive-sessions}
 
-**If you are enrolled in the Bioinformatics course, you only need to request a VSC account. After your account is approved, go to your VSC account, search for the p_h_edu_bioinformatics2025 group, and request to join it. You do not need to request computing credits to run the analyses; they are already provided.**
+**If you are enrolled in the Bioinformatics course, you only need to request a VSC account. After your account is approved, go to your VSC account, search for the lp_h_edu_bioinformatics2025 group, and request to join it. You do not need to request computing credits to run the analyses; they are already provided.**
 
 However, if you are not a student and are following this tutorial outside the Bioinformatics course, you must request a VSC account and apply for introductory credits to run your own jobs. If you manage a research group, apply for project credits instead to get computing resources for your team.
 
@@ -170,7 +170,7 @@ Start **Interactive Shell** with:
 
 - Cluster: *Wice*
 - Partition: *interactive*
-- Account:  *p_h_edu_bioinformatics2025* or *your own intro_VSC/project account*
+- Account:  *lp_h_edu_bioinformatics2025* or *your own intro_VSC/project account*
 - Number of hours: *2 h* or more
 - Number of nodes: *1*
 - Number of processes per node: *18*
