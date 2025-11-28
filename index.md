@@ -154,9 +154,9 @@ For more information about the VSC system and its usage, please see:
 
 ## Step 1 - Access to VSC & Interactive Sessions {#step-1-access-to-vsc-interactive-sessions}
 
-**If you are enrolled in the Bioinformatics course, you only need to request a VSC account. After your account is approved, request to join the p_h_edu_bioinformatics2025 group. The necessary computing credits for running the analyses are already provided.**
+**If you are enrolled in the Bioinformatics course, you only need to request a VSC account. After your account is approved, go to your VSC account, search for the p_h_edu_bioinformatics2025 group, and request to join it. You do not need to request computing credits to run the analyses; they are already provided.**
 
-However, if you are not student and following this tutorial outside the Bioinformatics course, you will need to request introductory credits to start running computations on your own, or apply for project credits if you are responsible for a group of researchers who require computing resources for a shared project.
+However, if you are not a student and are following this tutorial outside the Bioinformatics course, you must request a VSC account and apply for introductory credits to run your own jobs. If you manage a research group, apply for project credits instead to get computing resources for your team.
 
 [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account), Select **Hasselt University** when prompted.
 
@@ -170,12 +170,12 @@ Start **Interactive Shell** with:
 
 - Cluster: *Wice*
 - Partition: *interactive*
-- Account: *your intro_VSC account* or *your project account*
+- Account:  *p_h_edu_bioinformatics2025* or *your own intro_VSC/project account*
 - Number of hours: *2 h* or more
 - Number of nodes: *1*
-- Number of processes per node: *8*
-- Number of cores per each task: *8*
-- Required memory per core in megabytes: *7500 MB*
+- Number of processes per node: *18*
+- Number of cores per each task: *18*
+- Required memory per core in megabytes: *3455 MB*
 - Reservation: *course_h_edu_bioinformatics2025*
 - ✅ I would like to receive an email when the session starts
 
