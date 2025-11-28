@@ -121,11 +121,17 @@ The different steps of sequencing with Illumina’s sequencing by synthesis meth
   
 ## Prerequisites {#prerequisites}
 
--VSC account + computing credits (core hours) to run your jobs (intro credits or project credits)
-(*VSC is the Flanders' most highly integrated high-performance research computing (HPC) environment)
--Access to OnDemand and Interactive Apps
--Basic shell + R familiarity
--Storage under $VSC_DATA or staging storage
+- **Access to the VSC infrastructure**  
+  (The Vlaams Supercomputer Centrum (VSC) is Flanders’ high-performance computing (HPC) platform that provides large-scale computing and storage resources for research.)
+  
+- **VSC account** with sufficient **computing credits (core hours)** to run jobs  
+  (Credits measure how much computing time you are allowed to use. One core hour equals one CPU core running for one hour.)
+
+- **Access to OnDemand and Interactive Apps** on the VSC portal
+
+- **Basic familiarity with the Linux shell and R**
+
+- **Storage space** under `$VSC_DATA` or on staging storage
 
 ---
 ### What is an HPC Node?
