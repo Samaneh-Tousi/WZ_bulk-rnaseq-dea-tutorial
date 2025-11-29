@@ -538,47 +538,33 @@ OUT=strandness_from_STAR.tsv; printf "sample\tforward_counts(col3)\treverse_coun
 
 **Strandness summary command arguments**
 
-*OUT=strandness_from_STAR.tsv*
-Sets the name of the output file that will store strandness results.
-
-*printf "sample\tforward_counts(col3)\treverse_counts(col4)\tforward_frac\treverse_frac\n" > "$OUT"*
-Writes a header line to the output file with column names.
-
-*for f in *.ReadsPerGene.out.tab*
-Loops over all STAR gene counts files generated with --quantMode GeneCounts.
-
-*s=$(basename "$f" .ReadsPerGene.out.tab)*
-Extracts the sample name from each filename.
-
-*awk -v S="$s"*
+**awk -v S="$s"**
 Passes the sample name to awk as a variable.
 
-*'NR>4 {f+=$3; r+=$4}*
+**'NR>4 {f+=$3; r+=$4}**
 Skips the first 4 header lines and sums:
 
-*column 3 → forward-strand counts*
+**column 3 → forward-strand counts**
 
-*column 4 → reverse-strand counts*
+**column 4 → reverse-strand counts**
 
-*END {t=f+r; if(t==0)t=1; ... }*
+**END {t=f+r; if(t==0)t=1; ... }**
 Calculates the total number of reads and avoids division by zero.
 
-*printf "%s\t%.0f\t%.0f\t%.3f\t%.3f\n", S, f, r, f/t, r/t*
+**printf "%s\t%.0f\t%.0f\t%.3f\t%.3f\n", S, f, r, f/t, r/t**
 Prints one line per sample showing:
-
 forward read count
 reverse read count
 fraction of forward reads
 fraction of reverse reads
 
-*done >> "$OUT"*
+**done >> "$OUT"**
 Appends all results to the output file.
 
-*cat "$OUT"*
+**cat "$OUT"**
 Prints the final table to the terminal.
 
-
-**Interpretation**: reverse fraction ≫ forward → use -s 2 downstream.
+Then if reverse fraction ≫ forward → use **-s 2** arguments at featureCounts running.
 
 ## Step 6 - Quantifying Gene Expression by featureCounts {#step-6-quantifying-gene-expression-by-featurecounts}
 
