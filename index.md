@@ -162,7 +162,7 @@ However, if you are not a student and are following this tutorial outside the Bi
 
 [Request introduction credits](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
 
-Login to OnDemand: [VSC OnDemand Portal](https://ondemand.hpc.kuleuven.be/)
+Login to OnDemand, and click on **Partner organization** and select **Hasselt University**: [VSC OnDemand Portal](https://ondemand.hpc.kuleuven.be/)
 
 <img src="assets/OnDemand.png" alt="VSC OnDemand login" width="600">
 
