@@ -532,8 +532,8 @@ Raw read counts tell you how many sequencing reads mapped to each gene, and they
 | -------------- | ---------------------------------- | -------------------------------- | --------------------------- | --------------------------------------- | ------------------------------------------------------------------------------ |
 | **Raw Counts** | –                                  | ❌ No                            | ❌ No                       | Differential expression (DESeq2, edgeR) | **featureCounts**, **HTSeq-count**, **STAR GeneCounts**, **RSEM (raw counts)** |
 | **CPM**        | Counts Per Million                 | ✔️ Yes                           | ❌ No                       | Filtering; within-sample comparison     | **edgeR**, **limma**, **custom R scripts**                                     |
-| **RPKM**       | Reads Per Kilobase per Million     | ✔️ Yes                           | ✔️ Yes                      | Legacy single-end RNA-seq normalization | **RSEM**, older pipelines, some custom scripts                                 |
-| **FPKM**       | Fragments Per Kilobase per Million | ✔️ Yes                           | ✔️ Yes                      | Legacy paired-end RNA-seq normalization | **Cufflinks**, **RSEM**, some aligner-quant tools                              |
+| **RPKM**       | Reads Per Kilobase per Million     | ✔️ Yes                           | ✔️ Yes                      | In single-end RNA-seq, compare expression between genes within the same sample | **RSEM**, older pipelines, some custom scripts                                 |
+| **FPKM**       | Fragments Per Kilobase per Million | ✔️ Yes                           | ✔️ Yes                      | In paired-end RNA-seq, compare expression between genes within the same sample | **Cufflinks**, **RSEM**, some aligner-quant tools                              |
 | **TPM**        | Transcripts Per Million            | ✔️ Yes                           | ✔️ Yes                      | Cross-sample expression comparison      | **Salmon**, **Kallisto**, **RSEM**, **tximport (derived)**                     |
 
 
