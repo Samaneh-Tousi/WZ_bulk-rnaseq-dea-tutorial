@@ -535,7 +535,50 @@ cd "$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 OUT=strandness_from_STAR.tsv; printf "sample\tforward_counts(col3)\treverse_counts(col4)\tforward_frac\treverse_frac\n" > "$OUT"; for f in *.ReadsPerGene.out.tab; do s=$(basename "$f" .ReadsPerGene.out.tab); awk -v S="$s" 'NR>4 {f+=$3; r+=$4} END {t=f+r; if(t==0)t=1; printf "%s\t%.0f\t%.0f\t%.3f\t%.3f\n", S, f, r, f/t, r/t}' "$f"; done >> "$OUT"; cat "$OUT"
 
 ```
-Interpretation: reverse fraction ≫ forward → use -s 2 downstream.
+
+**Strandness summary command arguments**
+
+*OUT=strandness_from_STAR.tsv*
+Sets the name of the output file that will store strandness results.
+
+*printf "sample\tforward_counts(col3)\treverse_counts(col4)\tforward_frac\treverse_frac\n" > "$OUT"*
+Writes a header line to the output file with column names.
+
+*for f in *.ReadsPerGene.out.tab*
+Loops over all STAR gene counts files generated with --quantMode GeneCounts.
+
+*s=$(basename "$f" .ReadsPerGene.out.tab)*
+Extracts the sample name from each filename.
+
+*awk -v S="$s"*
+Passes the sample name to awk as a variable.
+
+*'NR>4 {f+=$3; r+=$4}*
+Skips the first 4 header lines and sums:
+
+*column 3 → forward-strand counts*
+
+*column 4 → reverse-strand counts*
+
+*END {t=f+r; if(t==0)t=1; ... }*
+Calculates the total number of reads and avoids division by zero.
+
+*printf "%s\t%.0f\t%.0f\t%.3f\t%.3f\n", S, f, r, f/t, r/t*
+Prints one line per sample showing:
+
+forward read count
+reverse read count
+fraction of forward reads
+fraction of reverse reads
+
+*done >> "$OUT"*
+Appends all results to the output file.
+
+*cat "$OUT"*
+Prints the final table to the terminal.
+
+
+**Interpretation**: reverse fraction ≫ forward → use -s 2 downstream.
 
 ## Step 6 - Quantifying Gene Expression by featureCounts {#step-6-quantifying-gene-expression-by-featurecounts}
 
@@ -563,6 +606,31 @@ mkdir -p "$OUTDIR"
 featureCounts -T 18 -s 2 -t exon -g gene_id -a "$GTF" -o "$OUTDIR/featureCounts_counts.txt" "$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam
 
 ```
+
+**featureCounts command arguments**
+
+**-T 18**
+Uses 18 CPU threads to speed up counting.
+
+**-s 2**
+Indicates the data is reverse-stranded
+(0 = unstranded, 1 = forward-stranded, 2 = reverse-stranded)
+
+**-t exon**
+Counts reads that overlap exons.
+
+**-g gene_id**
+Groups exons by the gene_id attribute in the GTF file so counts are summarized per gene.
+
+**-a "$GTF"**
+Specifies the gene annotation file (GTF format).
+
+**-o "$OUTDIR/featureCounts_counts.txt"**
+Sets the output file name.
+
+**"$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam**
+Inputs all sorted BAM alignment files in the directory.
+
 
 This next command line reformats the output file from featureCounts into a clean count matrix suitable for downstream analysis in R. The script extracts gene IDs and sample names from the featureCounts output, removes file path information from the column headers, and outputs a table where rows represent genes and columns represent samples with their corresponding read counts. The result is saved as a tab-separated file (featureCounts_counts_matrix.tsv) that can be directly loaded into R for differential expression analysis.
 
