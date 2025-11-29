@@ -398,10 +398,11 @@ Before STAR can align RNA-seq reads, it must first build a genome index from the
 
 This index acts as a searchable map that STAR uses to quickly locate and align sequencing reads to the genome.
 
-In this step, we downloaded the human reference genome (GRCh38) and its corresponding annotation from Ensembl, decompressed the files, and ran STAR in genomeGenerate mode. STAR processes the genome and annotation to create a set of optimized index files, which are stored in the Ref_genome directory under:
+In this step, we downloaded the human reference genome (GRCh38) FASTA and GTF files from Ensembl via the above links, then decompressed the files, and ran STAR in genomeGenerate mode. STAR processes the genome and annotation to create a set of optimized index files, which are stored in the Ref_genome directory under:
 **/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome**
 
-This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. To save time during the workshop session, the required reference genome and index files have already been prepared. The generated index will be used in the next step to align the trimmed FASTQ files to the genome.
+This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. 
+To save time during the workshop session, the required reference genome and index files have already been prepared. The generated index will be used in the next step to align the trimmed FASTQ files to the genome.
 
 
 **Aligning Reads to the Genome with STAR**
