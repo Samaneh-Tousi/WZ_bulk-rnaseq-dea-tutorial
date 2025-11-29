@@ -247,7 +247,7 @@ In SRA, each sequencing run has an SRR accession number (SRR######).
 The SRR files in SRA are stored in a binary format (.sra) to save space.
 To work with them in RNA-seq tools, we first download these .sra files using prefetch, then convert them to standard FASTQ format using fasterq-dump from the SRA Toolkit.
 
-**You do not need to download the files. To save time during the workshop, all required files are already available at:
+**You do not need to download the files. To save time during the workshop, all required files are already available at:**
 
 ```
 /scratch/leuven/377/vsc37707/Bioinfo_course_scratch/fastq
