@@ -10,13 +10,12 @@ by: Samaneh E. Tousi
 - [Prerequisites](#prerequisites)
 - [Step 1 – Access to VSC & Interactive Sessions](#step-1-access-to-vsc-interactive-sessions)
 - [Step 2 – Connect, workspace, data](#step-2-connect-workspace-data)
-- [Step 3 – Downsample FASTQ](#step-3-downsample-fastq)
-- [Step 4 – QC & trimming (fastp)](#step-4-qc-trimming-fastp)
-- [Step 5 – Mapping vs Aligning RNA-seq Reads](#step-5-mapping-vs-aligning-rna-seq-reads)
-- [Step 6 – Strandness check](#step-6-strandness-check)
-- [Step 7 – Quantifying Gene Expression by featureCounts](#step-7-quantifying-gene-expression-by-featurecounts)
-- [Step 8 – MultiQC summary report](#step-8-multiqc-summary-report)
-- [Step 9 – Differential expression analysis (DEA) and Enrichment analysis (GSEA)](#step-9-differential-expression-analysis-dea-and-enrichment-analysis-gsea)
+- [Step 3 – QC & trimming (fastp)](#step-3-qc-trimming-fastp)
+- [Step 4 – Mapping vs Aligning RNA-seq Reads](#step-4-mapping-vs-aligning-rna-seq-reads)
+- [Step 5 – Strandness check](#step-5-strandness-check)
+- [Step 6 – Quantifying Gene Expression by featureCounts](#step-6-quantifying-gene-expression-by-featurecounts)
+- [Step 7 – MultiQC summary report](#step-7-multiqc-summary-report)
+- [Step 8 – Differential expression analysis (DEA) and Enrichment analysis (GSEA)](#step-8-differential-expression-analysis-dea-and-enrichment-analysis-gsea)
 
 ---
 <span style="color:purple; font-weight:600;">
@@ -405,6 +404,7 @@ In this step, we downloaded the human reference genome (GRCh38) **FASTA** and **
 ````
 
 This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. 
+
 To save time during the workshop session, the required reference genome and index files have already been prepared. The generated index will be used in the next step to align the trimmed FASTQ files to the genome.
 
 
@@ -420,22 +420,13 @@ We also enable --quantMode GeneCounts, which instructs STAR to generate prelimin
 
 ```
 module load STAR/2.7.3a-GCCcore-6.4.0
-IDX="$VSC_DATA/Bioinfo_course/Ref_genome"
+IDX="/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome"
 IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 mkdir -p "$OUT"
 
-for fq in "$IN"/*.sub5M.trimmed.fastq.gz; do
-  s=$(basename "$fq" .sub5M.trimmed.fastq.gz)
-  echo "Aligning $s ..."
-  STAR --runThreadN 8 \
-       --genomeDir "$IDX" \
-       --readFilesIn "$fq" \
-       --readFilesCommand zcat \
-       --outFileNamePrefix "$OUT/${s}." \
-       --outSAMtype BAM SortedByCoordinate \
-       --quantMode GeneCounts
-done
+for fq in "$IN"/*.sub5M.trimmed.fastq.gz; do s=$(basename "$fq" .sub5M.trimmed.fastq.gz); echo "Aligning $s ..."; STAR --runThreadN 18 --genomeDir "$IDX" --readFilesIn "$fq" --readFilesCommand zcat --outFileNamePrefix "$OUT/${s}." --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts; done
+
 ```
 Check metrics:
 
@@ -483,7 +474,7 @@ MAPQ **255** → unique, high-confidence alignment
 **NM:i:0** → 0 mismatches from the reference
 
 
-## Step 6 - Strandness check {#step-6-strandness-check}
+## Step 5 - Strandness check {#step-5-strandness-check}
 
 Verifying library strandness is an important quality-control step in RNA-seq analysis, because different library preparation kits produce reads that originate from either the forward or reverse strand of the original transcript. The NEBNext Ultra Directional kit used in this dataset is expected to generate reverse-stranded libraries, but STAR makes it easy to confirm this empirically. Each STAR alignment produces a ReadsPerGene.out.tab file containing read counts for unstranded (column 2), forward-strand (column 3), and reverse-strand (column 4) alignments. By summing columns 3 and 4 for each sample, we compute the fraction of reads mapping to each strand. If the reverse fraction is much higher than the forward fraction, the dataset is reverse-stranded which matches the expected behavior of NEBNext. This confirmation ensures that we correctly specify -s 2 (reverse-stranded) in featureCounts and downstream analyses.
 
@@ -498,18 +489,12 @@ So even though RNA comes from only one DNA strand, the library prep protocol det
 ```
 cd "$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 
-OUT=strandness_from_STAR.tsv
-printf "sample\tforward_counts(col3)\treverse_counts(col4)\tforward_frac\treverse_frac\n" > "$OUT"
-for f in *.ReadsPerGene.out.tab; do
-  s=$(basename "$f" .ReadsPerGene.out.tab)
-  awk -v S="$s" 'NR>4 {f+=$3; r+=$4} END {t=f+r; if(t==0)t=1;
-    printf "%s\t%.0f\t%.0f\t%.3f\t%.3f\n", S, f, r, f/t, r/t}' "$f"
-done >> "$OUT"
-cat "$OUT"
+OUT=strandness_from_STAR.tsv; printf "sample\tforward_counts(col3)\treverse_counts(col4)\tforward_frac\treverse_frac\n" > "$OUT"; for f in *.ReadsPerGene.out.tab; do s=$(basename "$f" .ReadsPerGene.out.tab); awk -v S="$s" 'NR>4 {f+=$3; r+=$4} END {t=f+r; if(t==0)t=1; printf "%s\t%.0f\t%.0f\t%.3f\t%.3f\n", S, f, r, f/t, r/t}' "$f"; done >> "$OUT"; cat "$OUT"
+
 ```
 Interpretation: reverse fraction ≫ forward → use -s 2 downstream.
 
-## Step 7 - Quantifying Gene Expression by featureCounts {#step-7-quantifying-gene-expression-by-featurecounts}
+## Step 6 - Quantifying Gene Expression by featureCounts {#step-6-quantifying-gene-expression-by-featurecounts}
 
 Although featureCounts is one of the fastest and most widely used tools for counting reads that overlap annotated genes, several other methods exist depending on the analysis needs.
 
@@ -527,27 +512,15 @@ In this step, we generate gene-level read counts from the aligned BAM files usin
 
 ```
 module load Subread
-GTF="$VSC_DATA/Bioinfo_course/Ref_genome/Homo_sapiens.GRCh38.115.chr.gtf"
+GTF="/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome/Homo_sapiens.GRCh38.115.chr.gtf"
 ALIGN_DIR="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 OUTDIR="$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts"
 mkdir -p "$OUTDIR"
 
-featureCounts -T 8 -s 2 -t exon -g gene_id \
-  -a "$GTF" \
-  -o "$OUTDIR/featureCounts_counts.txt" \
-  "$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam
+featureCounts -T 18 -s 2 -t exon -g gene_id -a "$GTF" -o "$OUTDIR/featureCounts_counts.txt" "$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam
 
-awk 'NR==2{
-        printf "gene"
-        for(i=7;i<=NF;i++){
-          g=$i; sub(/^.*\//,"",g); sub(/\.Aligned\.sortedByCoord\.out\.bam$/,"",g)
-          printf "\t" g
-        } printf "\n"; next
-     }
-     NR>2{
-        printf "%s", $1; for(i=7;i<=NF;i++) printf "\t%s", $i; printf "\n"
-     }' \
-  "$OUTDIR/featureCounts_counts.txt" > "$OUTDIR/featureCounts_counts_matrix.tsv"
+awk 'NR==2{printf "gene"; for(i=7;i<=NF;i++){g=$i; sub(/^.*\//,"",g); sub(/\.Aligned\.sortedByCoord\.out\.bam$/,"",g); printf "\t" g} printf "\n"; next} NR>2{printf "%s", $1; for(i=7;i<=NF;i++) printf "\t%s", $i; printf "\n"}' "$OUTDIR/featureCounts_counts.txt" > "$OUTDIR/featureCounts_counts_matrix.tsv"
+
 ```
 
 
@@ -564,7 +537,7 @@ Raw read counts tell you how many sequencing reads mapped to each gene, and they
 | **TPM**        | Transcripts Per Million            | ✔️ Yes                           | ✔️ Yes                      | Cross-sample expression comparison      | **Salmon**, **Kallisto**, **RSEM**, **tximport (derived)**                     |
 
 
-## Step 8 - MultiQC summary report {#step-8-multiqc-summary-report}
+## Step 7 - MultiQC summary report {#step-7-multiqc-summary-report}
 
 MultiQC is a tool that scans the output files from many bioinformatics programs (such as FastQC, fastp, STAR, and featureCounts) and compiles them into one interactive HTML report. Instead of checking each tool’s results separately, MultiQC gives you a single overview of sample quality, trimming performance, alignment statistics, and counting summaries making it much easier to detect problems or compare samples side-by-side.
 
@@ -588,9 +561,9 @@ multiqc -o "$MQC_OUT" -n multiqc_all "$FASTP_DIR" "$STAR_DIR" "$FC_DIR"
 
 Outputs:
 
-A single HTML summary:
+You can check the **multiqc_all.html** output file by going to Ondemand, clicking on **Files** tab at top of the page and opening the Data directory and exploring the file in **Bioinfo_course folder** under **MS_microglia_MultiQC**
 
-$VSC_DATA/Bioinfo_course/MS_microglia_MultiQC/multiqc_all.html
+Here is also an example multiQC output file:
 
 <a href="assets/multiqc_all_1.html" target="_blank">**Interactively browse read qualities, trimming stats, alignment rates, and featureCounts summaries!**</a>
 
@@ -602,7 +575,7 @@ Question: Looking at the MultiQC report summary for all your samples:
 4. Based on what you see in the report, would you exclude this sample from your downstream differential expression analysis? Why or why not?
 
 
-## Step 9 - Differential expression analysis (DEA) and Enrichment analysis (GSEA) {#step-9-differential-expression-analysis-dea-and-enrichment-analysis-gsea}
+## Step 8 - Differential expression analysis (DEA) and Enrichment analysis (GSEA) {#step-8-differential-expression-analysis-dea-and-enrichment-analysis-gsea}
 
 Once we have a clean gene-level count matrix, the next step is differential expression analysis (DEA), testing which genes show statistically significant changes in expression between conditions (e.g. MS vs Control). DEA tools work on raw counts, model the variability between biological replicates, and apply appropriate normalization and statistical tests. The most widely used tools in bulk RNA-seq are DESeq2, edgeR, and limma-voom. They all aim to answer the same question **“which genes are differentially expressed?”**, but differ in how they normalize counts, model variance, and what experimental designs they are best suited for. A key point is that biological replicates are essential for reliable statistics, while technical replicates are usually merged at the count level rather than treated as independent samples.
 
@@ -630,25 +603,19 @@ Open a new R script once the R session is started and follo the stepsas below:
 **Install packages only if they are not already installed**
 
 ```
-# List of required packages
-packages <- c(
-  "DESeq2", "readr", "dplyr", "ggplot2", "ggrepel", "apeglm",
-  "biomaRt", "clusterProfiler", "msigdbr", "org.Hs.eg.db", "enrichplot"
-)
+# Load the required packages
 
-# Install missing packages
-installed <- rownames(installed.packages())
-to_install <- packages[!(packages %in% installed)]
-
-if (length(to_install) > 0) {
-  message("Installing missing packages: ", paste(to_install, collapse = ", "))
-  BiocManager::install(to_install, ask = FALSE)
-}
-
-# Load packages quietly
-suppressPackageStartupMessages({
-  lapply(packages, library, character.only = TRUE)
-})
+library(DESeq2)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+library(apeglm)
+library(biomaRt)
+library(clusterProfiler)
+library(msigdbr)
+library(org.Hs.eg.db)
+library(enrichplot)  
 
 ```
 **Setting up input and output directories in R**
