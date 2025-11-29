@@ -381,7 +381,7 @@ When you run fastp, it automatically creates a comprehensive quality report in H
 
 Before we can measure gene expression from RNA-seq data, we must determine where each sequencing read originated in the genome. This process is often called mapping or alignment. Mapping refers to finding the approximate genomic region a read comes from, while alignment describes the precise, base-by-base match between the read and the genome, including mismatches, gaps, or splice junctions. In RNA-seq, both are essential because transcripts contain exons separated by introns, so many reads span exon–exon boundaries and require a splice-aware aligner.
 
-Several tools exist for aligning next-generation sequencing reads, such as BWA, Bowtie2, HISAT2, and STAR. However, not all of them are suitable for RNA-seq. Tools like BWA or Bowtie2 are excellent for DNA-seq but cannot model splicing. HISAT2 and STAR are both splice-aware, but STAR has become the gold standard for bulk RNA-seq because it is exceptionally fast, highly accurate, and specifically optimized to detect splice junctions. STAR builds a specialized index of the genome that enables rapid searching, and during alignment it breaks each read into smaller seeds, maps them efficiently, and reconstructs spliced alignments with high precision. It also produces useful outputs such as sorted BAM files, splice junction information, and optional gene-level counts when using --quantMode GeneCounts.
+Several tools exist for aligning next-generation sequencing reads, such as **BWA**, **Bowtie2**, **HISAT2**, and **STAR**. However, not all of them are suitable for RNA-seq. Tools like **BWA** or **Bowtie2** are excellent for DNA-seq but cannot model splicing. **HISAT2** and **STAR** are both splice-aware, but **STAR** has become the gold standard for bulk RNA-seq because it is exceptionally fast, highly accurate, and specifically optimized to detect splice junctions. **STAR** builds a specialized index of the genome that enables rapid searching, and during alignment it breaks each read into smaller seeds, maps them efficiently, and reconstructs spliced alignments with high precision. It also produces useful outputs such as sorted **BAM** files, splice junction information, and optional gene-level counts when using --quantMode GeneCounts.
 
 **What Are GTF and GFF Annotation Files?**
 
@@ -393,8 +393,8 @@ GTF (Gene Transfer Format) and GFF (General Feature Format) are standardized fil
 
 Before STAR can align RNA-seq reads, it must first build a genome index from the reference FASTA file and gene annotation (GTF) through the links below:
 
-https://ftp.ensembl.org/pub/current/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
-https://ftp.ensembl.org/pub/current/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
+- [Human reference genome (GRCh38, FASTA)](https://ftp.ensembl.org/pub/current/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz)
+- [Human gene annotation (GRCh38, GTF)](https://ftp.ensembl.org/pub/current/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz)
 
 This index acts as a searchable map that STAR uses to quickly locate and align sequencing reads to the genome.
 
