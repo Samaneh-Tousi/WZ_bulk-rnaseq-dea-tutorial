@@ -435,6 +435,8 @@ Once the reference genome index is prepared, we can align our trimmed FASTQ read
 
 We also enable --quantMode GeneCounts, which instructs STAR to generate preliminary per-gene read counts that will later help verify the library’s strandness. The output of this step includes aligned BAM files, gene count summaries, and STAR logs, all stored in the MS_microglia_STAR_aligned directory and ready for downstream quantification and differential expression analysis.
 
+This command aligns trimmed RNA-seq reads to the reference genome using STAR and produces sorted BAM files and gene-level count summaries for each sample.
+
 ```
 module load STAR/2.7.3a-GCCcore-6.4.0
 IDX="/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome"
@@ -445,6 +447,30 @@ mkdir -p "$OUT"
 for fq in "$IN"/*.sub5M.trimmed.fastq.gz; do s=$(basename "$fq" .sub5M.trimmed.fastq.gz); echo "Aligning $s ..."; STAR --runThreadN 18 --genomeDir "$IDX" --readFilesIn "$fq" --readFilesCommand zcat --outFileNamePrefix "$OUT/${s}." --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts; done
 
 ```
+
+**STAR arguments**
+
+**--runThreadN 18**
+Uses 18 CPU threads to speed up alignment.
+
+**--genomeDir "$IDX"**
+Points to the STAR genome index directory.
+
+**--readFilesIn "$fq"**
+Specifies the input FASTQ file.
+
+**--readFilesCommand zcat**
+Decompresses .gz files on the fly during alignment.
+
+**--outFileNamePrefix "$OUT/${s}."**
+Sets the output filename prefix using the sample name.
+
+**--outSAMtype BAM SortedByCoordinate**
+Outputs alignments as a BAM file sorted by genomic coordinate.
+
+**--quantMode GeneCounts**
+Generates gene-level read counts for each sample.
+
 Check metrics:
 
 ```
