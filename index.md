@@ -130,7 +130,7 @@ The different steps of sequencing with Illumina’s sequencing by synthesis meth
 
 - **Basic familiarity with the Linux shell and R**
 
-- **Storage space** under `$VSC_DATA` or on staging storage
+- **Storage space** under `$VSC_DATA`
 
 ---
 ### What is an HPC Node?
@@ -187,9 +187,6 @@ Once connected, use these commands to prepare your course workspace and load req
 cd $VSC_DATA
 mkdir -p Bioinfo_course && cd Bioinfo_course && pwd
 
-# Load environment modules for this session
-module load cluster/genius/interactive
-module load SRA-Toolkit/3.0.5-gompi-2021a
 ```
 Explanation:
 
@@ -200,8 +197,6 @@ Explanation:
 **cd Bioinfo_course** → enters that folder
 
 **pwd** → confirms your current directory
-
-**module load ...** → loads the tools needed for downloading and processing sequencing data
 
 After this step, you’re ready to start downloading the example RNA-seq datasets in the next section.
 
@@ -371,6 +366,28 @@ mkdir -p "$OUT"
 for fq in "$IN"/SRR*.fastq.gz; do s=$(basename "${fq%.fastq.gz}"); echo "Running fastp on $s ..."; fastp -i "$fq" -o "$OUT/${s}.trimmed.fastq.gz" -h "$OUT/${s}_fastp.html" -j "$OUT/${s}_fastp.json" -w 18; done
 
 ```
+**module load ...** → loads the tools needed for downloading and processing sequencing data
+
+**fastp command arguments**
+
+-i → Input FASTQ file (raw sequencing reads)
+
+-o → Output FASTQ file (trimmed and filtered reads)
+
+-h → Generates an HTML quality report for each sample
+
+-j → Generates a JSON report with detailed processing statistics
+
+-w 18 → Uses 18 CPU threads to speed up processing
+
+basename → Extracts the sample name from the input file
+
+for ... do ... done → Loops through all FASTQ files matching SRR*.fastq.gz
+
+echo → Prints the name of the file currently being processed
+
+This loop runs fastp on all FASTQ files in the input directory to perform quality control, trimming, and filtering. For each sample, it produces a cleaned FASTQ file along with an HTML and JSON quality report.
+
 When you run fastp, it automatically creates a comprehensive quality report in HTML format, see below a part of the file.
 
 <img src="assets/Fastp.png" alt="Fastp" width="600">
@@ -519,6 +536,11 @@ mkdir -p "$OUTDIR"
 
 featureCounts -T 18 -s 2 -t exon -g gene_id -a "$GTF" -o "$OUTDIR/featureCounts_counts.txt" "$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam
 
+```
+
+This next command line reformats the output file from featureCounts into a clean count matrix suitable for downstream analysis in R. The script extracts gene IDs and sample names from the featureCounts output, removes file path information from the column headers, and outputs a table where rows represent genes and columns represent samples with their corresponding read counts. The result is saved as a tab-separated file (featureCounts_counts_matrix.tsv) that can be directly loaded into R for differential expression analysis.
+
+```
 awk 'NR==2{printf "gene"; for(i=7;i<=NF;i++){g=$i; sub(/^.*\//,"",g); sub(/\.Aligned\.sortedByCoord\.out\.bam$/,"",g); printf "\t" g} printf "\n"; next} NR>2{printf "%s", $1; for(i=7;i<=NF;i++) printf "\t%s", $i; printf "\n"}' "$OUTDIR/featureCounts_counts.txt" > "$OUTDIR/featureCounts_counts_matrix.tsv"
 
 ```
