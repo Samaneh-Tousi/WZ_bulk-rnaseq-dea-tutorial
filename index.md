@@ -248,10 +248,10 @@ In SRA, each sequencing run has an SRR accession number (SRR######).
 The SRR files in SRA are stored in a binary format (.sra) to save space.
 To work with them in RNA-seq tools, we first download these .sra files using prefetch, then convert them to standard FASTQ format using fasterq-dump from the SRA Toolkit.
 
-**You do not need to download the data files into your `$VSC_DATA` directory for this session. To save time during the workshop, all required files are already available at:
+**You do not need to download the files. To save time during the workshop, all required files are already available at:
 
 ```
-/scratch/leuven/377/vsc37707/Bioinfo_course_scratch
+/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/fastq
 ```
 
 
@@ -265,8 +265,7 @@ FASTQ files are text-based but usually compressed (.gz).
 To peek inside without fully decompressing:
 
 ```
-cd "$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
-zcat SRR6849240.fastq.gz | head
+zcat SRR6849240.sub5M.fastq.gz | head
 ```
 This prints the first few reads (each read spans 4 lines).
 
@@ -358,23 +357,7 @@ Illumina machines use Phred+33 encoding, meaning the ASCII code of the character
 | Typical pattern  | High → drop at end           | Normal for Illumina        |                     |
 
 
-## Step 3 - Downsample FASTQ {#step-3-downsample-fastq}
-
-To make the exercises run faster, we downsample each FASTQ file by randomly selecting a subset of reads (up to 5 million reads per sample).
-
-⚠️ **Note**: This step is only for training purposes. You should not downsample your data in real analyses, as it reduce sensitivity and affect biological conclusions.
-
-```
-module load seqtk
-IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastq"
-OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastq_sub5M"
-mkdir -p "$OUT"
-
-for s in SRR6849240 SRR6849241 SRR6849242 SRR6849255 SRR6849256 SRR6849257; do echo "Subsampling $s to 5,000,000 reads ..."; seqtk sample -s42 "$IN/${s}.fastq.gz" 5000000 | gzip > "$OUT/${s}.sub5M.fastq.gz"; done
-
-```
-
-## Step 4 - QC & trimming (fastp) {#step-4-qc-trimming-fastp}
+## Step 3 - QC & trimming (fastp) {#step-3-qc-trimming-fastp}
 
 **fastp** is an all-in-one FASTQ preprocessing tool that performs quality control (QC), adapter trimming, and filtering of sequencing reads — all in one fast, multithreaded program.
 
@@ -382,7 +365,7 @@ It is often used as a faster, modern replacement for older tools like **FastQC**
 
 ```
 module load fastp/0.23.2-GCC-10.3.0
-IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastq_sub5M"
+IN="/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/fastq"
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
 mkdir -p "$OUT"
 
@@ -394,7 +377,7 @@ When you run fastp, it automatically creates a comprehensive quality report in H
 <img src="assets/Fastp.png" alt="Fastp" width="600">
 
 
-## Step 5 - Mapping vs Aligning RNA-seq Reads {#step-5-mapping-vs-aligning-rna-seq-reads}
+## Step 4 - Mapping vs Aligning RNA-seq Reads {#step-4-mapping-vs-aligning-rna-seq-reads}
 
 Before we can measure gene expression from RNA-seq data, we must determine where each sequencing read originated in the genome. This process is often called mapping or alignment. Mapping refers to finding the approximate genomic region a read comes from, while alignment describes the precise, base-by-base match between the read and the genome, including mismatches, gaps, or splice junctions. In RNA-seq, both are essential because transcripts contain exons separated by introns, so many reads span exon–exon boundaries and require a splice-aware aligner.
 
@@ -408,26 +391,18 @@ GTF (Gene Transfer Format) and GFF (General Feature Format) are standardized fil
 
 **Building the Reference Genome (STAR Index)**
 
-Before STAR can align RNA-seq reads, it must first build a genome index from the reference FASTA sequence and gene annotation (GTF). This index acts as a searchable map of the genome that STAR uses to rapidly locate and align sequencing reads. In this step, we download the human reference genome (GRCh38) and its corresponding annotation from Ensembl, decompress the files, and run STAR in genomeGenerate mode. STAR processes the genome and annotation into a set of optimized index files stored inside the Ref_genome directory. This step only needs to be performed once per genome version and can take a few minutes depending on computing resources. The resulting index will be used in the next stage when we align our trimmed FASTQ files to the genome.
+Before STAR can align RNA-seq reads, it must first build a genome index from the reference FASTA file and gene annotation (GTF) through the links below:
 
-```
-cd "$VSC_DATA/Bioinfo_course"
-mkdir -p Ref_genome && cd Ref_genome
-module load STAR/2.7.3a-GCCcore-6.4.0
+https://ftp.ensembl.org/pub/current/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+https://ftp.ensembl.org/pub/current/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
 
-wget https://ftp.ensembl.org/pub/current/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
-wget https://ftp.ensembl.org/pub/current/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz
-gunzip *.gz
+This index acts as a searchable map that STAR uses to quickly locate and align sequencing reads to the genome.
 
-STAR --runThreadN 8 \
-     --runMode genomeGenerate \
-     --genomeDir "$VSC_DATA/Bioinfo_course/Ref_genome" \
-     --genomeFastaFiles "$VSC_DATA/Bioinfo_course/Ref_genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa" \
-     --sjdbGTFfile "$VSC_DATA/Bioinfo_course/Ref_genome/Homo_sapiens.GRCh38.115.chr.gtf" \
-     --sjdbOverhang 100
-	 
-```
-Note: sjdbOverhang = readLength − 1.
+In this step, we downloaded the human reference genome (GRCh38) and its corresponding annotation from Ensembl, decompressed the files, and ran STAR in genomeGenerate mode. STAR processes the genome and annotation to create a set of optimized index files, which are stored in the Ref_genome directory under:
+**/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome**
+
+This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. To save time during the workshop session, the required reference genome and index files have already been prepared. The generated index will be used in the next step to align the trimmed FASTQ files to the genome.
+
 
 **Aligning Reads to the Genome with STAR**
 
