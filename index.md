@@ -141,7 +141,7 @@ Each node has:
 - Large **memory (RAM)**
 - Access to **high-speed storage** and **shared file systems**
 
-When you start an **interactive session** on VSC, you’re temporarily reserving a portion of one or more nodes (e.g., 1 node with 8 cores and 7.5 GB RAM per core).  
+When you start an **interactive session** on VSC, you’re temporarily reserving a portion of one or more nodes (e.g., 1 node with 18 cores and 3.4 GB RAM per core).  
 Think of it like booking a workstation on the supercomputer for a limited time to run your analysis.
 <img src="assets/HPC_nodes.png" alt="VSC HPC" width="600">
 
@@ -368,7 +368,7 @@ IN="/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/fastq"
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
 mkdir -p "$OUT"
 
-for fq in "$IN"/SRR*.fastq.gz; do s=$(basename "${fq%.fastq.gz}"); echo "Running fastp on $s ..."; fastp -i "$fq" -o "$OUT/${s}.trimmed.fastq.gz" -h "$OUT/${s}_fastp.html" -j "$OUT/${s}_fastp.json" -w 8; done
+for fq in "$IN"/SRR*.fastq.gz; do s=$(basename "${fq%.fastq.gz}"); echo "Running fastp on $s ..."; fastp -i "$fq" -o "$OUT/${s}.trimmed.fastq.gz" -h "$OUT/${s}_fastp.html" -j "$OUT/${s}_fastp.json" -w 18; done
 
 ```
 When you run fastp, it automatically creates a comprehensive quality report in HTML format, see below a part of the file.
@@ -602,7 +602,7 @@ Open a new R script once the R session is started and follo the stepsas below:
 
 **Install packages only if they are not already installed**
 
-```
+```r
 # Load the required packages
 
 library(DESeq2)
@@ -619,7 +619,7 @@ library(enrichplot)
 
 ```
 **Setting up input and output directories in R**
-```
+```r
 counts_path <- file.path(Sys.getenv("VSC_DATA"),
                          "Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv")
 out_dir <- file.path(Sys.getenv("VSC_DATA"), "Bioinfo_course/MS_microglia_DEA")
@@ -628,7 +628,7 @@ dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 **Building the DESeq2 Dataset and Running Differential Expression**
 
-```
+```r
 # ---- Load gene-level count matrix from featureCounts ----
 counts <- read_tsv(counts_path)           # Read the TSV counts file into R (first column = gene, others = samples)
 
@@ -673,7 +673,7 @@ res <- results(
 
 After computing differential expression, the results contain gene identifiers in Ensembl ID format (e.g., ENSG00000141510.12). These identifiers are accurate but not user-friendly, so the next step is to annotate them with human-readable gene symbols (e.g., TP53). Using the biomaRt package, we query the Ensembl database, retrieve gene symbols for all genes in the results, remove version suffixes (e.g., .12), and merge the annotations back into the results table. The output is an annotated results file that is easier to interpret and suitable for downstream visualization and reporting.
 
-```
+```r
 # annotate
 mart <- useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
 gene_ids <- gsub("\\..*", "", rownames(res))
@@ -697,7 +697,7 @@ Based on your understanding of multiple testing in large datasets, explain the d
 Which one should be used to decide whether a gene is truly differentially expressed, and why?
 </span>
 
-```
+```r
 # DEGs
 lfc_thr <- 0.5; padj_thr <- 0.05
 DEGs <- subset(res_annot, !is.na(padj) & padj < padj_thr & abs(log2FoldChange) > lfc_thr)
@@ -732,7 +732,7 @@ ggsave(file.path(out_dir, "volcano_DEGs.png"), p, width = 7, height = 5, dpi = 3
 After identifying differentially expressed genes, we want to understand which biological pathways are systematically up- or down-regulated. Gene Set Enrichment Analysis (GSEA) evaluates genome-wide ranked statistics (e.g., Wald statistics or log₂ fold changes) to determine whether predefined gene sets show significant enrichment at the top or bottom of the ranked list. Unlike over-representation analysis, GSEA does not require an arbitrary DEG cutoff and instead uses all genes, making it more sensitive and biologically interpretable.
 In this step, we first convert gene symbols to Entrez IDs, which are required by many pathway databases. Then we build a ranked gene list, load the MSigDB Hallmark gene sets, and run GSEA. The results are saved to disk along with visualizations: a plot of the top enriched pathways and an enrichment map showing relationships among enriched terms.
 
-```
+```r
 # GSEA (Hallmark)
 symbols <- res_annot$external_gene_name
 entrez  <- mapIds(org.Hs.eg.db, keys = symbols, keytype = "SYMBOL", column = "ENTREZID", multiVals = "first")
