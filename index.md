@@ -791,12 +791,16 @@ readr::write_tsv(res_annot, file.path(out_dir, "deseq2_results_annotated.tsv"))
 
 Once the differential expression results are annotated, the next step is to extract the significant differentially expressed genes (DEGs). This is done by applying thresholds on both statistical significance (adjusted p-value or FDR) and effect size (log₂ fold change). In this tutorial, genes with padj < 0.05 and -0.5 <log₂FC > 0.5 are considered DEGs. After filtering, the DEG list is saved as a TSV file for downstream functional analysis.
 
+In differential expression analysis (DEA), the p-value tells you how likely it is that the difference in gene expression you observe happened just by chance, assuming there is no real difference between your conditions (null hypothesis). A small p-value means the change is unlikely to be random and may be biologically meaningful.
+
+However, in RNA-seq experiments, we test thousands of genes at the same time. When doing so, some genes will appear significant purely by chance. This is called the multiple testing problem. To fix this, we use False Discovery Rate (FDR) correction. The FDR estimates how many of the genes you call “significant” are expected to be false positives.
+
+The adjusted p-value (padj) is the p-value after applying FDR correction (commonly using the Benjamini–Hochberg method). It gives a more reliable measure of significance when many genes are tested. In practice, you should use padj instead of the raw p-value to decide whether a gene is truly differentially expressed. A common cutoff is padj < 0.05, meaning that no more than about 5% of the genes you call significant are expected to be false discoveries.
+
 To visualize the global expression changes between conditions, we generate a volcano plot, which displays each gene based on its log₂ fold change (x-axis) and statistical significance (–log₁₀ adjusted p-value, y-axis). Genes are categorized as Up, Down, or Not Significant, and the top 10 most significant genes are labeled. This plot provides an intuitive overview of the direction, magnitude, and significance of differential expression across the whole transcriptome.
 
 <span style="color:purple; font-weight:600;">
-Question: RNA-seq differential expression results often show both a p-value and an adjusted p-value (padj) for each gene.
-Based on your understanding of multiple testing in large datasets, explain the difference between the p-value and the adjusted p-value.
-Which one should be used to decide whether a gene is truly differentially expressed, and why?
+Question: A gene has a p-value of 0.002 but a padj of 0.10. What does this tell you about the gene’s significance, and why is there a difference between the two numbers?
 </span>
 
 ```r
