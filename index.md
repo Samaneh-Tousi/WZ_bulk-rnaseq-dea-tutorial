@@ -860,12 +860,7 @@ readr::write_tsv(as.data.frame(gseaH@result), file.path(out_dir, "GSEA_Hallmark_
 
 png(file.path(out_dir, "GSEA_Hallmark_top4.png"), width = 900, height = 700)
 print(enrichplot::gseaplot2(gseaH, geneSetID = 1:4, title = "Top Hallmark pathways"))
-dev.off()
 
-gseaH2 <- pairwise_termsim(gseaH)
-png(file.path(out_dir, "GSEA_Hallmark_emap.png"), width = 1200, height = 900)
-print(emapplot(gseaH2, showCategory = 10))
-dev.off()
 ```
 <img src="assets/GSEA.png" alt="GSEA" width="700">
   
