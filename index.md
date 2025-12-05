@@ -155,11 +155,8 @@ For more information about the VSC system and its usage, please see:
 
 **If you are enrolled in the Bioinformatics course, you only need to request a VSC account. After your account is approved, go to your VSC account, search for the lp_h_edu_bioinformatics2025 group, and request to join it. You do not need to request computing credits to run the analyses; they are already provided.**
 
-However, if you are not a student and are following this tutorial outside the Bioinformatics course, you must request a VSC account and apply for introductory credits to run your own jobs. If you manage a research group, apply for project credits instead to get computing resources for your team.
 
 [Apply for your VSC account](https://docs.vscentrum.be/accounts/vsc_account.html#applying-for-your-vsc-account), Select **Hasselt University** when prompted.
-
-[Request introduction credits](https://admin.kuleuven.be/icts/onderzoek/hpc/request-introduction-credits)
 
 Login to OnDemand, and click on **Partner organization** and select **Hasselt University**: [VSC OnDemand Portal](https://ondemand.hpc.kuleuven.be/)
 
