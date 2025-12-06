@@ -692,7 +692,17 @@ Question: Imagine you have 10 biological replicates per condition, collected at 
 Based on this study design, which differential expression analysis tool would be the most appropriate (DESeq2, edgeR, or limma-voom), and why?
 </span>
 
-To start the analysis, Stop the shell job and Launch RStudio Server (4 cores).
+- Stop the current shell job.
+- Launch **RStudio Server** on the **wICE cluster** using **R/4.4.1-gfbf-2023b**  
+- Load the module: `R-bundle-Bioconductor` (for additional Bioconductor packages).
+- **Partition:** `batch_icelake`
+- **Account:** `lp_h_edu_bioinformatics2025`
+- **Walltime:** 1 hour
+- **Number of nodes:** 1
+- **Processes per node:** 4
+- **Cores per task:** 1
+- **Memory per core:** 3400 MB
+- **Reservation:** `course_h_edu_bioinformatics2025`
 
 <img src="assets/Rstudio_interactive.png" alt="Rstudio_interactive" width="800">
 <img src="assets/Rstudio_interactive3.png" alt="Rstudio_interactive3" width="800">
