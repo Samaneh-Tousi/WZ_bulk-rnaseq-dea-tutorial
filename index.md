@@ -878,10 +878,31 @@ dds <- DESeq(dds)                         # Normalization, dispersion estimation
 
 # Plot dispersion estimates
 plotDispEsts(dds)
+```
+<img src="assets/Disp_plot.png" alt="Disp_plot" width="600">
 
+**Dispersion Plot** shows:
+
+**Black dots** → raw observed dispersion for each gene
+
+**Red curve** → fitted dispersion trend (what DESeq2 expects)
+
+**Blue circles** → final shrunken dispersions used in testing. DESeq2 shrinks noisy gene-wise estimates toward the fitted trend by stabilizing the variance estimates, it prevents overly large dispersion values for low-count or unstable genes.
+
+low-count genes = more variability
+high-count genes = more stable
+
+A few black dots lie at extremely low dispersion values (near 1e−8). These typically correspond to housekeeping genes, stably expressed genes, or even technical artifacts with extremely high counts.
+
+
+```r
 # MA plot to visualize normalization effects
-plotMA(dds, ylim = c(-5, 5))
+plotMA(dds, ylim = c(-10, 10))
+```
+<img src="assets/MAplot.png" alt="MAplot" width="600">
 
+
+```r
 # PCA plot of normalized counts
 vsd <- vst(dds)     # or use rlog(dds) for smaller datasets
 plotPCA(vsd, intgroup = "condition")
