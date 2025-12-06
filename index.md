@@ -1061,6 +1061,8 @@ p <- ggplot(df, aes(x = log2FoldChange, y = mlog10padj, color = status)) +
   ) +
   theme_minimal(base_size = 12)
 
+p
+
 # Save the volcano plot as a high-resolution PNG
 ggsave(file.path(out_dir, "volcano_DEGs.png"), p, width = 7, height = 5, dpi = 300)
 
