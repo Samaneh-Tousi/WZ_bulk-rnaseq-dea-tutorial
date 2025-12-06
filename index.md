@@ -1199,7 +1199,7 @@ dev.off()  # close the graphics device and write the PNG file
 
 How helpful was this tutorial?
 Have feedback?  
-👉 **[Click here to leave a comment in the discussion thread.](https://forms.gle/SmYewj3hQVYYX6tk9)**
+👉 **[Click here](https://forms.gle/SmYewj3hQVYYX6tk9)**
 
 
 
