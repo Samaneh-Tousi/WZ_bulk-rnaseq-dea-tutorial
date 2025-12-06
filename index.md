@@ -909,6 +909,7 @@ plotMA(dds, ylim = c(-10, 10))
 **Blue points** = significantly differentially expressed genes (DEGs), Genes with positive log2FC (blue above) are upregulated, and genes with negative log2FC (blue below) are downregulated.
 **1- Variability is higher for low-count genes**
 A wide “fan-shaped” spread of log2FC values; this is because low-count genes are noisy, even small count differences produce large fold changes
+
 **2-High-count genes (right side) have stable FC estimates**
 Where counts are high (>1,000): Points cluster tightly around 0, Very few extreme log2FC values. This means that highly expressed genes have more reliable fold-change estimates, variance is low because counts are high.
 
