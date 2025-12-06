@@ -879,8 +879,7 @@ dds <- DESeq(dds)                         # Normalization, dispersion estimation
 # Plot dispersion estimates
 plotDispEsts(dds)
 ```
-<img src="assets/Disp_plot.png" alt="Disp_plot" width="600">
-
+<img src="assets/Disp_plot.png" alt="Disp_plot" width="800">
 **Dispersion Plot** shows:
 
 **Black dots** → raw observed dispersion for each gene
@@ -899,7 +898,7 @@ A few black dots lie at extremely low dispersion values (near 1e−8). These typ
 # MA plot to visualize normalization effects
 plotMA(dds, ylim = c(-10, 10))
 ```
-<img src="assets/MAplot.png" alt="MAplot" width="600">
+<img src="assets/MAplot.png" alt="MAplot" width="800">
 
 
 ```r
