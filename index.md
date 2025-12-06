@@ -772,9 +772,9 @@ Now samples with bigger or smaller sequencing depth are adjusted to the same sca
 This way, we correct the sequencing depth without being distorted by highly expressed genes. It assumes most genes do not change dramatically between samples and makes gene counts comparable across samples before statistical testing.
 
 
-**For starting the next steps, first stop the current shell job.**
+**For starting the next steps, first stop the current shell job through onDemand "My Interactive session" tab.**
 
-- Launch **RStudio Server** on the **wICE cluster** using **R/4.4.1-gfbf-2023b**  
+- Launch **RStudio Server** on the **wICE cluster** using **R/4.4.1-gfbf-2023b** through onDemand VSC portal.  
 - Load the module: `R-bundle-Bioconductor` (for additional Bioconductor packages).
 - **Partition:** `batch_icelake`
 - **Account:** `lp_h_edu_bioinformatics2025`
@@ -873,7 +873,7 @@ dds <- DESeq(dds)                         # Normalization, dispersion estimation
 ```
 
 
-
+```r
 # ---- QC: Check normalization & dispersion ----
 
 # Plot dispersion estimates
