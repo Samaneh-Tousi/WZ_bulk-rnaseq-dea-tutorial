@@ -1058,6 +1058,35 @@ ggsave(file.path(out_dir, "volcano_DEGs.png"), p, width = 7, height = 5, dpi = 3
 ```
 <img src="assets/DEGs_Volcano.png" alt="DEGs_Volcano" width="600">
 
+**What log2 Fold Change (log2FC) Tells Us**
+
+log2FC measures how much expression changes on a log base 2 scale.
+
+| log2FC | Meaning                | Fold change     |
+| ------ | ---------------------- | --------------- |
+| +1     | Upregulated            | 2× higher       |
+| +2     | Strongly upregulated   | 4× higher       |
+| –1     | Downregulated          | 2× lower        |
+| –2     | Strongly downregulated | 4× lower        |
+| 0      | No change              | same expression |
+
+**Putting it all together**
+
+A DEG is a gene that shows:
+
+a large enough change in expression (log2FC threshold)
+
+consistent differences across replicates (low dispersion)
+
+a statistically significant difference (low padj)
+
+| Gene  | log2FC | padj  | Interpretation             |
+| ----- | ------ | ----- | -------------------------- |
+| GeneA | +1.5   | 0.001 | Strongly upregulated in MS |
+| GeneB | –2.0   | 0.03  | Downregulated in MS        |
+| GeneC | 0.2    | 0.8   | No meaningful change       |
+
+
 **Gene Set Enrichment Analysis (GSEA), Hallmark Pathways**
 
 After identifying differentially expressed genes, we want to understand which biological pathways are systematically up- or down-regulated. Gene Set Enrichment Analysis (GSEA) evaluates genome-wide ranked statistics (e.g., Wald statistics or log₂ fold changes) to determine whether predefined gene sets show significant enrichment at the top or bottom of the ranked list. Unlike over-representation analysis, GSEA does not require an arbitrary DEG cutoff and instead uses all genes, making it more sensitive and biologically interpretable.
