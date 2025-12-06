@@ -849,32 +849,71 @@ Question: A gene has a p-value of 0.002 but a padj of 0.10. What does this tell 
 </span>
 
 ```r
-# DEGs
-lfc_thr <- 0.5; padj_thr <- 0.05
-DEGs <- subset(res_annot, !is.na(padj) & padj < padj_thr & abs(log2FoldChange) > lfc_thr)
-readr::write_tsv(DEGs, file.path(out_dir, sprintf("DEGs_MS_vs_Control_padj%.2f_LFC%.2f.tsv", padj_thr, lfc_thr)))
+# -----------------------------------------------
+# Define thresholds for selecting significant DEGs
+# -----------------------------------------------
+lfc_thr  <- 0.5      # Minimum absolute log2 fold-change considered biologically relevant
+padj_thr <- 0.05     # Significance threshold after multiple-testing correction
 
-# Volcano
+# Filter DESeq2 results for significant differentially expressed genes (DEGs)
+DEGs <- subset(
+  res_annot,
+  !is.na(padj) &                     # remove genes with missing adjusted p-values
+  padj < padj_thr &                  # statistically significant genes
+  abs(log2FoldChange) > lfc_thr      # genes with sufficient effect size
+)
+
+# Save DEG table for downstream analyses
+readr::write_tsv(
+  DEGs,
+  file.path(out_dir,
+            sprintf("DEGs_MS_vs_Control_padj%.2f_LFC%.2f.tsv", padj_thr, lfc_thr))
+)
+
+# -----------------------------------------------
+# Volcano plot data preparation
+# -----------------------------------------------
 df <- res_annot
-if (!"external_gene_name" %in% names(df)) df$external_gene_name <- NA_character_
+
+# Ensure a gene symbol column exists (avoid errors if missing)
+if (!"external_gene_name" %in% names(df))
+  df$external_gene_name <- NA_character_
+
+# Classify each gene as Up, Down, or Not Significant
 df$status <- "NotSig"
 df$status[!is.na(df$padj) & df$padj < padj_thr & df$log2FoldChange >  lfc_thr] <- "Up"
 df$status[!is.na(df$padj) & df$padj < padj_thr & df$log2FoldChange < -lfc_thr] <- "Down"
-df$mlog10padj <- -log10(df$padj); df$mlog10padj[!is.finite(df$mlog10padj)] <- NA
-sig <- df[!is.na(df$padj) & df$padj < padj_thr & abs(df$log2FoldChange) > lfc_thr, ]
+
+# Transform adjusted p-values for better visualization
+df$mlog10padj <- -log10(df$padj)
+df$mlog10padj[!is.finite(df$mlog10padj)] <- NA   # remove -Inf for padj = 0
+
+# Select the top 10 most significant DEGs for labeling
+sig   <- df[!is.na(df$padj) & df$padj < padj_thr & abs(df$log2FoldChange) > lfc_thr, ]
 top10 <- head(sig[order(sig$padj, -abs(sig$log2FoldChange)), ], 10)
 
+# -----------------------------------------------
+# Volcano plot: visualize significance vs effect size
+# -----------------------------------------------
 p <- ggplot(df, aes(x = log2FoldChange, y = mlog10padj, color = status)) +
-  geom_point(size = 1.3, alpha = 0.8, na.rm = TRUE) +
-  geom_vline(xintercept = c(-lfc_thr, lfc_thr), linetype = "dashed") +
-  geom_hline(yintercept = -log10(padj_thr), linetype = "dashed") +
-  ggrepel::geom_text_repel(data = top10, aes(label = external_gene_name), size = 3) +
+  geom_point(size = 1.3, alpha = 0.8, na.rm = TRUE) +            # scatter points
+  geom_vline(xintercept = c(-lfc_thr, lfc_thr), linetype = "dashed") +  # LFC threshold lines
+  geom_hline(yintercept = -log10(padj_thr), linetype = "dashed") +      # p-value threshold line
+  ggrepel::geom_text_repel(                                        # label top significant genes
+    data = top10, aes(label = external_gene_name), size = 3
+  ) +
   scale_color_manual(values = c(NotSig = "grey70", Up = "red", Down = "blue")) +
-  labs(x = "log2 fold change", y = expression(-log[10]("adjusted p-value")),
-       color = "Status", title = "MS vs Control — Volcano") +
+  labs(
+    x = "log2 fold change",
+    y = expression(-log[10]("adjusted p-value")),
+    color = "Status",
+    title = "MS vs Control — Volcano Plot"
+  ) +
   theme_minimal(base_size = 12)
 
+# Save the volcano plot as a high-resolution PNG
 ggsave(file.path(out_dir, "volcano_DEGs.png"), p, width = 7, height = 5, dpi = 300)
+
 ```
 <img src="assets/DEGs_Volcano.png" alt="DEGs_Volcano" width="600">
 
@@ -884,30 +923,88 @@ After identifying differentially expressed genes, we want to understand which bi
 In this step, we first convert gene symbols to Entrez IDs, which are required by many pathway databases. Then we build a ranked gene list, load the MSigDB Hallmark gene sets, and run GSEA. The results are saved to disk along with visualizations: a plot of the top enriched pathways and an enrichment map showing relationships among enriched terms.
 
 ```r
-# GSEA (Hallmark)
+# -----------------------------------------------
+# GSEA using Hallmark gene sets (MSigDB)
+# -----------------------------------------------
+
+# Extract gene symbols from annotated DESeq2 results
 symbols <- res_annot$external_gene_name
-entrez  <- mapIds(org.Hs.eg.db, keys = symbols, keytype = "SYMBOL", column = "ENTREZID", multiVals = "first")
+
+# Map gene symbols to Entrez IDs (required for many enrichment tools)
+entrez <- mapIds(
+  org.Hs.eg.db,
+  keys     = symbols,
+  keytype  = "SYMBOL",
+  column   = "ENTREZID",
+  multiVals = "first"   # if multiple Entrez IDs, keep the first match
+)
+
+# Store Entrez IDs in the results table
 res_annot$ENTREZID <- entrez
 
+# Choose ranking statistic:
+# - Prefer the Wald statistic (`stat`) if available
+# - Otherwise fall back to log2 fold change
 score <- if (!all(is.na(res_annot$stat))) res_annot$stat else res_annot$log2FoldChange
 
-rank_df <- tibble::tibble(ENTREZID = res_annot$ENTREZID, score = score) |>
-  dplyr::filter(!is.na(ENTREZID), is.finite(score)) |>
+# Build a ranking table: one score per Entrez ID
+rank_df <- tibble::tibble(
+    ENTREZID = res_annot$ENTREZID,
+    score    = score
+  ) |>
+  dplyr::filter(
+    !is.na(ENTREZID),        # keep only genes with valid Entrez IDs
+    is.finite(score)         # remove NA / Inf scores
+  ) |>
   dplyr::group_by(ENTREZID) |>
-  dplyr::summarise(score = score[which.max(abs(score))], .groups = "drop")
+  dplyr::summarise(
+    # if multiple rows per Entrez ID, keep the one with the largest absolute score
+    score = score[which.max(abs(score))],
+    .groups = "drop"
+  )
 
-ranks <- sort(setNames(rank_df$score, rank_df$ENTREZID), decreasing = TRUE)
+# Create a named numeric vector of ranked genes (required format for GSEA)
+ranks <- sort(
+  setNames(rank_df$score, rank_df$ENTREZID),
+  decreasing = TRUE
+)
 
-m_h <- msigdbr(species = "Homo sapiens", category = "H") |>
-  dplyr::select(gs_name, entrez_gene)
+# Load Hallmark gene sets from MSigDB (H collection)
+m_h <- msigdbr(
+    species  = "Homo sapiens",
+    category = "H"
+  ) |>
+  dplyr::select(gs_name, entrez_gene)   # pathway name + Entrez gene ID
 
-set.seed(42)
-gseaH <- GSEA(ranks, TERM2GENE = m_h, pAdjustMethod = "BH", minGSSize = 10, maxGSSize = 500, verbose = FALSE)
+# Run GSEA using the Hallmark pathways
+set.seed(42)  # set seed for reproducibility
+gseaH <- GSEA(
+  ranks,
+  TERM2GENE   = m_h,      # mapping from gene set to Entrez IDs
+  pAdjustMethod = "BH",   # Benjamini-Hochberg multiple-testing correction
+  minGSSize   = 10,       # minimum size of a gene set
+  maxGSSize   = 500,      # maximum size of a gene set
+  verbose     = FALSE
+)
 
-readr::write_tsv(as.data.frame(gseaH@result), file.path(out_dir, "GSEA_Hallmark_results.tsv"))
+# Save full GSEA Hallmark results to a TSV file
+readr::write_tsv(
+  as.data.frame(gseaH@result),
+  file.path(out_dir, "GSEA_Hallmark_results.tsv")
+)
 
+# -----------------------------------------------
+# Plot top Hallmark pathways from GSEA
+# -----------------------------------------------
 png(file.path(out_dir, "GSEA_Hallmark_top4.png"), width = 900, height = 700)
-print(enrichplot::gseaplot2(gseaH, geneSetID = 1:4, title = "Top Hallmark pathways"))
+print(
+  enrichplot::gseaplot2(
+    gseaH,
+    geneSetID = 1:4,              # plot the top 4 enriched Hallmark pathways
+    title     = "Top Hallmark pathways"
+  )
+)
+dev.off()  # close the graphics device and write the PNG file
 
 ```
 <img src="assets/GSEA.png" alt="GSEA" width="700">
