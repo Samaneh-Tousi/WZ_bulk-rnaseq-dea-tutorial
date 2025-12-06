@@ -729,9 +729,28 @@ library(enrichplot)      # Visualization of enrichment analysis results
 ```
 **Setting up input and output directories in R**
 ```r
-counts_path <- file.path(Sys.getenv("VSC_DATA"),
-                         "Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv")
-out_dir <- file.path(Sys.getenv("VSC_DATA"), "Bioinfo_course/MS_microglia_DEA")
+# -------------------------------------------------------------
+# Define input and output paths for the analysis
+# -------------------------------------------------------------
+
+# Build the full path to the featureCounts matrix:
+# - Sys.getenv("VSC_DATA") retrieves your VSC_DATA environment variable,
+#   which points to your personal data directory on the cluster.
+# - file.path() safely constructs a valid path across systems.
+counts_path <- file.path(
+  Sys.getenv("VSC_DATA"),
+  "Bioinfo_course/MS_microglia_featureCounts/featureCounts_counts_matrix.tsv"
+)
+
+# Define an output directory where all DEA results and plots will be saved
+out_dir <- file.path(
+  Sys.getenv("VSC_DATA"),
+  "Bioinfo_course/MS_microglia_DEA"
+)
+
+# Create the output directory if it does not exist
+# - recursive = TRUE creates parent folders if needed  
+# - showWarnings = FALSE suppresses messages if the folder already exists
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 ```
 
