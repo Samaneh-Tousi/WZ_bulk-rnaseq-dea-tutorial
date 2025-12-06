@@ -880,6 +880,7 @@ dds <- DESeq(dds)                         # Normalization, dispersion estimation
 plotDispEsts(dds)
 ```
 <img src="assets/Disp_plot.png" alt="Disp_plot" width="800">
+
 **Dispersion Plot** shows:
 
 **Black dots** → raw observed dispersion for each gene
