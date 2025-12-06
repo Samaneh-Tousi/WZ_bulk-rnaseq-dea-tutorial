@@ -907,6 +907,7 @@ plotMA(dds, ylim = c(-10, 10))
 **A** = average expression (mean of normalized counts, horizontal axis)
 **Grey points** = all genes
 **Blue points** = significantly differentially expressed genes (DEGs), Genes with positive log2FC (blue above) are upregulated, and genes with negative log2FC (blue below) are downregulated.
+
 **1- Variability is higher for low-count genes**
 A wide “fan-shaped” spread of log2FC values; this is because low-count genes are noisy, even small count differences produce large fold changes
 
