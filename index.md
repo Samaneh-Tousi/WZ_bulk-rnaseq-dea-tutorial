@@ -164,16 +164,16 @@ Login to OnDemand, and click on **Partner organization** and select **Hasselt Un
 
 Start **Interactive Shell** with:
 
-- Cluster: *Wice*
-- Partition: *interactive*
-- Account:  *lp_h_edu_bioinformatics2025* or *your own intro_VSC/project account*
-- Number of hours: *2 h* or more
-- Number of nodes: *1*
-- Number of processes per node: *18*
-- Number of cores per each task: *18*
-- Required memory per core in megabytes: *3455 MB*
-- Reservation: *course_h_edu_bioinformatics2025*
-- ✅ I would like to receive an email when the session starts
+- **Cluster:** `Wice`
+- **Partition:** `batch_icelake`
+- **Account:** `lp_h_edu_bioinformatics2025`
+- **Walltime:** 1 hour
+- **Number of nodes:** 1
+- **Number of processes per node:** 18
+- **Number of cores per each task:** 1
+- **Memory per core:** 3400 MB
+- **Reservation:** `course_h_edu_bioinformatics2025`
+
 
 ## Step 2 - Connect, workspace, data {#step-2-connect-workspace-data}
 
