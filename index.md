@@ -373,7 +373,7 @@ for fq in "$IN"/SRR*.fastq.gz; do s=$(basename "${fq%.fastq.gz}"); echo "Running
 
 -h → Generates an HTML quality report for each sample
 
--j → Generates a JSON report with detailed processing statistics
+-j → Generates a JSON (JavaScript Object Notation, a plain text file) report with detailed processing statistics
 
 -w 18 → Uses 18 CPU threads to speed up processing
 
@@ -435,7 +435,7 @@ We also enable --quantMode GeneCounts, which instructs STAR to generate prelimin
 This command aligns trimmed RNA-seq reads to the reference genome using STAR and produces sorted BAM files and gene-level count summaries for each sample.
 
 ```
-module load STAR/2.7.3a-GCCcore-6.4.0
+module load STAR/2.7.10a-GCC-10.3.0
 IDX="/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome"
 IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
@@ -485,15 +485,11 @@ A BAM file (Binary Alignment/Map) is the compressed binary version of a SAM file
 To view just the first few alignment lines:
 
 ```
-module load SAMtools/1.18-GCC-12.3.0
+module load SAMtools/1.13-GCC-10.3.0
 samtools view yourfile.bam | head
 ```
-To see the header (metadata, reference names, and alignment settings):
 
-```
-samtools view -H yourfile.bam
-```
-These commands let you quickly verify that the alignments look correct without scrolling through the entire file.
+The command will let you quickly look at the first few alignments, without scrolling through the entire file.
 
 **Example interpretation of a BAM file**
 ```
@@ -580,7 +576,7 @@ Although featureCounts is one of the fastest and most widely used tools for coun
 In this step, we generate gene-level read counts from the aligned BAM files using featureCounts, a fast and widely used quantification tool from the Subread package. featureCounts assigns aligned reads to genomic features (typically exons) based on the annotation file (GTF). We specify -s 2 because our libraries are reverse-stranded, as confirmed in the previous step. Only reads aligning to the antisense strand of genes will be counted. The command produces a raw count table (featureCounts_counts.txt) that includes metadata columns and full file paths; therefore, an additional awk script is used to clean the matrix, remove extra columns, and extract sample names. The result in **featureCounts_counts_matrix.tsv** is a clean, tab-delimited matrix suitable for downstream analysis in DESeq2, edgeR, or similar tools.
 
 ```
-module load Subread
+module load Subread/2.0.3-GCC-10.3.0
 GTF="/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome/Homo_sapiens.GRCh38.115.chr.gtf"
 ALIGN_DIR="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 OUTDIR="$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts"
@@ -641,8 +637,7 @@ Raw read counts tell you how many sequencing reads mapped to each gene, and they
 MultiQC is a tool that scans the output files from many bioinformatics programs (such as FastQC, fastp, STAR, and featureCounts) and compiles them into one interactive HTML report. Instead of checking each tool’s results separately, MultiQC gives you a single overview of sample quality, trimming performance, alignment statistics, and counting summaries making it much easier to detect problems or compare samples side-by-side.
 
 ```
-# (Optional) if MultiQC isn't preinstalled on VSC
-conda install -c bioconda multiqc
+module load MultiQC/1.11-foss-2021a
 
 # Define input and output directories
 FASTP_DIR="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
