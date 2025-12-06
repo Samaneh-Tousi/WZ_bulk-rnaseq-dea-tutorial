@@ -1199,7 +1199,7 @@ dev.off()  # close the graphics device and write the PNG file
 
 How helpful was this tutorial?
 Have feedback?  
-👉 **[Click here to leave a comment in the discussion thread.](https://github.com/Samaneh-Tousi/WZ_bulk-rnaseq-dea-tutorial/discussions)**
+👉 **[Click here to leave a comment in the discussion thread.](https://github.com/Samaneh-Tousi/WZ_bulk-rnaseq-dea-tutorial/discussions/1)**
 
 
 
