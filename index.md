@@ -692,6 +692,86 @@ Question: Imagine you have 10 biological replicates per condition, collected at 
 Based on this study design, which differential expression analysis tool would be the most appropriate (DESeq2, edgeR, or limma-voom), and why?
 </span>
 
+** A mini-diagram of DESeq2 DEA**
+
+```scss
+
+Raw counts
+    │
+    ▼
+Normalization (size factors)
+    │
+    ▼
+Dispersion estimation (how much genes vary)
+    │
+    ▼
+Model fitting (compare MS vs Control)
+    │
+    ▼
+Statistical test (Wald test)
+    │
+    ▼
+Significant difference?
+    ├── Yes → DEG (uses log2FC + padj)
+    └── No  → Not a DEG
+```
+
+**How DESeq2 Normalizes RNA-seq Counts**
+
+DESeq2 uses a method called **median-of-ratios normalization** by calculating **size factor**, wich can correct the differences in sequencing depth between samples so they can be fairly compared.
+
+**Step1**- Create a reference for each gene
+
+For each gene, DESeq2 calculates the **geometric mean** of its counts across all samples.
+
+Example:
+Gene A counts = 10, 20, 5
+Geometric mean = √[10 × 20 × 5] ≈ 10.
+
+This gives a “typical” value for each gene.
+
+**Step2**- Compare each sample to this reference
+For every gene in a sample:
+```ini
+ratio = (gene count in sample) / (geometric mean of that gene)
+```
+Example for sample 1:
+Gene A = 10 → ratio = 10 / 10 = 1
+Gene B = 100 → ratio = 100 / 50 = 2
+Gene C = 5 → ratio = 5 / 10 = 0.5
+
+This tells us whether the sample has more or fewer reads than “typical.”
+
+**Step3**- Take the median ratio → this becomes the size factor
+DESeq2 takes the median of all ratios for a sample.
+
+Example: ratios = {1, 2, 0.5}
+Sorted = {0.5, 1, 2}
+Median = 1
+
+This number (size factor) tells how much bigger or smaller the library is compared to the others.
+
+A size factor > 1 → sample has more reads than average
+
+A size factor < 1 → sample has fewer reads
+
+**Step4**- Normalize the counts
+
+Finally:
+
+```matlab
+normalized count = raw count / size factor
+```
+Example:
+Raw count = 200
+Size factor = 2
+Normalized count = 200 / 2 = 100
+
+Now samples with bigger or smaller sequencing depth are adjusted to the same scale.
+
+This way, we correct the sequencing depth without being distorted by highly expressed genes. It assumes most genes do not change dramatically between samples and makes gene counts comparable across samples before statistical testing.
+
+
 **For starting the next steps, first stop the current shell job.**
 
 - Launch **RStudio Server** on the **wICE cluster** using **R/4.4.1-gfbf-2023b**  
@@ -785,9 +865,14 @@ dds <- DESeqDataSetFromMatrix(
 
 # ---- Filter out very lowly-expressed genes ----
 dds <- dds[rowSums(counts(dds)) >= 10, ]  # Keep genes with at least 10 total counts across all samples
+```
 
+```r
 # ---- Run the full DESeq2 pipeline ----
 dds <- DESeq(dds)                         # Normalization, dispersion estimation, and model fitting
+```
+
+
 
 # ---- QC: Check normalization & dispersion ----
 
