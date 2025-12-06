@@ -444,6 +444,9 @@ mkdir -p "$OUT"
 for fq in "$IN"/*.sub5M.trimmed.fastq.gz; do s=$(basename "$fq" .sub5M.trimmed.fastq.gz); echo "Aligning $s ..."; STAR --runThreadN 18 --genomeDir "$IDX" --readFilesIn "$fq" --readFilesCommand zcat --outFileNamePrefix "$OUT/${s}." --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts; done
 
 ```
+STAR/2.7.10a is loaded.
+
+GCC-10.3.0 is simply the compiler version used to build the STAR binary at the cluster.
 
 **STAR arguments**
 
