@@ -692,7 +692,8 @@ Question: Imagine you have 10 biological replicates per condition, collected at 
 Based on this study design, which differential expression analysis tool would be the most appropriate (DESeq2, edgeR, or limma-voom), and why?
 </span>
 
-- Stop the current shell job.
+**For starting the next steps, first stop the current shell job.**
+
 - Launch **RStudio Server** on the **wICE cluster** using **R/4.4.1-gfbf-2023b**  
 - Load the module: `R-bundle-Bioconductor` (for additional Bioconductor packages).
 - **Partition:** `batch_icelake`
@@ -707,24 +708,23 @@ Based on this study design, which differential expression analysis tool would be
 <img src="assets/Rstudio_interactive.png" alt="Rstudio_interactive" width="800">
 <img src="assets/Rstudio_interactive3.png" alt="Rstudio_interactive3" width="800">
 
-Open a new R script once the R session is started and follo the stepsas below:
+Open a new R script once the R session is started and follow the steps as below:
 
 **Install packages only if they are not already installed**
 
 ```r
 # Load the required packages
 
-library(DESeq2)
-library(readr)
-library(dplyr)
-library(ggplot2)
-library(ggrepel)
-library(apeglm)
-library(biomaRt)
-library(clusterProfiler)
-library(msigdbr)
-library(org.Hs.eg.db)
-library(enrichplot)  
+library(DESeq2)          # Differential gene expression analysis
+library(readr)           # Fast reading of tabular data
+library(dplyr)           # Data manipulation (filter, select, mutate, etc.)
+library(ggplot2)         # Data visualization using the grammar of graphics
+library(ggrepel)         # Improved label placement for ggplot2
+library(biomaRt)         # Gene annotation and ID mapping via Ensembl
+library(clusterProfiler) # Functional enrichment (GO, KEGG, pathways)
+library(msigdbr)         # Access to MSigDB gene sets
+library(org.Hs.eg.db)    # Human gene annotation database
+library(enrichplot)      # Visualization of enrichment analysis results  
 
 ```
 **Setting up input and output directories in R**
@@ -770,6 +770,18 @@ dds <- dds[rowSums(counts(dds)) >= 10, ]  # Keep genes with at least 10 total co
 # ---- Run the full DESeq2 pipeline ----
 dds <- DESeq(dds)                         # Normalization, dispersion estimation, and model fitting
 
+# ---- QC: Check normalization & dispersion ----
+
+# Plot dispersion estimates
+plotDispEsts(dds)
+
+# MA plot to visualize normalization effects
+plotMA(dds, ylim = c(-5, 5))
+
+# PCA plot of normalized counts
+vsd <- vst(dds)     # or use rlog(dds) for smaller datasets
+plotPCA(vsd, intgroup = "condition")
+
 # ---- Extract differential expression results ----
 res <- results(
   dds,
@@ -783,15 +795,41 @@ res <- results(
 After computing differential expression, the results contain gene identifiers in Ensembl ID format (e.g., ENSG00000141510.12). These identifiers are accurate but not user-friendly, so the next step is to annotate them with human-readable gene symbols (e.g., TP53). Using the biomaRt package, we query the Ensembl database, retrieve gene symbols for all genes in the results, remove version suffixes (e.g., .12), and merge the annotations back into the results table. The output is an annotated results file that is easier to interpret and suitable for downstream visualization and reporting.
 
 ```r
-# annotate
-mart <- useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl")
-gene_ids <- gsub("\\..*", "", rownames(res))
-annot <- getBM(attributes = c("ensembl_gene_id","external_gene_name"),
-               filters = "ensembl_gene_id", values = gene_ids, mart = mart)
-res_tbl <- as.data.frame(res); res_tbl$ensembl_gene_id <- gsub("\\..*", "", rownames(res_tbl))
+# -------------------------------
+# Gene annotation
+# -------------------------------
+
+# (Optional) Annotation using biomaRt — disabled here to save time
+# mart <- useEnsembl("ensembl", dataset = "hsapiens_gene_ensembl", GRCh = 38)
+#
+# Extract Ensembl gene IDs without version numbers (e.g., ENSG000001... from ENSG000001... .12)
+# gene_ids <- gsub("\\..*", "", rownames(res))
+#
+# Retrieve gene names (HGNC symbols) from Ensembl
+# annot <- getBM(
+#   attributes = c("ensembl_gene_id", "external_gene_name"),
+#   filters    = "ensembl_gene_id",
+#   values     = gene_ids,
+#   mart       = mart
+# )
+
+# Instead of querying Ensembl, load a precomputed annotation table 
+# (recommended during workshops to save time and avoid server delays)
+annot <- read.csv('/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/annot.csv')
+
+# Convert DESeq2 results to a data frame and extract pure Ensembl IDs
+res_tbl <- as.data.frame(res)
+res_tbl$ensembl_gene_id <- gsub("\\..*", "", rownames(res_tbl))
+
+# Merge DE results with annotation table (keeps all DESeq2 rows)
 res_annot <- merge(res_tbl, annot, by = "ensembl_gene_id", all.x = TRUE)
+
+# Order genes by adjusted p-value (most significant first)
 res_annot <- res_annot[order(res_annot$padj), ]
+
+# Save annotated differential expression results as a TSV file
 readr::write_tsv(res_annot, file.path(out_dir, "deseq2_results_annotated.tsv"))
+
 ```
 
 **Identifying Differentially Expressed Genes (DEGs) and Creating a Volcano Plot**
