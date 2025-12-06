@@ -1191,23 +1191,13 @@ dev.off()  # close the graphics device and write the PNG file
 ```
 <img src="assets/GSEA.png" alt="GSEA" width="700">
   
+
 ** Do not forget to cancel your interactive job after completing the tutorial at the end of WZ1 session.**
 
 
 ## 📝 Quick Feedback
 
 How helpful was this tutorial?
-
-👍 Very helpful  
-🙂 Somewhat helpful  
-😐 Neutral  
-👎 Not helpful
-
-Please react with the emoji that best matches your impression!  
-(Click the emoji reactions at the top of this page.)
-
-## 📝 Feedback Survey
-
 Have feedback?  
 👉 **[Click here to leave a comment in the discussion thread.](https://github.com/Samaneh-Tousi/WZ_bulk-rnaseq-dea-tutorial/discussions)**
 
