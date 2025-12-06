@@ -1072,19 +1072,20 @@ log2FC measures how much expression changes on a log base 2 scale.
 
 **Putting it all together**
 
-A DEG is a gene that shows:
+A **DEG** is a gene that shows:
 
-a large enough change in expression (log2FC threshold)
+1- A large enough change in expression (log2FC threshold)
 
-consistent differences across replicates (low dispersion)
+2- Consistent differences across replicates (low dispersion)
 
-a statistically significant difference (low padj)
+3- A statistically significant difference (low padj)
 
 | Gene  | log2FC | padj  | Interpretation             |
 | ----- | ------ | ----- | -------------------------- |
 | GeneA | +1.5   | 0.001 | Strongly upregulated in MS |
 | GeneB | –2.0   | 0.03  | Downregulated in MS        |
 | GeneC | 0.2    | 0.8   | No meaningful change       |
+
 
 
 **Gene Set Enrichment Analysis (GSEA), Hallmark Pathways**
