@@ -930,6 +930,15 @@ res <- results(
   independentFiltering = FALSE            # Keep all genes (no automatic filtering by mean counts)
 )
 ```
+<img src="assets/PCAplot.png" alt="PCAplot" width="600">
+
+This PCA plot shows how your samples group based on overall gene-expression patterns after normalization and variance-stabilizing transformation.
+
+✔ Controls are relatively homogenous
+✔ MS samples differ strongly from each other
+✔ High MS heterogeneity reduces statistical power
+✔ You may find fewer DEGs
+✔ more samples are required for a higher statistical power
 
 **Gene Annotation with Ensembl (biomaRt)**
 
