@@ -272,7 +272,6 @@ CCTAGNTAATTTTTTGTATTTTTAGTCGAGACAGGGTTTCTCCATGTTGGTCAGGCTGGTCTCGAACTCCCGACCT
 +SRR6849240.1 1 length=76
 AAAAA#EEE/EEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEAEEEEEEEEEEE<EAEEEAEAE/<AA
 ```
-<span style="color:purple; font-weight:600;">Question: Examine the FASTQ read above. Based on the sequence (A/C/T/G/N) and the quality string of ASCII symbols (A, E, /, <, #), what can you conclude about: 1-the presence of an “N” in the read, 2- the overall base-calling quality, 3- positions where sequencing quality drops, 4- and whether this read is likely to be kept or trimmed during QC?</span>
 
 Each read is made up of four lines:
 
@@ -350,6 +349,9 @@ Illumina machines use Phred+33 encoding, meaning the ASCII code of the character
 | Read length      | Count bases on line 2        | Usually 75–151 bp          |                     |
 | Quality encoding | Look at characters (A, E, J) | Likely Phred+33 (Illumina) |                     |
 | Typical pattern  | High → drop at end           | Normal for Illumina        |                     |
+
+
+<span style="color:purple; font-weight:600;">Question: Examine the FASTQ read above. Based on the sequence (A/C/T/G/N) and the quality string of ASCII symbols (A, E, /, <, #), what can you conclude about: 1-the presence of an “N” in the read, 2- the overall base-calling quality, 3- positions where sequencing quality drops, 4- and whether this read is likely to be kept or trimmed during QC?</span>
 
 
 ## Step 3 - QC & trimming (fastp) {#step-3-qc-trimming-fastp}
