@@ -784,8 +784,11 @@ Finally:
 normalized count = raw count / size factor
 ```
 Example:
+
 Raw count = 200
+
 Size factor = 2
+
 Normalized count = 200 / 2 = 100
 
 Now samples with bigger or smaller sequencing depth are adjusted to the same scale.
