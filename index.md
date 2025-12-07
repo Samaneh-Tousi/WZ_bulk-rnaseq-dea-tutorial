@@ -556,7 +556,7 @@ OUT=strandness_from_STAR.tsv; printf "sample\tforward_counts(col3)\treverse_coun
 **Strandness summary command arguments**
 
 **awk -v S="$s"**
-Passes the sample name to awk as a variable.
+Passes the sample name to awk as a variable. awk in Linux is a powerful command-line tool used for searching, filtering, and processing text files.
 
 **'NR>4 {f+=$3; r+=$4}**
 Skips the first 4 header lines and sums:
@@ -581,7 +581,7 @@ Appends all results to the output file.
 **cat "$OUT"**
 Prints the final table to the terminal.
 
-Then if reverse fraction ≫ forward → use **-s 2** arguments at featureCounts running.
+Then if reverse fraction is higher than forward → use **-s 2** arguments at featureCounts running.
 
 ## Step 6 - Quantifying Gene Expression by featureCounts {#step-6-quantifying-gene-expression-by-featurecounts}
 
