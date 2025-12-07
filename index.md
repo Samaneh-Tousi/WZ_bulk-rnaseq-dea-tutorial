@@ -754,9 +754,12 @@ For every gene in a sample:
 ratio = (gene count in sample) / (geometric mean of that gene)
 ```
 Example for sample 1:
-Gene A = 10 → ratio = 10 / 10 = 1
-Gene B = 100 → ratio = 100 / 50 = 2
-Gene C = 5 → ratio = 5 / 10 = 0.5
+
+Gene A = 10 → ratio = 10/10 = 1
+
+Gene B = 100 → ratio = 100/50 = 2
+
+Gene C = 5 → ratio = 5/10 = 0.5
 
 This tells us whether the sample has more or fewer reads than “typical.”
 
