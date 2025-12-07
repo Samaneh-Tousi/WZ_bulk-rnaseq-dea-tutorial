@@ -252,7 +252,7 @@ To work with them in RNA-seq tools, we first download these .sra files using pre
 
 ** Checking and Understanding FASTQ Files**
 
-Once your .fastq.gz files are downloaded from SRA, you can inspect their format and quality encoding directly from the command line.
+You can inspect the fastq file format and quality encoding directly from the command line.
 
 **Preview your FASTQ file**
 
