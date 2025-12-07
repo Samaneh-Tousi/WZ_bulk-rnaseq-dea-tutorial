@@ -233,9 +233,9 @@ In SRA, each sequencing run has an SRR accession number (SRR######).
 
 | Type    | Example    | Description                                       |
 | ------- | ---------- | ------------------------------------------------- |
-| **GSE** | GSE111972  | GEO *Series* — the entire study                   |
-| **GSM** | GSM3045818 | GEO *Sample* — metadata for one biological sample |
-| **SRR** | SRR6849240 | SRA *Run* — the actual sequencing file(s)         |
+| **GSE** | GSE111972  | GEO *Series*, the entire study                   |
+| **GSM** | GSM3045818 | GEO *Sample*, metadata for one biological sample |
+| **SRR** | SRR6849240 | SRA *Run*, the actual sequencing file(s)         |
 
 
 ** From SRR to FASTQ **
@@ -356,7 +356,7 @@ Illumina machines use Phred+33 encoding, meaning the ASCII code of the character
 
 ## Step 3 - QC & trimming (fastp) {#step-3-qc-trimming-fastp}
 
-**fastp** is an all-in-one FASTQ preprocessing tool that performs quality control (QC), adapter trimming, and filtering of sequencing reads — all in one fast, multithreaded program.
+**fastp** is an all-in-one FASTQ preprocessing tool that performs quality control (QC), adapter trimming, and filtering of sequencing reads, all in one fast, multithreaded program.
 
 It is often used as a faster, modern replacement for older tools like **FastQC** and **Trimmomatic**.
 
