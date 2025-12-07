@@ -420,7 +420,7 @@ This index acts as a searchable map that STAR uses to quickly locate and align s
 In this step, we downloaded the human reference genome (GRCh38) **FASTA** and **GTF** files from Ensembl via the above links, then decompressed the files, and ran STAR in genomeGenerate mode. STAR processes the genome and annotation to create a set of optimized index files, which are stored in the Ref_genome directory under:
 
 ````
-/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome
+cd /scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome
 ````
 
 This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. 
