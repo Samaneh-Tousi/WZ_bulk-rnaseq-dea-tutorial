@@ -105,7 +105,7 @@ Most bulk RNA-seq data today is generated on Illumina platforms, which produce s
 
 **Illumina MiSeq**: smaller experiments, pilot studies
 
-The different steps of sequencing with Illumina’s sequencing by synthesis method.
+**The different steps of sequencing with Illumina’s sequencing by synthesis method:**
 
 <img src="assets/Illumina_seq.png" alt="Illumina_seq" width="800">
 
@@ -131,6 +131,10 @@ The different steps of sequencing with Illumina’s sequencing by synthesis meth
 - **Basic familiarity with the Linux shell and R**
 
 - **Storage space** under `$VSC_DATA`
+
+**Why run RNA-seq analysis on an HPC?**
+
+High-performance computing (HPC) is important for bulk RNA-seq analysis because it can handle large datasets and run demanding steps like alignment and quantification much faster than a regular computer. Many tools require high memory and multiple CPU cores, especially when processing many samples in parallel. HPC provides the necessary speed, storage, and scalability to complete analyses efficiently and reliably.
 
 ---
 ### What is an HPC Node?
