@@ -500,7 +500,7 @@ To view just the first few alignment lines:
 
 ```
 module load SAMtools/1.13-GCC-10.3.0
-samtools view yourfile.bam | head
+samtools view SRR6849240.Aligned.sortedByCoord.out.bam | head
 ```
 
 The command will let you quickly look at the first few alignments, without scrolling through the entire file.
