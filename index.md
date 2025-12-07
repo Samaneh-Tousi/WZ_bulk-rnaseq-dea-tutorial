@@ -663,16 +663,15 @@ MultiQC is a tool that scans the output files from many bioinformatics programs 
 ```
 module load MultiQC/1.11-foss-2021a
 
-# Define input and output directories
 FASTP_DIR="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
 STAR_DIR="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 FC_DIR="$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts"
 MQC_OUT="$VSC_DATA/Bioinfo_course/MS_microglia_MultiQC"
 
-# Create output directory
+
 mkdir -p "$MQC_OUT"
 
-# Run MultiQC across all stages
+
 multiqc -o "$MQC_OUT" -n multiqc_all "$FASTP_DIR" "$STAR_DIR" "$FC_DIR"
 
 ```
