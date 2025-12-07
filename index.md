@@ -507,21 +507,54 @@ The command will let you quickly look at the first few alignments, without scrol
 
 **Example interpretation of a BAM file**
 ```
-SRR6849240.12345	16	chr1	10542	255	76M	*	0	0	ACTG…	AAAA…	NM:i:0
+SRR6849240.11223140  256  1  14410  0  76M  *  0  0  CTCAGT...GGAGC  AAAAAE...EEEE  NH:i:5  HI:i:2  AS:i:74  nM:i:0
 ```
 **Means:**
 
-This read is named **SRR6849240.12345**
+**QNAME** – ````SRR6849240.11223140````
+The read name (from your FASTQ file).
 
-FLAG **16** → read maps to reverse strand
+**FLAG** – ````256````
+Bitwise flag. 256 means this is a secondary alignment (the read maps in multiple places; this is not the primary one).
 
-It aligned to chromosome 1, position **10542**
+**RNAME** – ````1````
+Reference sequence name. Here it’s chromosome 1 (often written as chr1 in the reference).
 
-CIGAR **76M** → 76 bases matched the reference (no indels)
+**POS** – ````14410````
+1-based position where the alignment starts on the reference.
 
-MAPQ **255** → unique, high-confidence alignment
+**MAPQ** – ````0````
+Mapping quality. 0 means low confidence / multimapping (aligner isn’t sure of a unique location).
 
-**NM:i:0** → 0 mismatches from the reference
+**CIGAR** – ````76M````
+Alignment operations. 76M = 76 bases matched/aligned (read length 76 bp, all aligned, no indels).
+
+**RNEXT** – ````*````
+Mate’s reference name (for paired-end). * means not applicable/unknown (often single-end or not set here).
+
+**PNEXT** – ````0````
+Mate’s position. 0 again means not applicable/unknown.
+
+**TLEN** – ````0````
+Template length (insert size). 0 here because mate info isn’t being used / set.
+
+**SEQ** – ````CTCAGTTCTTTATTGATTGGTG...````
+The actual read sequence (76 bases).
+
+**QUAL** – ````AAAAAEEEEEEEEEEEEEEAE...````
+ASCII-encoded base quality scores (one character per base).
+
+**NH**:i:5
+Number of reported alignments for this read = 5 → the read maps to 5 locations.
+
+**HI**:i:2
+Hit index = 2 → this is the 2nd of those 5 alignments.
+
+**AS**:i:74
+Alignment score assigned by the aligner (higher is better). 74 is pretty good for a 76 bp read.
+
+**nM**:i:0
+Number of mismatches (edit distance) = 0 → perfect match to the reference at this location.
 
 
 ## Step 5 - Strandness check {#step-5-strandness-check}
