@@ -246,7 +246,7 @@ To work with them in RNA-seq tools, we first download these .sra files using pre
 **You do not need to download the files. To save time during the workshop, all required files are already available at:**
 
 ```
-/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/fastq
+cd /scratch/leuven/377/vsc37707/Bioinfo_course_scratch/fastq
 ```
 
 
