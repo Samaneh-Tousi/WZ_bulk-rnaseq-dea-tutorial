@@ -500,63 +500,40 @@ To view just the first few alignment lines:
 
 ```
 module load SAMtools/1.13-GCC-10.3.0
-samtools view SRR6849240.Aligned.sortedByCoord.out.bam | head
+samtools view SRR6849240.Aligned.sortedByCoord.out.bam | head -20
 ```
 
-The command will let you quickly look at the first few alignments, without scrolling through the entire file.
+The command will let you quickly look at the first 20 alignments, without scrolling through the entire file.
 
 **Example interpretation of a BAM file**
+```less
+SRR6849240.5225765   0   1   14518   0   76M   *   0   0   CCCCGC...GTCA   AAAAAE...E/E/   NH:i:8  HI:i:1  AS:i:74  nM:i:0
 ```
-SRR6849240.11223140  256  1  14410  0  76M  *  0  0  CTCAGT...GGAGC  AAAAAE...EEEE  NH:i:5  HI:i:2  AS:i:74  nM:i:0
-```
-**Means:**
+**SRR6849240.5225765** → Read name
 
-**QNAME** – ````SRR6849240.11223140````
-The read name (from your FASTQ file).
+**0** → FLAG = primary alignment, forward strand
 
-**FLAG** – ````256````
-Bitwise flag. 256 means this is a secondary alignment (the read maps in multiple places; this is not the primary one).
+**1** → Chromosome 1
 
-**RNAME** – ````1````
-Reference sequence name. Here it’s chromosome 1 (often written as chr1 in the reference).
+**14518** → Alignment start position on chr1
 
-**POS** – ````14410````
-1-based position where the alignment starts on the reference.
+**0** (MAPQ) → Low mapping quality → read maps to many locations
 
-**MAPQ** – ````0````
-Mapping quality. 0 means low confidence / multimapping (aligner isn’t sure of a unique location).
+**76M** → CIGAR: 76 bases match perfectly
 
-**CIGAR** – ````76M````
-Alignment operations. 76M = 76 bases matched/aligned (read length 76 bp, all aligned, no indels).
+**SEQ** → Read sequence (76 bp)
 
-**RNEXT** – ````*````
-Mate’s reference name (for paired-end). * means not applicable/unknown (often single-end or not set here).
+**QUAL** → Base quality scores (ASCII encoded)
 
-**PNEXT** – ````0````
-Mate’s position. 0 again means not applicable/unknown.
+**NH:i:8** → This read aligns to 8 different genomic locations (multi-mapped)
 
-**TLEN** – ````0````
-Template length (insert size). 0 here because mate info isn’t being used / set.
+**HI:i:1** → This is the 1st of those 8 reported alignments (the primary one)
 
-**SEQ** – ````CTCAGTTCTTTATTGATTGGTG...````
-The actual read sequence (76 bases).
+**AS:i:74** → Alignment score = 74 (strong alignment)
 
-**QUAL** – ````AAAAAEEEEEEEEEEEEEEAE...````
-ASCII-encoded base quality scores (one character per base).
-
-**NH**:i:5
-Number of reported alignments for this read = 5 → the read maps to 5 locations.
-
-**HI**:i:2
-Hit index = 2 → this is the 2nd of those 5 alignments.
-
-**AS**:i:74
-Alignment score assigned by the aligner (higher is better). 74 is pretty good for a 76 bp read.
-
-**nM**:i:0
-Number of mismatches (edit distance) = 0 → perfect match to the reference at this location.
-
-
+**nM:i:0** → Number of mismatches = 0 (perfect match)
+ 
+ 
 ## Step 5 - Strandness check {#step-5-strandness-check}
 
 Verifying library strandness is an important quality-control step in RNA-seq analysis, because different library preparation kits produce reads that originate from either the forward or reverse strand of the original transcript. The NEBNext Ultra Directional kit used in this dataset is expected to generate reverse-stranded libraries, but STAR makes it easy to confirm this empirically. Each STAR alignment produces a ReadsPerGene.out.tab file containing read counts for unstranded (column 2), forward-strand (column 3), and reverse-strand (column 4) alignments. By summing columns 3 and 4 for each sample, we compute the fraction of reads mapping to each strand. If the reverse fraction is much higher than the forward fraction, the dataset is reverse-stranded which matches the expected behavior of NEBNext. This confirmation ensures that we correctly specify -s 2 (reverse-stranded) in featureCounts and downstream analyses.
