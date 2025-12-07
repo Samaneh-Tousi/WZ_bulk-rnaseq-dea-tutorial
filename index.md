@@ -477,11 +477,16 @@ Outputs alignments as a BAM file sorted by genomic coordinate.
 **--quantMode GeneCounts**
 Generates gene-level read counts for each sample.
 
-Check metrics:
+Check metrics in the STAR output directory:
 
 ```
-less "$OUT"/<sample>.Log.final.out
+cd $VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned
+
+cat SRR6849240.Log.final.out
+
 ```
+The **cat** (concatenate) command in Linux displays file contents.
+
 
 <img src="assets/Log_final_out.png" alt="Log_final_out" width="700">
 
