@@ -485,7 +485,7 @@ cd $VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned
 cat SRR6849240.Log.final.out
 
 ```
-The **cat** (concatenate) command in Linux displays file contents.
+
 
 
 <img src="assets/Log_final_out.png" alt="Log_final_out" width="700">
