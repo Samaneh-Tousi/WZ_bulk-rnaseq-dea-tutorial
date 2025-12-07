@@ -182,7 +182,7 @@ Start **Interactive Shell** with:
 ## Step 2 - Connect, workspace, data {#step-2-connect-workspace-data}
 
 Connect to the running shell job (bottom Connect button). 
-Once connected, use these commands to prepare your course workspace and load required software:
+Once connected, use these commands to prepare your course workspace:
 
 ```
 cd $VSC_DATA
