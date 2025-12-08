@@ -415,9 +415,11 @@ Before STAR can align RNA-seq reads, it must first build a genome index from the
 - [Human reference genome (GRCh38, FASTA)](https://ftp.ensembl.org/pub/current/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz)
 - [Human gene annotation (GRCh38, GTF)](https://ftp.ensembl.org/pub/current/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.chr.gtf.gz)
 
-This index acts as a searchable map that STAR uses to quickly locate and align sequencing reads to the genome.
+The human reference genome (GRCh38) **FASTA** and **GTF** files were downloaded from **Ensembl**, decompressed, and processed with STAR in ```genomeGenerate``` mode. This step produced a set of optimized index files stored in the ```Ref_genome``` directory.
 
-In this step, we downloaded the human reference genome (GRCh38) **FASTA** and **GTF** files from Ensembl via the above links, then decompressed the files, and ran STAR in genomeGenerate mode. STAR processes the genome and annotation to create a set of optimized index files, which are stored in the Ref_genome directory:
+**To save time during the workshop, the reference genome and STAR index have already been prepared**. These files will be used in the next step to align the trimmed FASTQ reads.
+
+The STAR index serves as a searchable map that allows the aligner to efficiently locate and map sequencing reads to the genome.
 
 ````
 cd /scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome
@@ -425,32 +427,25 @@ cd /scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome
 
 This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. 
 
-** What are Genome Index Files?**
 
-# STAR Reference Genome Index Files
+** More explanation about Genome Index Files?**
 
 When STAR is run with `--runMode genomeGenerate`, it creates a directory containing all files required for alignment. These files together make up the **STAR genome index**.
 
----
-
-## Files Produced by `genomeGenerate`
-
-### **Genome**
+**Genome**
 - Binary-encoded reference genome.
 - Contains the full concatenated genomic sequence in STAR’s internal format.
 - One of the core index files required for alignment.
 
-### **SA**
+**SA**
 - STAR’s suffix array, used for fast seed searching.
 - Typically large (comparable to or larger than `Genome`).
 
-### **SAindex**
+**SAindex**
 - Supporting index for the suffix array.
 - Speeds up initial genome search steps.
 
----
-
-## Chromosome Metadata Files
+**Chromosome Metadata Files**
 
 | File | Description |
 |------|-------------|
@@ -461,49 +456,27 @@ When STAR is run with `--runMode genomeGenerate`, it creates a directory contain
 
 These files help STAR convert between internal coordinates and chromosome coordinates.
 
----
+**Annotation-Derived Files (if a GTF is provided)
 
-## Annotation-Derived Files (if a GTF is provided)
-
-### **sjdbList.out.tab**
+**sjdbList.out.tab**
 - List of splice junctions extracted from the annotation.
 - Used to improve spliced read alignment.
 
-### **sjdbInfo.txt**
+**sjdbInfo.txt**
 - Metadata describing how splice junctions were processed and incorporated.
 
-### **sjdbN.txt**
+**sjdbN.txt**
 - Total number of splice junctions included.
 
-### Optional (STAR version–dependent)
+**Optional (STAR version–dependent)**
 - `geneInfo.tab`
 - `transcriptInfo.tab`
 - `exonInfo.tab`  
 These contain tables summarizing gene, transcript, and exon structure.
 
----
-
-## Additional File
-
-### **genomeParameters.txt**
+**genomeParameters.txt
 - Records the parameters used during index generation.
 - Includes values for genome size, number of chromosomes, STAR version, and indexing parameters such as `genomeSAindexNbases` and `sjdbOverhang`.
-
----
-
-## Summary
-
-The STAR genome index directory contains:
-
-- core binary genome and suffix array files,
-- supporting chromosome metadata files,
-- optional annotation-based splice junction files,
-- a parameter log for reproducibility.
-
-These files work together to allow STAR to perform rapid, accurate alignment against the reference genome.
-
-
-To save time during the workshop session, the required reference genome and index files have already been prepared. The generated index will be used in the next step to align the trimmed FASTQ files to the genome.
 
 
 **Aligning Reads to the Genome with STAR**
@@ -517,6 +490,7 @@ Once the reference genome index is prepared, we can align our trimmed FASTQ read
 We also enable --quantMode GeneCounts, which instructs STAR to generate preliminary per-gene read counts that will later help verify the library’s strandness. The output of this step includes aligned BAM files, gene count summaries, and STAR logs, all stored in the MS_microglia_STAR_aligned directory and ready for downstream quantification and differential expression analysis.
 
 This command aligns trimmed RNA-seq reads to the reference genome using STAR and produces sorted BAM files and gene-level count summaries for each sample.
+
 
 ```
 module load STAR/2.7.10a-GCC-10.3.0
