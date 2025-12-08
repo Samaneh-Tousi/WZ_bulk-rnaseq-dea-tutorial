@@ -427,8 +427,9 @@ cd /scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome
 
 This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. 
 
+---
+##** More explanation about Genome Index Files?**
 
-** More explanation about Genome Index Files?**
 
 When STAR is run with `--runMode genomeGenerate`, it creates a directory containing all files required for alignment. These files together make up the **STAR genome index**.
 
@@ -477,7 +478,7 @@ These contain tables summarizing gene, transcript, and exon structure.
 **genomeParameters.txt
 - Records the parameters used during index generation.
 - Includes values for genome size, number of chromosomes, STAR version, and indexing parameters such as `genomeSAindexNbases` and `sjdbOverhang`.
-
+---
 
 **Aligning Reads to the Genome with STAR**
 
