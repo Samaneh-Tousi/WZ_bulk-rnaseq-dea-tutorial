@@ -965,6 +965,7 @@ plotDispEsts(dds)
 **Blue circles** → final shrunken dispersions used in testing. DESeq2 shrinks noisy gene-wise estimates toward the fitted trend by stabilizing the variance estimates, it prevents overly large dispersion values for low-count or unstable genes.
 
 low-count genes = more variability
+
 high-count genes = more stable
 
 A few black dots lie at extremely low dispersion values (near 1e−8). These typically correspond to housekeeping genes, stably expressed genes, or even technical artifacts with extremely high counts.
