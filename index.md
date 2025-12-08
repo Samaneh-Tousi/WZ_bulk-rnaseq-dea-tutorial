@@ -427,10 +427,7 @@ cd /scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome
 
 This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. 
 
-
-
 ** More explanation about Genome Index Files?**
-
 
 When STAR is run with `--runMode genomeGenerate`, it creates a directory containing all files required for alignment. These files together make up the **STAR genome index**.
 
