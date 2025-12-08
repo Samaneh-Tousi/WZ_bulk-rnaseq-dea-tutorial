@@ -417,13 +417,91 @@ Before STAR can align RNA-seq reads, it must first build a genome index from the
 
 This index acts as a searchable map that STAR uses to quickly locate and align sequencing reads to the genome.
 
-In this step, we downloaded the human reference genome (GRCh38) **FASTA** and **GTF** files from Ensembl via the above links, then decompressed the files, and ran STAR in genomeGenerate mode. STAR processes the genome and annotation to create a set of optimized index files, which are stored in the Ref_genome directory under:
+In this step, we downloaded the human reference genome (GRCh38) **FASTA** and **GTF** files from Ensembl via the above links, then decompressed the files, and ran STAR in genomeGenerate mode. STAR processes the genome and annotation to create a set of optimized index files, which are stored in the Ref_genome directory:
 
 ````
 cd /scratch/leuven/377/vsc37707/Bioinfo_course_scratch/Ref_genome
 ````
 
 This indexing step only needs to be done once for each genome version and may take several minutes depending on the available computing resources. 
+
+** What are Genome Index Files?**
+
+# STAR Reference Genome Index Files
+
+When STAR is run with `--runMode genomeGenerate`, it creates a directory containing all files required for alignment. These files together make up the **STAR genome index**.
+
+---
+
+## Files Produced by `genomeGenerate`
+
+### **Genome**
+- Binary-encoded reference genome.
+- Contains the full concatenated genomic sequence in STAR’s internal format.
+- One of the core index files required for alignment.
+
+### **SA**
+- STAR’s suffix array, used for fast seed searching.
+- Typically large (comparable to or larger than `Genome`).
+
+### **SAindex**
+- Supporting index for the suffix array.
+- Speeds up initial genome search steps.
+
+---
+
+## Chromosome Metadata Files
+
+| File | Description |
+|------|-------------|
+| `chrName` | Names of all chromosomes included in the index. |
+| `chrLength` | Length of each chromosome. |
+| `chrStart` | Offsets of chromosomes within the concatenated genome. |
+| `chrNameLength` | Length of each chromosome name string. |
+
+These files help STAR convert between internal coordinates and chromosome coordinates.
+
+---
+
+## Annotation-Derived Files (if a GTF is provided)
+
+### **sjdbList.out.tab**
+- List of splice junctions extracted from the annotation.
+- Used to improve spliced read alignment.
+
+### **sjdbInfo.txt**
+- Metadata describing how splice junctions were processed and incorporated.
+
+### **sjdbN.txt**
+- Total number of splice junctions included.
+
+### Optional (STAR version–dependent)
+- `geneInfo.tab`
+- `transcriptInfo.tab`
+- `exonInfo.tab`  
+These contain tables summarizing gene, transcript, and exon structure.
+
+---
+
+## Additional File
+
+### **genomeParameters.txt**
+- Records the parameters used during index generation.
+- Includes values for genome size, number of chromosomes, STAR version, and indexing parameters such as `genomeSAindexNbases` and `sjdbOverhang`.
+
+---
+
+## Summary
+
+The STAR genome index directory contains:
+
+- core binary genome and suffix array files,
+- supporting chromosome metadata files,
+- optional annotation-based splice junction files,
+- a parameter log for reproducibility.
+
+These files work together to allow STAR to perform rapid, accurate alignment against the reference genome.
+
 
 To save time during the workshop session, the required reference genome and index files have already been prepared. The generated index will be used in the next step to align the trimmed FASTQ files to the genome.
 
