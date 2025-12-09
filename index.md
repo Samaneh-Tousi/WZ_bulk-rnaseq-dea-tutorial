@@ -169,14 +169,14 @@ Login to OnDemand, and click on **Partner organization** and select **Hasselt Un
 Start **Interactive Shell** with:
 
 - **Cluster:** `Wice`
-- **Partition:** `batch_icelake`
+- **Partition:** `bigmem`
 - **Account:** `lp_h_edu_bioinformatics2025`
 - **Walltime:** 1 hour
 - **Number of nodes:** 1
-- **Number of processes per node:** 18
+- **Number of processes per node:** 8
 - **Number of cores per each task:** 1
-- **Memory per core:** 3400 MB
-- **Reservation:** `course_h_edu_bioinformatics2025`
+- **Memory per core:** 7500 MB
+- **Reservation:** ``
 
 
 ## Step 2 - Connect, workspace, data {#step-2-connect-workspace-data}
@@ -858,7 +858,7 @@ This way, we correct the sequencing depth without being distorted by highly expr
 - **Processes per node:** 4
 - **Cores per task:** 1
 - **Memory per core:** 3400 MB
-- **Reservation:** `course_h_edu_bioinformatics2025`
+- **Reservation:** ``
 
 <img src="assets/Rstudio_interactive.png" alt="Rstudio_interactive" width="800">
 <img src="assets/Rstudio_interactive3.png" alt="Rstudio_interactive3" width="800">
