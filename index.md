@@ -366,7 +366,7 @@ IN="/scratch/leuven/377/vsc37707/Bioinfo_course_scratch/fastq"
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
 mkdir -p "$OUT"
 
-for fq in "$IN"/SRR*.fastq.gz; do s=$(basename "${fq%.fastq.gz}"); echo "Running fastp on $s ..."; fastp -i "$fq" -o "$OUT/${s}.trimmed.fastq.gz" -h "$OUT/${s}_fastp.html" -j "$OUT/${s}_fastp.json" -w 18; done
+for fq in "$IN"/SRR*.fastq.gz; do s=$(basename "${fq%.fastq.gz}"); echo "Running fastp on $s ..."; fastp -i "$fq" -o "$OUT/${s}.trimmed.fastq.gz" -h "$OUT/${s}_fastp.html" -j "$OUT/${s}_fastp.json" -w 8; done
 
 ```
 **module load ...** → loads the tools needed for downloading and processing sequencing data
@@ -498,7 +498,7 @@ IN="$VSC_DATA/Bioinfo_course/MS_microglia_fastp"
 OUT="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 mkdir -p "$OUT"
 
-for fq in "$IN"/*.sub5M.trimmed.fastq.gz; do s=$(basename "$fq" .sub5M.trimmed.fastq.gz); echo "Aligning $s ..."; STAR --runThreadN 18 --genomeDir "$IDX" --readFilesIn "$fq" --readFilesCommand zcat --outFileNamePrefix "$OUT/${s}." --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts; done
+for fq in "$IN"/*.sub5M.trimmed.fastq.gz; do s=$(basename "$fq" .sub5M.trimmed.fastq.gz); echo "Aligning $s ..."; STAR --runThreadN 8 --genomeDir "$IDX" --readFilesIn "$fq" --readFilesCommand zcat --outFileNamePrefix "$OUT/${s}." --outSAMtype BAM SortedByCoordinate --quantMode GeneCounts; done
 
 ```
 STAR/2.7.10a is loaded.
@@ -657,14 +657,14 @@ ALIGN_DIR="$VSC_DATA/Bioinfo_course/MS_microglia_STAR_aligned"
 OUTDIR="$VSC_DATA/Bioinfo_course/MS_microglia_featureCounts"
 mkdir -p "$OUTDIR"
 
-featureCounts -T 18 -s 2 -t exon -g gene_id -a "$GTF" -o "$OUTDIR/featureCounts_counts.txt" "$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam
+featureCounts -T 8 -s 2 -t exon -g gene_id -a "$GTF" -o "$OUTDIR/featureCounts_counts.txt" "$ALIGN_DIR"/*.Aligned.sortedByCoord.out.bam
 
 ```
 
 **featureCounts command arguments**
 
-**-T 18**
-Uses 18 CPU threads to speed up counting.
+**-T 8**
+Uses 8 CPU threads to speed up counting.
 
 **-s 2**
 Indicates the data is reverse-stranded
