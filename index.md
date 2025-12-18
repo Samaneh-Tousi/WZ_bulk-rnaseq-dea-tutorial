@@ -381,7 +381,7 @@ for fq in "$IN"/SRR*.fastq.gz; do s=$(basename "${fq%.fastq.gz}"); echo "Running
 
 -j → Generates a JSON (JavaScript Object Notation, a plain text file) report with detailed processing statistics
 
--w 18 → Uses 18 CPU threads to speed up processing
+-w 8 → Uses 8 CPU threads to speed up processing
 
 basename → Extracts the sample name from the input file
 
