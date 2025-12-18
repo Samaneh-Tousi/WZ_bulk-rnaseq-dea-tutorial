@@ -507,8 +507,8 @@ GCC-10.3.0 is simply the compiler version used to build the STAR binary at the c
 
 **STAR arguments**
 
-**--runThreadN 18**
-Uses 18 CPU threads to speed up alignment.
+**--runThreadN 8**
+Uses 8 CPU threads to speed up alignment.
 
 **--genomeDir "$IDX"**
 Points to the STAR genome index directory.
